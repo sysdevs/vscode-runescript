@@ -1,0 +1,655 @@
+{
+  "name": "vscode-runescript",
+  "displayName": "RuneScript",
+  "description": "RuneScript (.rs2) and config file support: highlighting, file icons, diagnostics, hover, go to definition, references, completion.",
+  "version": "0.8.1",
+  "publisher": "sysdevs",
+  "icon": "images/icon.png",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sysdevs/vscode-runescript.git"
+  },
+  "license": "GPL-3.0-only",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "runescript",
+        "aliases": [
+          "RuneScript"
+        ],
+        "extensions": [
+          ".rs2"
+        ],
+        "configuration": "./language-configuration/runescript.json",
+        "icon": {
+          "light": "./icons/rs2.svg",
+          "dark": "./icons/rs2.svg"
+        }
+      },
+      {
+        "id": "runescript-macro",
+        "aliases": [
+          "RuneScript Macro"
+        ],
+        "extensions": [
+          ".macro"
+        ],
+        "configuration": "./language-configuration/runescript.json",
+        "icon": {
+          "light": "./icons/macro.svg",
+          "dark": "./icons/macro.svg"
+        }
+      },
+      {
+        "id": "runescript-npc",
+        "aliases": [
+          "RuneScript NPC"
+        ],
+        "extensions": [
+          ".npc"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/npc.svg",
+          "dark": "./icons/npc.svg"
+        }
+      },
+      {
+        "id": "runescript-obj",
+        "aliases": [
+          "RuneScript Object"
+        ],
+        "extensions": [
+          ".obj"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/obj.svg",
+          "dark": "./icons/obj.svg"
+        }
+      },
+      {
+        "id": "runescript-loc",
+        "aliases": [
+          "RuneScript Location"
+        ],
+        "extensions": [
+          ".loc"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/loc.svg",
+          "dark": "./icons/loc.svg"
+        }
+      },
+      {
+        "id": "runescript-idk",
+        "aliases": [
+          "RuneScript Identity Kit"
+        ],
+        "extensions": [
+          ".idk"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/idk.svg",
+          "dark": "./icons/idk.svg"
+        }
+      },
+      {
+        "id": "runescript-seq",
+        "aliases": [
+          "RuneScript Sequence"
+        ],
+        "extensions": [
+          ".seq"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/seq.svg",
+          "dark": "./icons/seq.svg"
+        }
+      },
+      {
+        "id": "runescript-spotanim",
+        "aliases": [
+          "RuneScript Spot Animation"
+        ],
+        "extensions": [
+          ".spotanim"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/spotanim.svg",
+          "dark": "./icons/spotanim.svg"
+        }
+      },
+      {
+        "id": "runescript-mesanim",
+        "aliases": [
+          "RuneScript Message Animation"
+        ],
+        "extensions": [
+          ".mesanim"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/mesanim.svg",
+          "dark": "./icons/mesanim.svg"
+        }
+      },
+      {
+        "id": "runescript-flo",
+        "aliases": [
+          "RuneScript Floor"
+        ],
+        "extensions": [
+          ".flo"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/flo.svg",
+          "dark": "./icons/flo.svg"
+        }
+      },
+      {
+        "id": "runescript-hitsplat",
+        "aliases": [
+          "RuneScript Hitsplat"
+        ],
+        "extensions": [
+          ".hitsplat"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/hitsplat.svg",
+          "dark": "./icons/hitsplat.svg"
+        }
+      },
+      {
+        "id": "runescript-varp",
+        "aliases": [
+          "RuneScript Player Variable"
+        ],
+        "extensions": [
+          ".varp"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/varp.svg",
+          "dark": "./icons/varp.svg"
+        }
+      },
+      {
+        "id": "runescript-varbit",
+        "aliases": [
+          "RuneScript Variable Bit"
+        ],
+        "extensions": [
+          ".varbit"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/varbit.svg",
+          "dark": "./icons/varbit.svg"
+        }
+      },
+      {
+        "id": "runescript-varn",
+        "aliases": [
+          "RuneScript NPC Variable"
+        ],
+        "extensions": [
+          ".varn"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/varn.svg",
+          "dark": "./icons/varn.svg"
+        }
+      },
+      {
+        "id": "runescript-varo",
+        "aliases": [
+          "RuneScript Obj Variable"
+        ],
+        "extensions": [
+          ".varo"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/varo.svg",
+          "dark": "./icons/varo.svg"
+        }
+      },
+      {
+        "id": "runescript-vars",
+        "aliases": [
+          "RuneScript Shared Variable"
+        ],
+        "extensions": [
+          ".vars"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/vars.svg",
+          "dark": "./icons/vars.svg"
+        }
+      },
+      {
+        "id": "runescript-inv",
+        "aliases": [
+          "RuneScript Inventory"
+        ],
+        "extensions": [
+          ".inv"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/inv.svg",
+          "dark": "./icons/inv.svg"
+        }
+      },
+      {
+        "id": "runescript-enum",
+        "aliases": [
+          "RuneScript Enum"
+        ],
+        "extensions": [
+          ".enum"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/enum.svg",
+          "dark": "./icons/enum.svg"
+        }
+      },
+      {
+        "id": "runescript-struct",
+        "aliases": [
+          "RuneScript Struct"
+        ],
+        "extensions": [
+          ".struct"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/struct.svg",
+          "dark": "./icons/struct.svg"
+        }
+      },
+      {
+        "id": "runescript-param",
+        "aliases": [
+          "RuneScript Param"
+        ],
+        "extensions": [
+          ".param"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/param.svg",
+          "dark": "./icons/param.svg"
+        }
+      },
+      {
+        "id": "runescript-dbtable",
+        "aliases": [
+          "RuneScript DB Table"
+        ],
+        "extensions": [
+          ".dbtable"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/dbtable.svg",
+          "dark": "./icons/dbtable.svg"
+        }
+      },
+      {
+        "id": "runescript-dbrow",
+        "aliases": [
+          "RuneScript DB Row"
+        ],
+        "extensions": [
+          ".dbrow"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/dbrow.svg",
+          "dark": "./icons/dbrow.svg"
+        }
+      },
+      {
+        "id": "runescript-hunt",
+        "aliases": [
+          "RuneScript Hunt"
+        ],
+        "extensions": [
+          ".hunt"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/hunt.svg",
+          "dark": "./icons/hunt.svg"
+        }
+      },
+      {
+        "id": "runescript-if",
+        "aliases": [
+          "RuneScript Interface"
+        ],
+        "extensions": [
+          ".if"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/if.svg",
+          "dark": "./icons/if.svg"
+        }
+      },
+      {
+        "id": "runescript-constant",
+        "aliases": [
+          "RuneScript Constant"
+        ],
+        "extensions": [
+          ".constant"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/constant.svg",
+          "dark": "./icons/constant.svg"
+        }
+      },
+      {
+        "id": "runescript-pack",
+        "aliases": [
+          "RuneScript Pack"
+        ],
+        "extensions": [
+          ".pack"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/pack.svg",
+          "dark": "./icons/pack.svg"
+        }
+      }
+    ],
+    "grammars": [
+      {
+        "language": "runescript",
+        "scopeName": "source.runescript",
+        "path": "./syntaxes/runescript.tmLanguage.json"
+      },
+      {
+        "language": "runescript-macro",
+        "scopeName": "source.runescript",
+        "path": "./syntaxes/runescript.tmLanguage.json"
+      },
+      {
+        "language": "runescript-npc",
+        "scopeName": "source.runescript-config.npc",
+        "path": "./syntaxes/config/npc.tmLanguage.json"
+      },
+      {
+        "language": "runescript-obj",
+        "scopeName": "source.runescript-config.obj",
+        "path": "./syntaxes/config/obj.tmLanguage.json"
+      },
+      {
+        "language": "runescript-loc",
+        "scopeName": "source.runescript-config.loc",
+        "path": "./syntaxes/config/loc.tmLanguage.json"
+      },
+      {
+        "language": "runescript-idk",
+        "scopeName": "source.runescript-config.idk",
+        "path": "./syntaxes/config/idk.tmLanguage.json"
+      },
+      {
+        "language": "runescript-seq",
+        "scopeName": "source.runescript-config.seq",
+        "path": "./syntaxes/config/seq.tmLanguage.json"
+      },
+      {
+        "language": "runescript-spotanim",
+        "scopeName": "source.runescript-config.spotanim",
+        "path": "./syntaxes/config/spotanim.tmLanguage.json"
+      },
+      {
+        "language": "runescript-mesanim",
+        "scopeName": "source.runescript-config.mesanim",
+        "path": "./syntaxes/config/mesanim.tmLanguage.json"
+      },
+      {
+        "language": "runescript-flo",
+        "scopeName": "source.runescript-config.flo",
+        "path": "./syntaxes/config/flo.tmLanguage.json"
+      },
+      {
+        "language": "runescript-hitsplat",
+        "scopeName": "source.runescript-config.hitsplat",
+        "path": "./syntaxes/config/hitsplat.tmLanguage.json"
+      },
+      {
+        "language": "runescript-varp",
+        "scopeName": "source.runescript-config.varp",
+        "path": "./syntaxes/config/varp.tmLanguage.json"
+      },
+      {
+        "language": "runescript-varbit",
+        "scopeName": "source.runescript-config.varbit",
+        "path": "./syntaxes/config/varbit.tmLanguage.json"
+      },
+      {
+        "language": "runescript-varn",
+        "scopeName": "source.runescript-config.varn",
+        "path": "./syntaxes/config/varn.tmLanguage.json"
+      },
+      {
+        "language": "runescript-varo",
+        "scopeName": "source.runescript-config.varo",
+        "path": "./syntaxes/config/varo.tmLanguage.json"
+      },
+      {
+        "language": "runescript-vars",
+        "scopeName": "source.runescript-config.vars",
+        "path": "./syntaxes/config/vars.tmLanguage.json"
+      },
+      {
+        "language": "runescript-inv",
+        "scopeName": "source.runescript-config.inv",
+        "path": "./syntaxes/config/inv.tmLanguage.json"
+      },
+      {
+        "language": "runescript-enum",
+        "scopeName": "source.runescript-config.enum",
+        "path": "./syntaxes/config/enum.tmLanguage.json"
+      },
+      {
+        "language": "runescript-struct",
+        "scopeName": "source.runescript-config.struct",
+        "path": "./syntaxes/config/struct.tmLanguage.json"
+      },
+      {
+        "language": "runescript-param",
+        "scopeName": "source.runescript-config.param",
+        "path": "./syntaxes/config/param.tmLanguage.json"
+      },
+      {
+        "language": "runescript-dbtable",
+        "scopeName": "source.runescript-config.dbtable",
+        "path": "./syntaxes/config/dbtable.tmLanguage.json"
+      },
+      {
+        "language": "runescript-dbrow",
+        "scopeName": "source.runescript-config.dbrow",
+        "path": "./syntaxes/config/dbrow.tmLanguage.json"
+      },
+      {
+        "language": "runescript-hunt",
+        "scopeName": "source.runescript-config.hunt",
+        "path": "./syntaxes/config/hunt.tmLanguage.json"
+      },
+      {
+        "language": "runescript-if",
+        "scopeName": "source.runescript-config.if",
+        "path": "./syntaxes/config/if.tmLanguage.json"
+      },
+      {
+        "language": "runescript-constant",
+        "scopeName": "source.runescript-config.constant",
+        "path": "./syntaxes/config/constant.tmLanguage.json"
+      },
+      {
+        "language": "runescript-pack",
+        "scopeName": "source.runescript-config.pack",
+        "path": "./syntaxes/config/pack.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "RuneScript",
+      "properties": {
+        "runescript.symbolsPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to the ares server's data/symbols.json, e.g. ../ares-gameserver/data/symbols.json. A dev-mode server writes it at startup and after every build; `ares-pack symbols` writes it once. Relative paths start at the first workspace folder. Without it only syntax errors are reported."
+        },
+        "runescript.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "Path to a runescript-lsp binary. Empty uses the one shipped with the extension, then PATH."
+        },
+        "runescript.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Trace the communication with the language server."
+        },
+        "runescript.diagnostics.configWarnings": {
+          "type": "boolean",
+          "default": true,
+          "description": "Report unknown keys, bad values and unknown names in config files."
+        },
+        "runescript.contentRoot": {
+          "type": "string",
+          "default": "",
+          "description": "The Content folder the interface editor reads sprites, fonts and pack/interface.pack from. Empty finds the first folder above the .if file holding pack/interface.pack. Relative paths start at the first workspace folder."
+        },
+        "runescript.interfaceEditor.openWith": {
+          "type": "string",
+          "enum": [
+            "visual",
+            "text"
+          ],
+          "enumDescriptions": [
+            "Open .if files in the visual interface editor.",
+            "Open .if files as text."
+          ],
+          "default": "visual",
+          "description": "How .if files open. Setting it writes workbench.editorAssociations[\"*.if\"] at the same scope."
+        },
+        "runescript.interfaceEditor.zoom": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 8,
+          "default": 2,
+          "description": "Zoom a newly opened interface editor starts at."
+        },
+        "runescript.interfaceEditor.gridSize": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 8,
+          "description": "Grid spacing in pixels for the interface editor's grid and grid snapping."
+        },
+        "runescript.interfaceEditor.grid": {
+          "type": "boolean",
+          "default": false,
+          "description": "Whether a newly opened interface editor starts with the grid (and grid snapping) on."
+        },
+        "runescript.interfaceEditor.smartGuides": {
+          "type": "boolean",
+          "default": true,
+          "description": "Whether a newly opened interface editor starts with smart guides (snap to layer and sibling edges and centres) on."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "runescript.restartServer",
+        "title": "Restart Language Server",
+        "category": "RuneScript"
+      },
+      {
+        "command": "runescript.ifOpenVisual",
+        "title": "Open Interface Editor",
+        "category": "RuneScript",
+        "icon": "$(preview)"
+      },
+      {
+        "command": "runescript.ifOpenText",
+        "title": "Open as Text",
+        "category": "RuneScript",
+        "icon": "$(go-to-file)"
+      }
+    ],
+    "customEditors": [
+      {
+        "viewType": "runescript.ifEditor",
+        "displayName": "Interface Editor",
+        "selector": [
+          {
+            "filenamePattern": "*.if"
+          }
+        ],
+        "priority": "default"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "runescript.ifOpenVisual",
+          "when": "resourceExtname == .if && activeCustomEditorId != runescript.ifEditor",
+          "group": "navigation"
+        },
+        {
+          "command": "runescript.ifOpenText",
+          "when": "activeCustomEditorId == runescript.ifEditor",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "gen": "cd ../ares-compiler && cargo run --release --example dump_syntax > ../vscode-runescript/data/syntax.json && cd ../vscode-runescript && node scripts/gen-grammar.mjs",
+    "compile": "tsc -p .",
+    "watch": "tsc -w -p .",
+    "test": "npm run compile && node --test test/scan.test.js test/ifedit.test.js test/ifedit-render.test.js && vscode-tmgrammar-snap \"test/grammar/*.*\"",
+    "snap": "vscode-tmgrammar-snap --updateSnapshot \"test/grammar/*.*\"",
+    "package": "npm run compile && npm run build-server && vsce package --target win32-x64",
+    "build-server": "cd ../runescript-lsp && cargo build --release && cd ../vscode-runescript && node -e \"require('fs').mkdirSync('bin',{recursive:true});require('fs').copyFileSync('../runescript-lsp/target/release/runescript-lsp.exe','bin/runescript-lsp.exe')\""
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/vsce": "^4.1.0",
+    "typescript": "^5.4.0",
+    "vscode-tmgrammar-test": "^0.1.3"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1"
+  }
+}

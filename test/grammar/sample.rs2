@@ -1,0 +1,18 @@
+/* block
+   comment */
+[proc,sample](int $count, namedobj $item, intarray $list)(string, int)
+def_int $hp = calc($count * 2 + 0x1F - 0b101);
+def_string $msg = "You have <tostring($hp)> hp and <$count> items, <col=ff0000>red</col><br>\"quoted\" \<lt";
+.%tradestatus = %tradestatus;
+if ($item ! null & $hp >= ^max_hp | $list(0) <= 'a') {
+    queue*(sample_queue, 0, $count);
+    #MY_MACRO($count, "a,b");
+}
+switch_int($count) {
+    case 1, 2 : @sample_label(0_50_50_0_0, 50_50_1);
+    case default : ~sample_proc;
+}
+while (npc_findnext = true) {
+    return("<p,happy>Hi <tostring(%hp)>!", 1);
+}
+[unknown_trigger,_cat] jump($x);

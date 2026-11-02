@@ -1,0 +1,270 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "RuneScript",
+  "scopeName": "source.runescript",
+  "patterns": [
+    {
+      "include": "#header"
+    },
+    {
+      "include": "#expression"
+    }
+  ],
+  "repository": {
+    "header": {
+      "comment": "[trigger,subject]; capture 2 lists are written by scripts/gen-grammar.mjs",
+      "match": "^\\s*(\\[)([A-Za-z0-9_]+)(,)\\s*(?:(_[^\\]]*)|([^\\]]*))(\\])\\s*(\\([^)]*\\))?\\s*(\\([^)]*\\))?",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.header.begin.runescript"
+        },
+        "2": {
+          "patterns": [
+            {
+              "match": "\\b(?:command|proc|label|debugproc|apnpc1|apnpc2|apnpc3|apnpc4|apnpc5|apnpcu|apnpct|opnpc1|opnpc2|opnpc3|opnpc4|opnpc5|opnpcu|opnpct|ai_apnpc1|ai_apnpc2|ai_apnpc3|ai_apnpc4|ai_apnpc5|ai_opnpc1|ai_opnpc2|ai_opnpc3|ai_opnpc4|ai_opnpc5|apobj1|apobj2|apobj3|apobj4|apobj5|apobju|apobjt|opobj1|opobj2|opobj3|opobj4|opobj5|opobju|opobjt|ai_apobj1|ai_apobj2|ai_apobj3|ai_apobj4|ai_apobj5|ai_opobj1|ai_opobj2|ai_opobj3|ai_opobj4|ai_opobj5|aploc1|aploc2|aploc3|aploc4|aploc5|aplocu|aploct|oploc1|oploc2|oploc3|oploc4|oploc5|oplocu|oploct|ai_aploc1|ai_aploc2|ai_aploc3|ai_aploc4|ai_aploc5|ai_oploc1|ai_oploc2|ai_oploc3|ai_oploc4|ai_oploc5|applayer1|applayer2|applayer3|applayer4|applayer5|applayeru|applayert|opplayer1|opplayer2|opplayer3|opplayer4|opplayer5|opplayeru|opplayert|ai_applayer1|ai_applayer2|ai_applayer3|ai_applayer4|ai_applayer5|ai_opplayer1|ai_opplayer2|ai_opplayer3|ai_opplayer4|ai_opplayer5|queue|ai_queue1|ai_queue2|ai_queue3|ai_queue4|ai_queue5|ai_queue6|ai_queue7|ai_queue8|ai_queue9|ai_queue10|ai_queue11|ai_queue12|ai_queue13|ai_queue14|ai_queue15|ai_queue16|ai_queue17|ai_queue18|ai_queue19|ai_queue20|softtimer|timer|ai_timer|opheld1|opheld2|opheld3|opheld4|opheld5|opheldu|opheldt|if_button|if_close|inv_button1|if_button1|inv_button2|if_button2|inv_button3|if_button3|inv_button4|if_button4|inv_button5|if_button5|inv_buttond|if_buttond|walktrigger|login|logout|tutorial|advancestat|mapzone|mapzoneexit|zone|zoneexit|changestat|ai_spawn|ai_despawn)\\b",
+              "name": "keyword.other.trigger.runescript"
+            },
+            {
+              "match": ".+",
+              "name": "invalid.illegal.trigger.runescript"
+            }
+          ]
+        },
+        "3": {
+          "name": "punctuation.separator.header.runescript"
+        },
+        "4": {
+          "name": "entity.name.tag.category.runescript"
+        },
+        "5": {
+          "name": "entity.name.function.subject.runescript"
+        },
+        "6": {
+          "name": "punctuation.definition.header.end.runescript"
+        },
+        "7": {
+          "patterns": [
+            {
+              "include": "#type-name"
+            },
+            {
+              "include": "#sigil"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        },
+        "8": {
+          "patterns": [
+            {
+              "include": "#type-name"
+            },
+            {
+              "include": "#punctuation"
+            }
+          ]
+        }
+      }
+    },
+    "expression": {
+      "patterns": [
+        {
+          "include": "#comment"
+        },
+        {
+          "include": "#string"
+        },
+        {
+          "include": "#literal"
+        },
+        {
+          "include": "#keyword"
+        },
+        {
+          "include": "#sigil"
+        },
+        {
+          "include": "#call"
+        },
+        {
+          "include": "#operator"
+        },
+        {
+          "include": "#punctuation"
+        }
+      ]
+    },
+    "comment": {
+      "patterns": [
+        {
+          "match": "//.*$",
+          "name": "comment.line.double-slash.runescript"
+        },
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.runescript"
+        }
+      ]
+    },
+    "string": {
+      "begin": "\"",
+      "end": "\"",
+      "name": "string.quoted.double.runescript",
+      "beginCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.begin.runescript"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "punctuation.definition.string.end.runescript"
+        }
+      },
+      "patterns": [
+        {
+          "match": "\\\\[\\\\\"<]",
+          "name": "constant.character.escape.runescript"
+        },
+        {
+          "match": "<p,[^<>]+>",
+          "name": "constant.other.tag.mesanim.runescript"
+        },
+        {
+          "match": "<(br|col|str|shad|u|img|gt|lt)(=[^<>]+)?>|</[a-z]+>",
+          "name": "constant.other.tag.runescript"
+        },
+        {
+          "begin": "<",
+          "end": ">",
+          "name": "meta.interpolation.runescript",
+          "beginCaptures": {
+            "0": {
+              "name": "punctuation.section.interpolation.begin.runescript"
+            }
+          },
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.section.interpolation.end.runescript"
+            }
+          },
+          "patterns": [
+            {
+              "include": "#expression"
+            }
+          ]
+        }
+      ]
+    },
+    "literal": {
+      "patterns": [
+        {
+          "match": "\\b[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+\\b",
+          "name": "constant.numeric.coord.runescript"
+        },
+        {
+          "match": "\\b[0-9]+_[0-9]+_[0-9]+\\b",
+          "name": "constant.numeric.mapzone.runescript"
+        },
+        {
+          "match": "\\b0[xX][0-9a-fA-F]+\\b",
+          "name": "constant.numeric.hex.runescript"
+        },
+        {
+          "match": "\\b0[bB][01]+\\b",
+          "name": "constant.numeric.binary.runescript"
+        },
+        {
+          "match": "-?\\b[0-9]+\\b",
+          "name": "constant.numeric.integer.runescript"
+        },
+        {
+          "match": "\\b(true|false)\\b",
+          "name": "constant.language.boolean.runescript"
+        },
+        {
+          "match": "\\bnull\\b",
+          "name": "constant.language.null.runescript"
+        },
+        {
+          "match": "'(\\\\.|[^'\\\\])'",
+          "name": "string.quoted.single.char.runescript"
+        }
+      ]
+    },
+    "keyword": {
+      "patterns": [
+        {
+          "match": "\\b(?:if|else|while|case|default|return|calc)\\b",
+          "name": "keyword.control.runescript"
+        },
+        {
+          "match": "\\bdef_[A-Za-z0-9_+.:]+",
+          "name": "storage.type.def.runescript"
+        },
+        {
+          "match": "\\bswitch_[A-Za-z0-9_+.:]+",
+          "name": "keyword.control.switch.runescript"
+        }
+      ]
+    },
+    "sigil": {
+      "patterns": [
+        {
+          "match": "\\$[A-Za-z0-9_+.:]+",
+          "name": "variable.other.local.runescript"
+        },
+        {
+          "match": "\\.?%[A-Za-z0-9_+.:]+",
+          "name": "variable.other.game.runescript"
+        },
+        {
+          "match": "\\^[A-Za-z0-9_+.:]+",
+          "name": "constant.other.runescript"
+        },
+        {
+          "match": "~[A-Za-z0-9_+.:]+",
+          "name": "entity.name.function.proc.runescript"
+        },
+        {
+          "match": "@[A-Za-z0-9_+.:]+",
+          "name": "entity.name.function.label.runescript"
+        },
+        {
+          "match": "#[A-Za-z0-9_+.:]+",
+          "name": "meta.preprocessor.macro.runescript"
+        }
+      ]
+    },
+    "call": {
+      "match": "\\.?[A-Za-z0-9_+.:]+\\*?(?=\\s*\\()",
+      "name": "entity.name.function.command.runescript"
+    },
+    "type-name": {
+      "comment": "written by scripts/gen-grammar.mjs; only used inside header parameter/return lists",
+      "match": "\\b(?:int|boolean|coord|string|char|long|mapzone|seq|locshape|component|idkit|midi|npc_mode|namedobj|synth|area|stat|npc_stat|writeinv|wma|graphic|fontmetrics|enum|hunt|jingle|loc|model|npc|obj|player_uid|spotanim|npc_uid|inv|texture|category|mapelement|hitmark|struct|dbrow|interface|toplevelinterface|overlayinterface|movespeed|entityoverlay|dbtable|stringvector|mesanim|verifyobj|hitsplat|type|proc|label|walktrigger|queue|timer|softtimer|param|intparam|varp|varbit|dbcolumn)(?:array)?\\b",
+      "name": "storage.type.runescript"
+    },
+    "operator": {
+      "match": "<=|>=|[-+*/%&|=!<>]",
+      "name": "keyword.operator.runescript"
+    },
+    "punctuation": {
+      "patterns": [
+        {
+          "match": "[{}]",
+          "name": "punctuation.section.block.runescript"
+        },
+        {
+          "match": "[()]",
+          "name": "punctuation.section.parens.runescript"
+        },
+        {
+          "match": "[,;:]",
+          "name": "punctuation.separator.runescript"
+        }
+      ]
+    }
+  }
+}

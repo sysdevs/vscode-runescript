@@ -1,0 +1,1534 @@
+>[ai_timer,borderguard1] @guard_scout_toll_fence;
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^^^ source.runescript keyword.other.trigger.runescript
+#         ^ source.runescript punctuation.separator.header.runescript
+#          ^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                      ^ source.runescript punctuation.definition.header.end.runescript
+#                       ^ source.runescript
+#                        ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                               ^ source.runescript punctuation.separator.runescript
+>[ai_timer,borderguard2] @guard_scout_toll_fence;
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^^^ source.runescript keyword.other.trigger.runescript
+#         ^ source.runescript punctuation.separator.header.runescript
+#          ^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                      ^ source.runescript punctuation.definition.header.end.runescript
+#                       ^ source.runescript
+#                        ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                               ^ source.runescript punctuation.separator.runescript
+>[opnpc1,borderguard1] @talk_to_border_guard(null);
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^ source.runescript keyword.other.trigger.runescript
+#       ^ source.runescript punctuation.separator.header.runescript
+#        ^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                    ^ source.runescript punctuation.definition.header.end.runescript
+#                     ^ source.runescript
+#                      ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                           ^ source.runescript punctuation.section.parens.runescript
+#                                            ^^^^ source.runescript constant.language.null.runescript
+#                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                 ^ source.runescript punctuation.separator.runescript
+>[opnpc1,borderguard2] @talk_to_border_guard(null);
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^ source.runescript keyword.other.trigger.runescript
+#       ^ source.runescript punctuation.separator.header.runescript
+#        ^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                    ^ source.runescript punctuation.definition.header.end.runescript
+#                     ^ source.runescript
+#                      ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                           ^ source.runescript punctuation.section.parens.runescript
+#                                            ^^^^ source.runescript constant.language.null.runescript
+#                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                 ^ source.runescript punctuation.separator.runescript
+>[oploc1,border_gate_toll_left] @find_and_talk_to_border_guard;
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^ source.runescript keyword.other.trigger.runescript
+#       ^ source.runescript punctuation.separator.header.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                             ^ source.runescript punctuation.definition.header.end.runescript
+#                              ^ source.runescript
+#                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                                             ^ source.runescript punctuation.separator.runescript
+>[oploc1,border_gate_toll_right] @find_and_talk_to_border_guard;
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^ source.runescript keyword.other.trigger.runescript
+#       ^ source.runescript punctuation.separator.header.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                              ^ source.runescript punctuation.definition.header.end.runescript
+#                               ^ source.runescript
+#                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                                              ^ source.runescript punctuation.separator.runescript
+>
+>// searches for a nearby border guard
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// then starts dialogue with them
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>[label,find_and_talk_to_border_guard]
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^ source.runescript keyword.other.trigger.runescript
+#      ^ source.runescript punctuation.separator.header.runescript
+#       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                                    ^ source.runescript punctuation.definition.header.end.runescript
+>if (coordx(coord) < coordx(loc_coord)) { // in lumby
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^ source.runescript entity.name.function.command.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^ source.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^ source.runescript
+#                  ^ source.runescript keyword.operator.runescript
+#                   ^ source.runescript
+#                    ^^^^^^ source.runescript entity.name.function.command.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^^^^^^^^^ source.runescript
+#                                    ^ source.runescript punctuation.section.parens.runescript
+#                                     ^ source.runescript punctuation.section.parens.runescript
+#                                      ^ source.runescript
+#                                       ^ source.runescript punctuation.section.block.runescript
+#                                        ^ source.runescript
+#                                         ^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>    if (npc_find(coord, borderguard1, 1, 0) = true) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^ source.runescript
+#                      ^ source.runescript punctuation.separator.runescript
+#                       ^^^^^^^^^^^^^ source.runescript
+#                                    ^ source.runescript punctuation.separator.runescript
+#                                     ^ source.runescript
+#                                      ^ source.runescript constant.numeric.integer.runescript
+#                                       ^ source.runescript punctuation.separator.runescript
+#                                        ^ source.runescript
+#                                         ^ source.runescript constant.numeric.integer.runescript
+#                                          ^ source.runescript punctuation.section.parens.runescript
+#                                           ^ source.runescript
+#                                            ^ source.runescript keyword.operator.runescript
+#                                             ^ source.runescript
+#                                              ^^^^ source.runescript constant.language.boolean.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^ source.runescript
+#                                                    ^ source.runescript punctuation.section.block.runescript
+>        @talk_to_border_guard(loc_coord);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                             ^ source.runescript punctuation.section.parens.runescript
+#                              ^^^^^^^^^ source.runescript
+#                                       ^ source.runescript punctuation.section.parens.runescript
+#                                        ^ source.runescript punctuation.separator.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>} else { // in al kharid
+#^ source.runescript punctuation.section.block.runescript
+# ^ source.runescript
+#  ^^^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.block.runescript
+#        ^ source.runescript
+#         ^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>    if (npc_find(coord, borderguard2, 1, 0) = true) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^ source.runescript
+#                      ^ source.runescript punctuation.separator.runescript
+#                       ^^^^^^^^^^^^^ source.runescript
+#                                    ^ source.runescript punctuation.separator.runescript
+#                                     ^ source.runescript
+#                                      ^ source.runescript constant.numeric.integer.runescript
+#                                       ^ source.runescript punctuation.separator.runescript
+#                                        ^ source.runescript
+#                                         ^ source.runescript constant.numeric.integer.runescript
+#                                          ^ source.runescript punctuation.section.parens.runescript
+#                                           ^ source.runescript
+#                                            ^ source.runescript keyword.operator.runescript
+#                                             ^ source.runescript
+#                                              ^^^^ source.runescript constant.language.boolean.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^ source.runescript
+#                                                    ^ source.runescript punctuation.section.block.runescript
+>        @talk_to_border_guard(loc_coord);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                             ^ source.runescript punctuation.section.parens.runescript
+#                              ^^^^^^^^^ source.runescript
+#                                       ^ source.runescript punctuation.section.parens.runescript
+#                                        ^ source.runescript punctuation.separator.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>[label,talk_to_border_guard](coord $loc_coord)
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^ source.runescript keyword.other.trigger.runescript
+#      ^ source.runescript punctuation.separator.header.runescript
+#       ^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                           ^ source.runescript punctuation.definition.header.end.runescript
+#                            ^ source.runescript punctuation.section.parens.runescript
+#                             ^^^^^ source.runescript storage.type.runescript
+#                                  ^ source.runescript
+#                                   ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                             ^ source.runescript punctuation.section.parens.runescript
+>// in early rs, paying 10gp will message "You pay the guard.".
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// osrs uses a different message. rsc uses this message.
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// https://youtu.be/gfWdQJH2Pmc?si=BKF8uqy1wLouzGCE&t=35
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// osrs using Pay-fare option on the gate gives different messages.
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>~chatplayer("<p,quiz>Can I come through this gate?");
+#^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#           ^ source.runescript punctuation.section.parens.runescript
+#            ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#             ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                  ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                    ^ source.runescript punctuation.separator.runescript
+>
+>if (%princequest >= ^prince_saved) {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^^^^^^^ source.runescript variable.other.game.runescript
+#                ^ source.runescript
+#                 ^^ source.runescript keyword.operator.runescript
+#                   ^ source.runescript
+#                    ^^^^^^^^^^^^^ source.runescript constant.other.runescript
+#                                 ^ source.runescript punctuation.section.parens.runescript
+#                                  ^ source.runescript
+#                                   ^ source.runescript punctuation.section.block.runescript
+>    ~chatnpc("<p,quiz>You may pass for free, you are a friend of Al-Kharid.");
+#^^^^ source.runescript
+#    ^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#            ^ source.runescript punctuation.section.parens.runescript
+#             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#              ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                                           ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                                            ^ source.runescript punctuation.section.parens.runescript
+#                                                                             ^ source.runescript punctuation.separator.runescript
+>    @pass_toll_gate($loc_coord);
+#^^^^ source.runescript
+#    ^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                   ^ source.runescript punctuation.section.parens.runescript
+#                    ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                              ^ source.runescript punctuation.section.parens.runescript
+#                               ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>~chatnpc("<p,quiz>You must pay a toll of 10 gold coins to pass.");
+#^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#        ^ source.runescript punctuation.section.parens.runescript
+#         ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#          ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                               ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                                 ^ source.runescript punctuation.separator.runescript
+>
+>def_int $choice = ~p_choice3("No thank you, I'll walk around.", 1, "Who does my money go to?", 2, "Yes, ok.", 3);
+#^^^^^^^ source.runescript storage.type.def.runescript
+#       ^ source.runescript
+#        ^^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript
+#                ^ source.runescript keyword.operator.runescript
+#                 ^ source.runescript
+#                  ^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                            ^ source.runescript punctuation.section.parens.runescript
+#                             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                              ^ source.runescript punctuation.separator.runescript
+#                                                               ^ source.runescript
+#                                                                ^ source.runescript constant.numeric.integer.runescript
+#                                                                 ^ source.runescript punctuation.separator.runescript
+#                                                                  ^ source.runescript
+#                                                                   ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                                                                    ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                                                            ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                                                             ^ source.runescript punctuation.separator.runescript
+#                                                                                              ^ source.runescript
+#                                                                                               ^ source.runescript constant.numeric.integer.runescript
+#                                                                                                ^ source.runescript punctuation.separator.runescript
+#                                                                                                 ^ source.runescript
+#                                                                                                  ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                                                                                                   ^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                                                                           ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                                                                            ^ source.runescript punctuation.separator.runescript
+#                                                                                                             ^ source.runescript
+#                                                                                                              ^ source.runescript constant.numeric.integer.runescript
+#                                                                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                                                                ^ source.runescript punctuation.separator.runescript
+>if ($choice = 1) {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^^ source.runescript variable.other.local.runescript
+#           ^ source.runescript
+#            ^ source.runescript keyword.operator.runescript
+#             ^ source.runescript
+#              ^ source.runescript constant.numeric.integer.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^ source.runescript
+#                 ^ source.runescript punctuation.section.block.runescript
+>    ~chatplayer("<p,quiz>No, thank you. I'll walk around.");
+#^^^^ source.runescript
+#    ^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                 ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                         ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                          ^ source.runescript punctuation.section.parens.runescript
+#                                                           ^ source.runescript punctuation.separator.runescript
+>    ~chatnpc("<p,quiz>Ok suit yourself.");
+#^^^^ source.runescript
+#    ^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#            ^ source.runescript punctuation.section.parens.runescript
+#             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#              ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                      ^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                       ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                        ^ source.runescript punctuation.section.parens.runescript
+#                                         ^ source.runescript punctuation.separator.runescript
+>    return;
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript keyword.control.runescript
+#          ^ source.runescript punctuation.separator.runescript
+>} else if ($choice = 2) {
+#^ source.runescript punctuation.section.block.runescript
+# ^ source.runescript
+#  ^^^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^^ source.runescript keyword.control.runescript
+#         ^ source.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^^^ source.runescript variable.other.local.runescript
+#                  ^ source.runescript
+#                   ^ source.runescript keyword.operator.runescript
+#                    ^ source.runescript
+#                     ^ source.runescript constant.numeric.integer.runescript
+#                      ^ source.runescript punctuation.section.parens.runescript
+#                       ^ source.runescript
+#                        ^ source.runescript punctuation.section.block.runescript
+>    ~chatplayer("<p,quiz>Who does my money go to?");
+#^^^^ source.runescript
+#    ^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                 ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                         ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                 ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^ source.runescript punctuation.separator.runescript
+>    ~chatnpc("<p,quiz>The money goes to the city of Al-Kharid.");
+#^^^^ source.runescript
+#    ^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#            ^ source.runescript punctuation.section.parens.runescript
+#             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#              ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                              ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                ^ source.runescript punctuation.separator.runescript
+>    return;
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript keyword.control.runescript
+#          ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>~chatplayer("<p,quiz>Yes, ok.");
+#^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#           ^ source.runescript punctuation.section.parens.runescript
+#            ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#             ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                     ^^^^^^^^ source.runescript string.quoted.double.runescript
+#                             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                              ^ source.runescript punctuation.section.parens.runescript
+#                               ^ source.runescript punctuation.separator.runescript
+>if (inv_total(inv, coins) < 10) {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#             ^ source.runescript punctuation.section.parens.runescript
+#              ^^^ source.runescript
+#                 ^ source.runescript punctuation.separator.runescript
+#                  ^^^^^^ source.runescript
+#                        ^ source.runescript punctuation.section.parens.runescript
+#                         ^ source.runescript
+#                          ^ source.runescript keyword.operator.runescript
+#                           ^ source.runescript
+#                            ^^ source.runescript constant.numeric.integer.runescript
+#                              ^ source.runescript punctuation.section.parens.runescript
+#                               ^ source.runescript
+#                                ^ source.runescript punctuation.section.block.runescript
+>    ~chatplayer("<p,quiz>Oh dear, I don't actually seem to have enough money.");
+#^^^^ source.runescript
+#    ^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                 ^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                                             ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                                              ^ source.runescript punctuation.section.parens.runescript
+#                                                                               ^ source.runescript punctuation.separator.runescript
+>    return;
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript keyword.control.runescript
+#          ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>mes("You pay the guard.");
+#^^^ source.runescript entity.name.function.command.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#     ^^^^^^^^^^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                       ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                        ^ source.runescript punctuation.section.parens.runescript
+#                         ^ source.runescript punctuation.separator.runescript
+>inv_del(inv, coins, 10);
+#^^^^^^^ source.runescript entity.name.function.command.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^ source.runescript
+#           ^ source.runescript punctuation.separator.runescript
+#            ^^^^^^ source.runescript
+#                  ^ source.runescript punctuation.separator.runescript
+#                   ^ source.runescript
+#                    ^^ source.runescript constant.numeric.integer.runescript
+#                      ^ source.runescript punctuation.section.parens.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+>@pass_toll_gate($loc_coord);
+#^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript punctuation.separator.runescript
+>
+>[label,pass_toll_gate](coord $loc_coord)
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^ source.runescript keyword.other.trigger.runescript
+#      ^ source.runescript punctuation.separator.header.runescript
+#       ^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                     ^ source.runescript punctuation.definition.header.end.runescript
+#                      ^ source.runescript punctuation.section.parens.runescript
+#                       ^^^^^ source.runescript storage.type.runescript
+#                            ^ source.runescript
+#                             ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                       ^ source.runescript punctuation.section.parens.runescript
+>// close the dialogue
+#^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>//if_close;
+#^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>
+>def_coord $coord = 0_51_50_4_27;
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^ source.runescript variable.other.local.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^^^^ source.runescript constant.numeric.coord.runescript
+#                               ^ source.runescript punctuation.separator.runescript
+>def_boolean $enter_east = false;
+#^^^^^^^^^^^ source.runescript storage.type.def.runescript
+#           ^ source.runescript
+#            ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                       ^ source.runescript
+#                        ^ source.runescript keyword.operator.runescript
+#                         ^ source.runescript
+#                          ^^^^^ source.runescript constant.language.boolean.runescript
+#                               ^ source.runescript punctuation.separator.runescript
+>
+>// checks if we are west of the gate on the lumbridge side
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>if (coordx(coord) < coordx($coord)) {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^ source.runescript entity.name.function.command.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^ source.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^ source.runescript
+#                  ^ source.runescript keyword.operator.runescript
+#                   ^ source.runescript
+#                    ^^^^^^ source.runescript entity.name.function.command.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^^^^^^ source.runescript variable.other.local.runescript
+#                                 ^ source.runescript punctuation.section.parens.runescript
+#                                  ^ source.runescript punctuation.section.parens.runescript
+#                                   ^ source.runescript
+#                                    ^ source.runescript punctuation.section.block.runescript
+>    // if we are on the west side then our coord
+#^^^^ source.runescript
+#    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>    // destination is moved over to the west
+#^^^^ source.runescript
+#    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>    $coord = movecoord($coord, -1, 0, 0);
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript variable.other.local.runescript
+#          ^ source.runescript
+#           ^ source.runescript keyword.operator.runescript
+#            ^ source.runescript
+#             ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                      ^ source.runescript punctuation.section.parens.runescript
+#                       ^^^^^^ source.runescript variable.other.local.runescript
+#                             ^ source.runescript punctuation.separator.runescript
+#                              ^ source.runescript
+#                               ^^ source.runescript constant.numeric.integer.runescript
+#                                 ^ source.runescript punctuation.separator.runescript
+#                                  ^ source.runescript
+#                                   ^ source.runescript constant.numeric.integer.runescript
+#                                    ^ source.runescript punctuation.separator.runescript
+#                                     ^ source.runescript
+#                                      ^ source.runescript constant.numeric.integer.runescript
+#                                       ^ source.runescript punctuation.section.parens.runescript
+#                                        ^ source.runescript punctuation.separator.runescript
+>    $enter_east = true;
+#^^^^ source.runescript
+#    ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript
+#                ^ source.runescript keyword.operator.runescript
+#                 ^ source.runescript
+#                  ^^^^ source.runescript constant.language.boolean.runescript
+#                      ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>if ($loc_coord ! null & distance(coord, $loc_coord) <= 1) {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#              ^ source.runescript
+#               ^ source.runescript keyword.operator.runescript
+#                ^ source.runescript
+#                 ^^^^ source.runescript constant.language.null.runescript
+#                     ^ source.runescript
+#                      ^ source.runescript keyword.operator.runescript
+#                       ^ source.runescript
+#                        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                                ^ source.runescript punctuation.section.parens.runescript
+#                                 ^^^^^ source.runescript
+#                                      ^ source.runescript punctuation.separator.runescript
+#                                       ^ source.runescript
+#                                        ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^ source.runescript
+#                                                    ^^ source.runescript keyword.operator.runescript
+#                                                      ^ source.runescript
+#                                                       ^ source.runescript constant.numeric.integer.runescript
+#                                                        ^ source.runescript punctuation.section.parens.runescript
+#                                                         ^ source.runescript
+#                                                          ^ source.runescript punctuation.section.block.runescript
+>    if ($enter_east = false & (coord ! 0_51_50_4_28 & coord ! 0_51_50_4_27)) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                   ^ source.runescript
+#                    ^ source.runescript keyword.operator.runescript
+#                     ^ source.runescript
+#                      ^^^^^ source.runescript constant.language.boolean.runescript
+#                           ^ source.runescript
+#                            ^ source.runescript keyword.operator.runescript
+#                             ^ source.runescript
+#                              ^ source.runescript punctuation.section.parens.runescript
+#                               ^^^^^^ source.runescript
+#                                     ^ source.runescript keyword.operator.runescript
+#                                      ^ source.runescript
+#                                       ^^^^^^^^^^^^ source.runescript constant.numeric.coord.runescript
+#                                                   ^ source.runescript
+#                                                    ^ source.runescript keyword.operator.runescript
+#                                                     ^^^^^^^ source.runescript
+#                                                            ^ source.runescript keyword.operator.runescript
+#                                                             ^ source.runescript
+#                                                              ^^^^^^^^^^^^ source.runescript constant.numeric.coord.runescript
+#                                                                          ^ source.runescript punctuation.section.parens.runescript
+#                                                                           ^ source.runescript punctuation.section.parens.runescript
+#                                                                            ^ source.runescript
+#                                                                             ^ source.runescript punctuation.section.block.runescript
+>        p_teleport($loc_coord);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                  ^ source.runescript punctuation.section.parens.runescript
+#                   ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                             ^ source.runescript punctuation.section.parens.runescript
+#                              ^ source.runescript punctuation.separator.runescript
+>        p_stopaction;
+#^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                    ^ source.runescript punctuation.separator.runescript
+>        p_delay(2);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^ source.runescript constant.numeric.integer.runescript
+#                 ^ source.runescript punctuation.section.parens.runescript
+#                  ^ source.runescript punctuation.separator.runescript
+>        @enter_through_border_gate_toll($enter_east, $loc_coord);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                       ^ source.runescript punctuation.section.parens.runescript
+#                                        ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                   ^ source.runescript punctuation.separator.runescript
+#                                                    ^ source.runescript
+#                                                     ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                ^ source.runescript punctuation.separator.runescript
+>    } else {
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+#     ^ source.runescript
+#      ^^^^ source.runescript keyword.control.runescript
+#          ^ source.runescript
+#           ^ source.runescript punctuation.section.block.runescript
+>        p_stopaction;
+#^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                    ^ source.runescript punctuation.separator.runescript
+>        p_delay(1);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^ source.runescript constant.numeric.integer.runescript
+#                 ^ source.runescript punctuation.section.parens.runescript
+#                  ^ source.runescript punctuation.separator.runescript
+>        @enter_through_border_gate_toll($enter_east, $loc_coord);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                                       ^ source.runescript punctuation.section.parens.runescript
+#                                        ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                   ^ source.runescript punctuation.separator.runescript
+#                                                    ^ source.runescript
+#                                                     ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                ^ source.runescript punctuation.separator.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>p_delay(0);
+#^^^^^^^ source.runescript entity.name.function.command.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^ source.runescript constant.numeric.integer.runescript
+#         ^ source.runescript punctuation.section.parens.runescript
+#          ^ source.runescript punctuation.separator.runescript
+>~forcemove($coord);
+#^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^^ source.runescript variable.other.local.runescript
+#                 ^ source.runescript punctuation.section.parens.runescript
+#                  ^ source.runescript punctuation.separator.runescript
+>p_stopaction;
+#^^^^^^^^^^^^ source.runescript
+#            ^ source.runescript punctuation.separator.runescript
+>p_delay(0);
+#^^^^^^^ source.runescript entity.name.function.command.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^ source.runescript constant.numeric.integer.runescript
+#         ^ source.runescript punctuation.section.parens.runescript
+#          ^ source.runescript punctuation.separator.runescript
+>// open the gates and teleport through
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>@enter_through_border_gate_toll($enter_east, $loc_coord);
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                               ^ source.runescript punctuation.section.parens.runescript
+#                                ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                           ^ source.runescript punctuation.separator.runescript
+#                                            ^ source.runescript
+#                                             ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                       ^ source.runescript punctuation.section.parens.runescript
+#                                                        ^ source.runescript punctuation.separator.runescript
+>
+>// opens the gate and blocks all 4 sides
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// teleports us through the gate
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// plays the gates synth when opening
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>// does magic
+#^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>[label,enter_through_border_gate_toll](boolean $west, coord $loc_coord)
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^ source.runescript keyword.other.trigger.runescript
+#      ^ source.runescript punctuation.separator.header.runescript
+#       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                                     ^ source.runescript punctuation.definition.header.end.runescript
+#                                      ^ source.runescript punctuation.section.parens.runescript
+#                                       ^^^^^^^ source.runescript storage.type.runescript
+#                                              ^ source.runescript
+#                                               ^^^^^ source.runescript variable.other.local.runescript
+#                                                    ^ source.runescript punctuation.separator.runescript
+#                                                     ^ source.runescript
+#                                                      ^^^^^ source.runescript storage.type.runescript
+#                                                           ^ source.runescript
+#                                                            ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                                                      ^ source.runescript punctuation.section.parens.runescript
+>def_coord $destination;
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                      ^ source.runescript punctuation.separator.runescript
+>if ($west = true) {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^ source.runescript variable.other.local.runescript
+#         ^ source.runescript
+#          ^ source.runescript keyword.operator.runescript
+#           ^ source.runescript
+#            ^^^^ source.runescript constant.language.boolean.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^ source.runescript
+#                  ^ source.runescript punctuation.section.block.runescript
+>    $destination = movecoord(coord, 1, 0, 0);
+#^^^^ source.runescript
+#    ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                            ^ source.runescript punctuation.section.parens.runescript
+#                             ^^^^^ source.runescript
+#                                  ^ source.runescript punctuation.separator.runescript
+#                                   ^ source.runescript
+#                                    ^ source.runescript constant.numeric.integer.runescript
+#                                     ^ source.runescript punctuation.separator.runescript
+#                                      ^ source.runescript
+#                                       ^ source.runescript constant.numeric.integer.runescript
+#                                        ^ source.runescript punctuation.separator.runescript
+#                                         ^ source.runescript
+#                                          ^ source.runescript constant.numeric.integer.runescript
+#                                           ^ source.runescript punctuation.section.parens.runescript
+#                                            ^ source.runescript punctuation.separator.runescript
+>    $loc_coord = $destination;
+#^^^^ source.runescript
+#    ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#              ^ source.runescript
+#               ^ source.runescript keyword.operator.runescript
+#                ^ source.runescript
+#                 ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                             ^ source.runescript punctuation.separator.runescript
+>} else {
+#^ source.runescript punctuation.section.block.runescript
+# ^ source.runescript
+#  ^^^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.block.runescript
+>    if ($loc_coord = null) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                  ^ source.runescript
+#                   ^ source.runescript keyword.operator.runescript
+#                    ^ source.runescript
+#                     ^^^^ source.runescript constant.language.null.runescript
+#                         ^ source.runescript punctuation.section.parens.runescript
+#                          ^ source.runescript
+#                           ^ source.runescript punctuation.section.block.runescript
+>        $destination = movecoord(coord, -1, 0, 0);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                    ^ source.runescript
+#                     ^ source.runescript keyword.operator.runescript
+#                      ^ source.runescript
+#                       ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                                ^ source.runescript punctuation.section.parens.runescript
+#                                 ^^^^^ source.runescript
+#                                      ^ source.runescript punctuation.separator.runescript
+#                                       ^ source.runescript
+#                                        ^^ source.runescript constant.numeric.integer.runescript
+#                                          ^ source.runescript punctuation.separator.runescript
+#                                           ^ source.runescript
+#                                            ^ source.runescript constant.numeric.integer.runescript
+#                                             ^ source.runescript punctuation.separator.runescript
+#                                              ^ source.runescript
+#                                               ^ source.runescript constant.numeric.integer.runescript
+#                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                 ^ source.runescript punctuation.separator.runescript
+>        $loc_coord = coord;
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                  ^ source.runescript
+#                   ^ source.runescript keyword.operator.runescript
+#                    ^^^^^^ source.runescript
+#                          ^ source.runescript punctuation.separator.runescript
+>    } else {
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+#     ^ source.runescript
+#      ^^^^ source.runescript keyword.control.runescript
+#          ^ source.runescript
+#           ^ source.runescript punctuation.section.block.runescript
+>        $destination = movecoord($loc_coord, -1, 0, 0);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                    ^ source.runescript
+#                     ^ source.runescript keyword.operator.runescript
+#                      ^ source.runescript
+#                       ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                                ^ source.runescript punctuation.section.parens.runescript
+#                                 ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                                           ^ source.runescript punctuation.separator.runescript
+#                                            ^ source.runescript
+#                                             ^^ source.runescript constant.numeric.integer.runescript
+#                                               ^ source.runescript punctuation.separator.runescript
+#                                                ^ source.runescript
+#                                                 ^ source.runescript constant.numeric.integer.runescript
+#                                                  ^ source.runescript punctuation.separator.runescript
+#                                                   ^ source.runescript
+#                                                    ^ source.runescript constant.numeric.integer.runescript
+#                                                     ^ source.runescript punctuation.section.parens.runescript
+#                                                      ^ source.runescript punctuation.separator.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>loc_findallzone($loc_coord);
+#^^^^^^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript punctuation.separator.runescript
+>while (loc_findnext = true) {
+#^^^^^ source.runescript keyword.control.runescript
+#     ^ source.runescript
+#      ^ source.runescript punctuation.section.parens.runescript
+#       ^^^^^^^^^^^^^ source.runescript
+#                    ^ source.runescript keyword.operator.runescript
+#                     ^ source.runescript
+#                      ^^^^ source.runescript constant.language.boolean.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript
+#                            ^ source.runescript punctuation.section.block.runescript
+>    if (loc_coord = $loc_coord & (loc_category = border_gate_toll_right | loc_category = border_gate_toll_left)) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^^ source.runescript
+#                  ^ source.runescript keyword.operator.runescript
+#                   ^ source.runescript
+#                    ^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                              ^ source.runescript
+#                               ^ source.runescript keyword.operator.runescript
+#                                ^ source.runescript
+#                                 ^ source.runescript punctuation.section.parens.runescript
+#                                  ^^^^^^^^^^^^^ source.runescript
+#                                               ^ source.runescript keyword.operator.runescript
+#                                                ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                                                                        ^ source.runescript keyword.operator.runescript
+#                                                                         ^^^^^^^^^^^^^^ source.runescript
+#                                                                                       ^ source.runescript keyword.operator.runescript
+#                                                                                        ^^^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                                                                                                              ^ source.runescript punctuation.section.parens.runescript
+#                                                                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                                                                ^ source.runescript
+#                                                                                                                 ^ source.runescript punctuation.section.block.runescript
+>        if (loc_category = border_gate_toll_left) {
+#^^^^^^^^ source.runescript
+#        ^^ source.runescript keyword.control.runescript
+#          ^ source.runescript
+#           ^ source.runescript punctuation.section.parens.runescript
+#            ^^^^^^^^^^^^^ source.runescript
+#                         ^ source.runescript keyword.operator.runescript
+#                          ^^^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                 ^ source.runescript
+#                                                  ^ source.runescript punctuation.section.block.runescript
+>            ~open_border_gate_toll_left_closed;
+#^^^^^^^^^^^^ source.runescript
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                              ^ source.runescript punctuation.separator.runescript
+>        } else {
+#^^^^^^^^ source.runescript
+#        ^ source.runescript punctuation.section.block.runescript
+#         ^ source.runescript
+#          ^^^^ source.runescript keyword.control.runescript
+#              ^ source.runescript
+#               ^ source.runescript punctuation.section.block.runescript
+>            ~open_border_gate_toll_right_closed;
+#^^^^^^^^^^^^ source.runescript
+#            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                               ^ source.runescript punctuation.separator.runescript
+>        }
+#^^^^^^^^ source.runescript
+#        ^ source.runescript punctuation.section.block.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>sound_synth(grate_open, 1, 0);
+#^^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#           ^ source.runescript punctuation.section.parens.runescript
+#            ^^^^^^^^^^ source.runescript
+#                      ^ source.runescript punctuation.separator.runescript
+#                       ^ source.runescript
+#                        ^ source.runescript constant.numeric.integer.runescript
+#                         ^ source.runescript punctuation.separator.runescript
+#                          ^ source.runescript
+#                           ^ source.runescript constant.numeric.integer.runescript
+#                            ^ source.runescript punctuation.section.parens.runescript
+#                             ^ source.runescript punctuation.separator.runescript
+>facesquare($destination);
+#^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                       ^ source.runescript punctuation.section.parens.runescript
+#                        ^ source.runescript punctuation.separator.runescript
+>p_teleport($destination);
+#^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                       ^ source.runescript punctuation.section.parens.runescript
+#                        ^ source.runescript punctuation.separator.runescript
+>p_stopaction;
+#^^^^^^^^^^^^ source.runescript
+#            ^ source.runescript punctuation.separator.runescript
+>p_delay(0);
+#^^^^^^^ source.runescript entity.name.function.command.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^ source.runescript constant.numeric.integer.runescript
+#         ^ source.runescript punctuation.section.parens.runescript
+#          ^ source.runescript punctuation.separator.runescript
+>
+>[proc,open_border_gate_toll_left_closed]()
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^ source.runescript keyword.other.trigger.runescript
+#     ^ source.runescript punctuation.separator.header.runescript
+#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                                       ^ source.runescript punctuation.definition.header.end.runescript
+#                                        ^ source.runescript punctuation.section.parens.runescript
+#                                         ^ source.runescript punctuation.section.parens.runescript
+>def_coord $other = movecoord(loc_coord, 0, 0, 1);
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^ source.runescript variable.other.local.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                            ^ source.runescript punctuation.section.parens.runescript
+#                             ^^^^^^^^^ source.runescript
+#                                      ^ source.runescript punctuation.separator.runescript
+#                                       ^ source.runescript
+#                                        ^ source.runescript constant.numeric.integer.runescript
+#                                         ^ source.runescript punctuation.separator.runescript
+#                                          ^ source.runescript
+#                                           ^ source.runescript constant.numeric.integer.runescript
+#                                            ^ source.runescript punctuation.separator.runescript
+#                                             ^ source.runescript
+#                                              ^ source.runescript constant.numeric.integer.runescript
+#                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                ^ source.runescript punctuation.separator.runescript
+>
+>def_coord $coord = ~movecoord_loc_return(~door_open(loc_angle, loc_shape));
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^ source.runescript variable.other.local.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                        ^ source.runescript punctuation.section.parens.runescript
+#                                         ^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                    ^^^^^^^^^ source.runescript
+#                                                             ^ source.runescript punctuation.separator.runescript
+#                                                              ^^^^^^^^^^ source.runescript
+#                                                                        ^ source.runescript punctuation.section.parens.runescript
+#                                                                         ^ source.runescript punctuation.section.parens.runescript
+#                                                                          ^ source.runescript punctuation.separator.runescript
+>// Temp note: dur updated
+#^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>.loc_add($coord, inviswall, loc_angle, wall_straight, 3);
+#^^^^^^^^ source.runescript entity.name.function.command.runescript
+#        ^ source.runescript punctuation.section.parens.runescript
+#         ^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript punctuation.separator.runescript
+#                ^^^^^^^^^^ source.runescript
+#                          ^ source.runescript punctuation.separator.runescript
+#                           ^^^^^^^^^^ source.runescript
+#                                     ^ source.runescript punctuation.separator.runescript
+#                                      ^^^^^^^^^^^^^^ source.runescript
+#                                                    ^ source.runescript punctuation.separator.runescript
+#                                                     ^ source.runescript
+#                                                      ^ source.runescript constant.numeric.integer.runescript
+#                                                       ^ source.runescript punctuation.section.parens.runescript
+#                                                        ^ source.runescript punctuation.separator.runescript
+>.loc_add($coord, loc_param(next_loc_stage), calc(loc_angle + 3), loc_shape, 3);
+#^^^^^^^^ source.runescript entity.name.function.command.runescript
+#        ^ source.runescript punctuation.section.parens.runescript
+#         ^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript punctuation.separator.runescript
+#                ^ source.runescript
+#                 ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^^^^^^^^^^^^^^ source.runescript
+#                                         ^ source.runescript punctuation.section.parens.runescript
+#                                          ^ source.runescript punctuation.separator.runescript
+#                                           ^ source.runescript
+#                                            ^^^^ source.runescript keyword.control.runescript
+#                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                 ^^^^^^^^^^ source.runescript
+#                                                           ^ source.runescript keyword.operator.runescript
+#                                                            ^ source.runescript
+#                                                             ^ source.runescript constant.numeric.integer.runescript
+#                                                              ^ source.runescript punctuation.section.parens.runescript
+#                                                               ^ source.runescript punctuation.separator.runescript
+#                                                                ^^^^^^^^^^ source.runescript
+#                                                                          ^ source.runescript punctuation.separator.runescript
+#                                                                           ^ source.runescript
+#                                                                            ^ source.runescript constant.numeric.integer.runescript
+#                                                                             ^ source.runescript punctuation.section.parens.runescript
+#                                                                              ^ source.runescript punctuation.separator.runescript
+>loc_add(loc_coord, inviswall, loc_angle, loc_shape, 3);
+#^^^^^^^ source.runescript entity.name.function.command.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^ source.runescript
+#                 ^ source.runescript punctuation.separator.runescript
+#                  ^^^^^^^^^^ source.runescript
+#                            ^ source.runescript punctuation.separator.runescript
+#                             ^^^^^^^^^^ source.runescript
+#                                       ^ source.runescript punctuation.separator.runescript
+#                                        ^^^^^^^^^^ source.runescript
+#                                                  ^ source.runescript punctuation.separator.runescript
+#                                                   ^ source.runescript
+#                                                    ^ source.runescript constant.numeric.integer.runescript
+#                                                     ^ source.runescript punctuation.section.parens.runescript
+#                                                      ^ source.runescript punctuation.separator.runescript
+>
+>loc_findallzone($coord);
+#^^^^^^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^^^^^^ source.runescript variable.other.local.runescript
+#                      ^ source.runescript punctuation.section.parens.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+>while (loc_findnext = true) {
+#^^^^^ source.runescript keyword.control.runescript
+#     ^ source.runescript
+#      ^ source.runescript punctuation.section.parens.runescript
+#       ^^^^^^^^^^^^^ source.runescript
+#                    ^ source.runescript keyword.operator.runescript
+#                     ^ source.runescript
+#                      ^^^^ source.runescript constant.language.boolean.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript
+#                            ^ source.runescript punctuation.section.block.runescript
+>    if (loc_coord = $other & loc_category = border_gate_toll_right) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^^ source.runescript
+#                  ^ source.runescript keyword.operator.runescript
+#                   ^ source.runescript
+#                    ^^^^^^ source.runescript variable.other.local.runescript
+#                          ^ source.runescript
+#                           ^ source.runescript keyword.operator.runescript
+#                            ^^^^^^^^^^^^^^ source.runescript
+#                                          ^ source.runescript keyword.operator.runescript
+#                                           ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                                   ^ source.runescript
+#                                                                    ^ source.runescript punctuation.section.block.runescript
+>        def_coord $coord2 = ~movecoord_loc_return(~door_open(loc_angle, loc_shape));
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^ source.runescript storage.type.def.runescript
+#                 ^ source.runescript
+#                  ^^^^^^^ source.runescript variable.other.local.runescript
+#                         ^ source.runescript
+#                          ^ source.runescript keyword.operator.runescript
+#                           ^ source.runescript
+#                            ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                  ^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                            ^ source.runescript punctuation.section.parens.runescript
+#                                                             ^^^^^^^^^ source.runescript
+#                                                                      ^ source.runescript punctuation.separator.runescript
+#                                                                       ^^^^^^^^^^ source.runescript
+#                                                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                                                   ^ source.runescript punctuation.separator.runescript
+>        // Temp note: dur updated
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>        .loc_add($coord2, inviswall, loc_angle, wall_straight, 3);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^^^ source.runescript variable.other.local.runescript
+#                        ^ source.runescript punctuation.separator.runescript
+#                         ^^^^^^^^^^ source.runescript
+#                                   ^ source.runescript punctuation.separator.runescript
+#                                    ^^^^^^^^^^ source.runescript
+#                                              ^ source.runescript punctuation.separator.runescript
+#                                               ^^^^^^^^^^^^^^ source.runescript
+#                                                             ^ source.runescript punctuation.separator.runescript
+#                                                              ^ source.runescript
+#                                                               ^ source.runescript constant.numeric.integer.runescript
+#                                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                                 ^ source.runescript punctuation.separator.runescript
+>        .loc_add($coord2, loc_param(next_loc_stage), calc(loc_angle + 1), loc_shape, 3);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^^^ source.runescript variable.other.local.runescript
+#                        ^ source.runescript punctuation.separator.runescript
+#                         ^ source.runescript
+#                          ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                                   ^ source.runescript punctuation.section.parens.runescript
+#                                    ^^^^^^^^^^^^^^ source.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^ source.runescript punctuation.separator.runescript
+#                                                    ^ source.runescript
+#                                                     ^^^^ source.runescript keyword.control.runescript
+#                                                         ^ source.runescript punctuation.section.parens.runescript
+#                                                          ^^^^^^^^^^ source.runescript
+#                                                                    ^ source.runescript keyword.operator.runescript
+#                                                                     ^ source.runescript
+#                                                                      ^ source.runescript constant.numeric.integer.runescript
+#                                                                       ^ source.runescript punctuation.section.parens.runescript
+#                                                                        ^ source.runescript punctuation.separator.runescript
+#                                                                         ^^^^^^^^^^ source.runescript
+#                                                                                   ^ source.runescript punctuation.separator.runescript
+#                                                                                    ^ source.runescript
+#                                                                                     ^ source.runescript constant.numeric.integer.runescript
+#                                                                                      ^ source.runescript punctuation.section.parens.runescript
+#                                                                                       ^ source.runescript punctuation.separator.runescript
+>        loc_add(loc_coord, inviswall, loc_angle, wall_straight, 3);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^^^^^^^^^ source.runescript
+#                         ^ source.runescript punctuation.separator.runescript
+#                          ^^^^^^^^^^ source.runescript
+#                                    ^ source.runescript punctuation.separator.runescript
+#                                     ^^^^^^^^^^ source.runescript
+#                                               ^ source.runescript punctuation.separator.runescript
+#                                                ^^^^^^^^^^^^^^ source.runescript
+#                                                              ^ source.runescript punctuation.separator.runescript
+#                                                               ^ source.runescript
+#                                                                ^ source.runescript constant.numeric.integer.runescript
+#                                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                                  ^ source.runescript punctuation.separator.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>[proc,open_border_gate_toll_right_closed]()
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^ source.runescript keyword.other.trigger.runescript
+#     ^ source.runescript punctuation.separator.header.runescript
+#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                                        ^ source.runescript punctuation.definition.header.end.runescript
+#                                         ^ source.runescript punctuation.section.parens.runescript
+#                                          ^ source.runescript punctuation.section.parens.runescript
+>def_coord $other = movecoord(loc_coord, 0, 0, -1);
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^ source.runescript variable.other.local.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                            ^ source.runescript punctuation.section.parens.runescript
+#                             ^^^^^^^^^ source.runescript
+#                                      ^ source.runescript punctuation.separator.runescript
+#                                       ^ source.runescript
+#                                        ^ source.runescript constant.numeric.integer.runescript
+#                                         ^ source.runescript punctuation.separator.runescript
+#                                          ^ source.runescript
+#                                           ^ source.runescript constant.numeric.integer.runescript
+#                                            ^ source.runescript punctuation.separator.runescript
+#                                             ^ source.runescript
+#                                              ^^ source.runescript constant.numeric.integer.runescript
+#                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                 ^ source.runescript punctuation.separator.runescript
+>
+>
+>
+>def_coord $coord = ~movecoord_loc_return(~door_open(loc_angle, loc_shape));
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^ source.runescript variable.other.local.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                        ^ source.runescript punctuation.section.parens.runescript
+#                                         ^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                    ^^^^^^^^^ source.runescript
+#                                                             ^ source.runescript punctuation.separator.runescript
+#                                                              ^^^^^^^^^^ source.runescript
+#                                                                        ^ source.runescript punctuation.section.parens.runescript
+#                                                                         ^ source.runescript punctuation.section.parens.runescript
+#                                                                          ^ source.runescript punctuation.separator.runescript
+>// Temp note: dur updated
+#^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>.loc_add($coord, inviswall, loc_angle, wall_straight, 3);
+#^^^^^^^^ source.runescript entity.name.function.command.runescript
+#        ^ source.runescript punctuation.section.parens.runescript
+#         ^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript punctuation.separator.runescript
+#                ^^^^^^^^^^ source.runescript
+#                          ^ source.runescript punctuation.separator.runescript
+#                           ^^^^^^^^^^ source.runescript
+#                                     ^ source.runescript punctuation.separator.runescript
+#                                      ^^^^^^^^^^^^^^ source.runescript
+#                                                    ^ source.runescript punctuation.separator.runescript
+#                                                     ^ source.runescript
+#                                                      ^ source.runescript constant.numeric.integer.runescript
+#                                                       ^ source.runescript punctuation.section.parens.runescript
+#                                                        ^ source.runescript punctuation.separator.runescript
+>.loc_add($coord, loc_param(next_loc_stage), modulo(add(loc_angle, 1), 4), loc_shape, 3);
+#^^^^^^^^ source.runescript entity.name.function.command.runescript
+#        ^ source.runescript punctuation.section.parens.runescript
+#         ^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript punctuation.separator.runescript
+#                ^ source.runescript
+#                 ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^^^^^^^^^^^^^^ source.runescript
+#                                         ^ source.runescript punctuation.section.parens.runescript
+#                                          ^ source.runescript punctuation.separator.runescript
+#                                           ^ source.runescript
+#                                            ^^^^^^ source.runescript entity.name.function.command.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^^^ source.runescript entity.name.function.command.runescript
+#                                                      ^ source.runescript punctuation.section.parens.runescript
+#                                                       ^^^^^^^^^ source.runescript
+#                                                                ^ source.runescript punctuation.separator.runescript
+#                                                                 ^ source.runescript
+#                                                                  ^ source.runescript constant.numeric.integer.runescript
+#                                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                                    ^ source.runescript punctuation.separator.runescript
+#                                                                     ^ source.runescript
+#                                                                      ^ source.runescript constant.numeric.integer.runescript
+#                                                                       ^ source.runescript punctuation.section.parens.runescript
+#                                                                        ^ source.runescript punctuation.separator.runescript
+#                                                                         ^^^^^^^^^^ source.runescript
+#                                                                                   ^ source.runescript punctuation.separator.runescript
+#                                                                                    ^ source.runescript
+#                                                                                     ^ source.runescript constant.numeric.integer.runescript
+#                                                                                      ^ source.runescript punctuation.section.parens.runescript
+#                                                                                       ^ source.runescript punctuation.separator.runescript
+>loc_add(loc_coord, inviswall, loc_angle, loc_shape, 3);
+#^^^^^^^ source.runescript entity.name.function.command.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^ source.runescript
+#                 ^ source.runescript punctuation.separator.runescript
+#                  ^^^^^^^^^^ source.runescript
+#                            ^ source.runescript punctuation.separator.runescript
+#                             ^^^^^^^^^^ source.runescript
+#                                       ^ source.runescript punctuation.separator.runescript
+#                                        ^^^^^^^^^^ source.runescript
+#                                                  ^ source.runescript punctuation.separator.runescript
+#                                                   ^ source.runescript
+#                                                    ^ source.runescript constant.numeric.integer.runescript
+#                                                     ^ source.runescript punctuation.section.parens.runescript
+#                                                      ^ source.runescript punctuation.separator.runescript
+>
+>loc_findallzone($coord);
+#^^^^^^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^^^^^^ source.runescript variable.other.local.runescript
+#                      ^ source.runescript punctuation.section.parens.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+>while (loc_findnext = true) {
+#^^^^^ source.runescript keyword.control.runescript
+#     ^ source.runescript
+#      ^ source.runescript punctuation.section.parens.runescript
+#       ^^^^^^^^^^^^^ source.runescript
+#                    ^ source.runescript keyword.operator.runescript
+#                     ^ source.runescript
+#                      ^^^^ source.runescript constant.language.boolean.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript
+#                            ^ source.runescript punctuation.section.block.runescript
+>    if (loc_coord = $other & loc_category = border_gate_toll_left) {
+#^^^^ source.runescript
+#    ^^ source.runescript keyword.control.runescript
+#      ^ source.runescript
+#       ^ source.runescript punctuation.section.parens.runescript
+#        ^^^^^^^^^^ source.runescript
+#                  ^ source.runescript keyword.operator.runescript
+#                   ^ source.runescript
+#                    ^^^^^^ source.runescript variable.other.local.runescript
+#                          ^ source.runescript
+#                           ^ source.runescript keyword.operator.runescript
+#                            ^^^^^^^^^^^^^^ source.runescript
+#                                          ^ source.runescript keyword.operator.runescript
+#                                           ^^^^^^^^^^^^^^^^^^^^^^ source.runescript
+#                                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                                  ^ source.runescript
+#                                                                   ^ source.runescript punctuation.section.block.runescript
+>        $coord = ~movecoord_loc_return(~door_open(loc_angle, loc_shape));
+#^^^^^^^^ source.runescript
+#        ^^^^^^ source.runescript variable.other.local.runescript
+#              ^ source.runescript
+#               ^ source.runescript keyword.operator.runescript
+#                ^ source.runescript
+#                 ^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                      ^ source.runescript punctuation.section.parens.runescript
+#                                       ^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                  ^^^^^^^^^ source.runescript
+#                                                           ^ source.runescript punctuation.separator.runescript
+#                                                            ^^^^^^^^^^ source.runescript
+#                                                                      ^ source.runescript punctuation.section.parens.runescript
+#                                                                       ^ source.runescript punctuation.section.parens.runescript
+#                                                                        ^ source.runescript punctuation.separator.runescript
+>        // Temp note: dur updated
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript comment.line.double-slash.runescript
+>        .loc_add($coord, inviswall, loc_angle, wall_straight, 3);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^^ source.runescript variable.other.local.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+#                        ^^^^^^^^^^ source.runescript
+#                                  ^ source.runescript punctuation.separator.runescript
+#                                   ^^^^^^^^^^ source.runescript
+#                                             ^ source.runescript punctuation.separator.runescript
+#                                              ^^^^^^^^^^^^^^ source.runescript
+#                                                            ^ source.runescript punctuation.separator.runescript
+#                                                             ^ source.runescript
+#                                                              ^ source.runescript constant.numeric.integer.runescript
+#                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                ^ source.runescript punctuation.separator.runescript
+>        .loc_add($coord, loc_param(next_loc_stage), modulo(add(loc_angle, 3), 4), loc_shape, 3);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^^ source.runescript variable.other.local.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+#                        ^ source.runescript
+#                         ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                                  ^ source.runescript punctuation.section.parens.runescript
+#                                   ^^^^^^^^^^^^^^ source.runescript
+#                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                  ^ source.runescript punctuation.separator.runescript
+#                                                   ^ source.runescript
+#                                                    ^^^^^^ source.runescript entity.name.function.command.runescript
+#                                                          ^ source.runescript punctuation.section.parens.runescript
+#                                                           ^^^ source.runescript entity.name.function.command.runescript
+#                                                              ^ source.runescript punctuation.section.parens.runescript
+#                                                               ^^^^^^^^^ source.runescript
+#                                                                        ^ source.runescript punctuation.separator.runescript
+#                                                                         ^ source.runescript
+#                                                                          ^ source.runescript constant.numeric.integer.runescript
+#                                                                           ^ source.runescript punctuation.section.parens.runescript
+#                                                                            ^ source.runescript punctuation.separator.runescript
+#                                                                             ^ source.runescript
+#                                                                              ^ source.runescript constant.numeric.integer.runescript
+#                                                                               ^ source.runescript punctuation.section.parens.runescript
+#                                                                                ^ source.runescript punctuation.separator.runescript
+#                                                                                 ^^^^^^^^^^ source.runescript
+#                                                                                           ^ source.runescript punctuation.separator.runescript
+#                                                                                            ^ source.runescript
+#                                                                                             ^ source.runescript constant.numeric.integer.runescript
+#                                                                                              ^ source.runescript punctuation.section.parens.runescript
+#                                                                                               ^ source.runescript punctuation.separator.runescript
+>        loc_add(loc_coord, inviswall, loc_angle, wall_straight, 3);
+#^^^^^^^^ source.runescript
+#        ^^^^^^^ source.runescript entity.name.function.command.runescript
+#               ^ source.runescript punctuation.section.parens.runescript
+#                ^^^^^^^^^ source.runescript
+#                         ^ source.runescript punctuation.separator.runescript
+#                          ^^^^^^^^^^ source.runescript
+#                                    ^ source.runescript punctuation.separator.runescript
+#                                     ^^^^^^^^^^ source.runescript
+#                                               ^ source.runescript punctuation.separator.runescript
+#                                                ^^^^^^^^^^^^^^ source.runescript
+#                                                              ^ source.runescript punctuation.separator.runescript
+#                                                               ^ source.runescript
+#                                                                ^ source.runescript constant.numeric.integer.runescript
+#                                                                 ^ source.runescript punctuation.section.parens.runescript
+#                                                                  ^ source.runescript punctuation.separator.runescript
+>    }
+#^^^^ source.runescript
+#    ^ source.runescript punctuation.section.block.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>[label,guard_scout_toll_fence]
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^ source.runescript keyword.other.trigger.runescript
+#      ^ source.runescript punctuation.separator.header.runescript
+#       ^^^^^^^^^^^^^^^^^^^^^^ source.runescript entity.name.function.subject.runescript
+#                             ^ source.runescript punctuation.definition.header.end.runescript
+>if (random(4) ! 0) return;
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^ source.runescript entity.name.function.command.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^ source.runescript constant.numeric.integer.runescript
+#            ^ source.runescript punctuation.section.parens.runescript
+#             ^ source.runescript
+#              ^ source.runescript keyword.operator.runescript
+#               ^ source.runescript
+#                ^ source.runescript constant.numeric.integer.runescript
+#                 ^ source.runescript punctuation.section.parens.runescript
+#                  ^ source.runescript
+#                   ^^^^^^ source.runescript keyword.control.runescript
+#                         ^ source.runescript punctuation.separator.runescript
+>if (npc_getmode = playerfaceclose) return;
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^^^^^^^^ source.runescript
+#                ^ source.runescript keyword.operator.runescript
+#                 ^^^^^^^^^^^^^^^^ source.runescript
+#                                 ^ source.runescript punctuation.section.parens.runescript
+#                                  ^ source.runescript
+#                                   ^^^^^^ source.runescript keyword.control.runescript
+#                                         ^ source.runescript punctuation.separator.runescript
+>
+>def_coord $next_coord = movecoord(npc_coord, ~random_range(-1, 1), 0, ~random_range(-1, 1));
+#^^^^^^^^^ source.runescript storage.type.def.runescript
+#         ^ source.runescript
+#          ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                     ^ source.runescript
+#                      ^ source.runescript keyword.operator.runescript
+#                       ^ source.runescript
+#                        ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                                 ^ source.runescript punctuation.section.parens.runescript
+#                                  ^^^^^^^^^ source.runescript
+#                                           ^ source.runescript punctuation.separator.runescript
+#                                            ^ source.runescript
+#                                             ^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                          ^ source.runescript punctuation.section.parens.runescript
+#                                                           ^^ source.runescript constant.numeric.integer.runescript
+#                                                             ^ source.runescript punctuation.separator.runescript
+#                                                              ^ source.runescript
+#                                                               ^ source.runescript constant.numeric.integer.runescript
+#                                                                ^ source.runescript punctuation.section.parens.runescript
+#                                                                 ^ source.runescript punctuation.separator.runescript
+#                                                                  ^ source.runescript
+#                                                                   ^ source.runescript constant.numeric.integer.runescript
+#                                                                    ^ source.runescript punctuation.separator.runescript
+#                                                                     ^ source.runescript
+#                                                                      ^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                                                    ^^ source.runescript constant.numeric.integer.runescript
+#                                                                                      ^ source.runescript punctuation.separator.runescript
+#                                                                                       ^ source.runescript
+#                                                                                        ^ source.runescript constant.numeric.integer.runescript
+#                                                                                         ^ source.runescript punctuation.section.parens.runescript
+#                                                                                          ^ source.runescript punctuation.section.parens.runescript
+#                                                                                           ^ source.runescript punctuation.separator.runescript
+>
+>def_int $count = 0;
+#^^^^^^^ source.runescript storage.type.def.runescript
+#       ^ source.runescript
+#        ^^^^^^ source.runescript variable.other.local.runescript
+#              ^ source.runescript
+#               ^ source.runescript keyword.operator.runescript
+#                ^ source.runescript
+#                 ^ source.runescript constant.numeric.integer.runescript
+#                  ^ source.runescript punctuation.separator.runescript
+>while ($next_coord = npc_coord & $count < 10) {
+#^^^^^ source.runescript keyword.control.runescript
+#     ^ source.runescript
+#      ^ source.runescript punctuation.section.parens.runescript
+#       ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                  ^ source.runescript
+#                   ^ source.runescript keyword.operator.runescript
+#                    ^^^^^^^^^^^ source.runescript
+#                               ^ source.runescript keyword.operator.runescript
+#                                ^ source.runescript
+#                                 ^^^^^^ source.runescript variable.other.local.runescript
+#                                       ^ source.runescript
+#                                        ^ source.runescript keyword.operator.runescript
+#                                         ^ source.runescript
+#                                          ^^ source.runescript constant.numeric.integer.runescript
+#                                            ^ source.runescript punctuation.section.parens.runescript
+#                                             ^ source.runescript
+#                                              ^ source.runescript punctuation.section.block.runescript
+>    $next_coord = movecoord(npc_coord, ~random_range(-1, 1), 0, ~random_range(-1, 1));
+#^^^^ source.runescript
+#    ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript
+#                ^ source.runescript keyword.operator.runescript
+#                 ^ source.runescript
+#                  ^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#                           ^ source.runescript punctuation.section.parens.runescript
+#                            ^^^^^^^^^ source.runescript
+#                                     ^ source.runescript punctuation.separator.runescript
+#                                      ^ source.runescript
+#                                       ^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                    ^ source.runescript punctuation.section.parens.runescript
+#                                                     ^^ source.runescript constant.numeric.integer.runescript
+#                                                       ^ source.runescript punctuation.separator.runescript
+#                                                        ^ source.runescript
+#                                                         ^ source.runescript constant.numeric.integer.runescript
+#                                                          ^ source.runescript punctuation.section.parens.runescript
+#                                                           ^ source.runescript punctuation.separator.runescript
+#                                                            ^ source.runescript
+#                                                             ^ source.runescript constant.numeric.integer.runescript
+#                                                              ^ source.runescript punctuation.separator.runescript
+#                                                               ^ source.runescript
+#                                                                ^^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                                                                             ^ source.runescript punctuation.section.parens.runescript
+#                                                                              ^^ source.runescript constant.numeric.integer.runescript
+#                                                                                ^ source.runescript punctuation.separator.runescript
+#                                                                                 ^ source.runescript
+#                                                                                  ^ source.runescript constant.numeric.integer.runescript
+#                                                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                                                    ^ source.runescript punctuation.section.parens.runescript
+#                                                                                     ^ source.runescript punctuation.separator.runescript
+>    $count = add($count, 1);
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript variable.other.local.runescript
+#          ^ source.runescript
+#           ^ source.runescript keyword.operator.runescript
+#            ^ source.runescript
+#             ^^^ source.runescript entity.name.function.command.runescript
+#                ^ source.runescript punctuation.section.parens.runescript
+#                 ^^^^^^ source.runescript variable.other.local.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+#                        ^ source.runescript
+#                         ^ source.runescript constant.numeric.integer.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>
+>npc_facesquare($next_coord);
+#^^^^^^^^^^^^^^ source.runescript entity.name.function.command.runescript
+#              ^ source.runescript punctuation.section.parens.runescript
+#               ^^^^^^^^^^^ source.runescript variable.other.local.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript punctuation.separator.runescript
+>

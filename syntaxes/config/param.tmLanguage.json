@@ -1,0 +1,104 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "RuneScript Param",
+  "scopeName": "source.runescript-config.param",
+  "patterns": [
+    {
+      "match": "^\\s*//.*$",
+      "name": "comment.line.double-slash.runescript-config"
+    },
+    {
+      "match": "^(\\[)([^\\]]+)(\\])\\s*$",
+      "captures": {
+        "1": {
+          "name": "punctuation.definition.section.begin.runescript-config"
+        },
+        "2": {
+          "name": "entity.name.section.runescript-config"
+        },
+        "3": {
+          "name": "punctuation.definition.section.end.runescript-config"
+        }
+      }
+    },
+    {
+      "comment": ".constant files: ^name = value",
+      "match": "^(\\^[A-Za-z0-9_+.:]+)\\s*(=)\\s*(.*)$",
+      "captures": {
+        "1": {
+          "name": "constant.other.definition.runescript-config"
+        },
+        "2": {
+          "name": "keyword.operator.assignment.runescript-config"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#value"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "match": "^([A-Za-z0-9_]+)(=)(.*)$",
+      "captures": {
+        "1": {
+          "name": "variable.other.key.runescript-config"
+        },
+        "2": {
+          "name": "keyword.operator.assignment.runescript-config"
+        },
+        "3": {
+          "patterns": [
+            {
+              "include": "#value"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "repository": {
+    "value": {
+      "patterns": [
+        {
+          "match": "\\b0[xX][0-9a-fA-F]+\\b",
+          "name": "constant.numeric.hex.runescript-config"
+        },
+        {
+          "match": "\\b[0-9]+_[0-9]+_[0-9]+_[0-9]+_[0-9]+\\b",
+          "name": "constant.numeric.coord.runescript-config"
+        },
+        {
+          "match": "\\b(yes|no|on|off)\\b",
+          "name": "constant.language.boolean.runescript-config"
+        },
+        {
+          "match": "[<>=!]-?[0-9]+\\b",
+          "name": "keyword.operator.comparison.runescript-config"
+        },
+        {
+          "match": "(?<![A-Za-z0-9_])-?[0-9]+(oz|lb|kg|g)?\\b(?![A-Za-z0-9_])",
+          "name": "constant.numeric.integer.runescript-config"
+        },
+        {
+          "match": "\\^[A-Za-z0-9_+.:]+",
+          "name": "constant.other.runescript-config"
+        },
+        {
+          "match": "%[A-Za-z0-9_+.:]+",
+          "name": "variable.other.game.runescript-config"
+        },
+        {
+          "match": "\\b[A-Za-z0-9_]+:[A-Za-z0-9_]+\\b",
+          "name": "variable.other.component.runescript-config"
+        },
+        {
+          "match": ",",
+          "name": "punctuation.separator.runescript-config"
+        }
+      ]
+    }
+  }
+}

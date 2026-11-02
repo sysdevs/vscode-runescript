@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D9463A"/>
+      <stop offset="1" stop-color="#9E2B20"/>
+    </linearGradient>
+  </defs>
+  <!-- the .rs2 badge colour, with header brackets around the Raido rune (R) -->
+  <rect x="8" y="8" width="240" height="240" rx="44" fill="url(#bg)"/>
+  <g fill="none" stroke="#FFFFFF" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M78 60H56V196H78M178 60H200V196H178" stroke-width="16" opacity="0.85"/>
+    <path d="M104 62V194M104 62L152 98L104 130L154 194" stroke-width="20"/>
+  </g>
+</svg>

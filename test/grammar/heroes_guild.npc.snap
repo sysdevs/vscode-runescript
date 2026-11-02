@@ -1,0 +1,250 @@
+>[achietties]
+#^ source.runescript-config.npc punctuation.definition.section.begin.runescript-config
+# ^^^^^^^^^^ source.runescript-config.npc entity.name.section.runescript-config
+#           ^ source.runescript-config.npc punctuation.definition.section.end.runescript-config
+>vislevel=hide
+#^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#        ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#         ^^^^ source.runescript-config.npc
+>name=Achietties
+#^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#    ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#     ^^^^^^^^^^ source.runescript-config.npc
+>desc=Distinctly heroic.
+#^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#    ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#     ^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>walkanim=human_walk_f,human_walk_b,human_walk_l,human_walk_r
+#^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#        ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#         ^^^^^^^^^^^^ source.runescript-config.npc
+#                     ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                      ^^^^^^^^^^^^ source.runescript-config.npc
+#                                  ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                                   ^^^^^^^^^^^^ source.runescript-config.npc
+#                                               ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                                                ^^^^^^^^^^^^ source.runescript-config.npc
+>readyanim=human_ready
+#^^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#         ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#          ^^^^^^^^^^^ source.runescript-config.npc
+>op1=Talk-to
+#^^^ source.runescript-config.npc variable.other.key.runescript-config
+#   ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#    ^^^^^^^ source.runescript-config.npc
+>recol1s=6273
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol1d=30480
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol2s=10468
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol2d=15855
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol3s=2340
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol3d=15360
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>model1=woman_head_mediumhair
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model2=woman_hat_headband
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model3=woman_torso_platemail
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model4=woman_legs_armouredskirt
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model5=woman_hands_gloves
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model6=woman_feet_elfboots
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model7=woman_arms_bareforplate
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model8=woman_headextra_ponytail
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model9=human_weapons_squareshield
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model10=human_weapons_longsword
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>head1=chat_female_head_mediumhair
+#^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#     ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>head2=model_136_npc_head
+#^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#     ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>head3=chat_female_headband
+#^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#     ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>hitpoints=42
+#^^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#         ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#          ^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>attack=35
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>strength=38
+#^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#        ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#         ^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>defence=40
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>param=damagetype,^slash_style
+#^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#     ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^ source.runescript-config.npc
+#                ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                 ^^^^^^^^^^^^ source.runescript-config.npc constant.other.runescript-config
+>// https://raw.githubusercontent.com/Joshua-F/osrs-dumps/refs/heads/master/config/dump.npc npc_4923
+#^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc comment.line.double-slash.runescript-config
+>
+>[helemos]
+#^ source.runescript-config.npc punctuation.definition.section.begin.runescript-config
+# ^^^^^^^ source.runescript-config.npc entity.name.section.runescript-config
+#        ^ source.runescript-config.npc punctuation.definition.section.end.runescript-config
+>vislevel=hide
+#^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#        ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#         ^^^^ source.runescript-config.npc
+>name=Helemos
+#^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#    ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.npc
+>desc=A retired hero.
+#^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#    ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#     ^^^^^^^^^^^^^^^ source.runescript-config.npc
+>walkanim=human_walk_f,human_walk_b,human_walk_l,human_walk_r
+#^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#        ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#         ^^^^^^^^^^^^ source.runescript-config.npc
+#                     ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                      ^^^^^^^^^^^^ source.runescript-config.npc
+#                                  ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                                   ^^^^^^^^^^^^ source.runescript-config.npc
+#                                               ^ source.runescript-config.npc punctuation.separator.runescript-config
+#                                                ^^^^^^^^^^^^ source.runescript-config.npc
+>readyanim=human_ready
+#^^^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#         ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#          ^^^^^^^^^^^ source.runescript-config.npc
+>op1=Talk-to
+#^^^ source.runescript-config.npc variable.other.key.runescript-config
+#   ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#    ^^^^^^^ source.runescript-config.npc
+>op3=Trade
+#^^^ source.runescript-config.npc variable.other.key.runescript-config
+#   ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#    ^^^^^ source.runescript-config.npc
+>recol1s=8420
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol1d=3562
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol2s=7328
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol2d=3562
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol3s=14724
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol3d=15850
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol4s=2340
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol4d=3402
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol5s=24075
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol5d=20934
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol6s=6273
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>recol6d=16705
+#^^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#       ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#        ^^^^^ source.runescript-config.npc constant.numeric.integer.runescript-config
+>model1=man_head_mediumhair
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model2=man_arms_longsleeves2
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model3=man_torso_leatherfat
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model4=man_legs_turnups
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model5=man_hands_basic
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^ source.runescript-config.npc
+>model6=man_feet_boots
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^ source.runescript-config.npc
+>model7=man_jaw_medium
+#^^^^^^ source.runescript-config.npc variable.other.key.runescript-config
+#      ^ source.runescript-config.npc keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^ source.runescript-config.npc
+>

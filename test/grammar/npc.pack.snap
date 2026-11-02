@@ -1,0 +1,41 @@
+>0=hans
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^ source.runescript-config.pack
+>1=man
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.pack
+>2=man2
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^ source.runescript-config.pack
+>3=man3
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^ source.runescript-config.pack
+>4=woman
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^^ source.runescript-config.pack
+>5=woman2
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^^^ source.runescript-config.pack
+>6=woman3
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^^^ source.runescript-config.pack
+>7=farmer1
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^^^^ source.runescript-config.pack
+>8=thief1
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^^^ source.runescript-config.pack
+>9=guard1
+#^ source.runescript-config.pack variable.other.key.runescript-config
+# ^ source.runescript-config.pack keyword.operator.assignment.runescript-config
+#  ^^^^^^ source.runescript-config.pack
+>

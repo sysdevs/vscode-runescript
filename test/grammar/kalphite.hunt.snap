@@ -1,0 +1,123 @@
+>[kalphite_queen]
+#^ source.runescript-config.hunt punctuation.definition.section.begin.runescript-config
+# ^^^^^^^^^^^^^^ source.runescript-config.hunt entity.name.section.runescript-config
+#               ^ source.runescript-config.hunt punctuation.definition.section.end.runescript-config
+>type=player
+#^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#    ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#     ^^^^^^ source.runescript-config.hunt
+>check_vis=lineofsight
+#^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#         ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#          ^^^^^^^^^^^ source.runescript-config.hunt
+>check_nottoostrong=off
+#^^^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                  ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                   ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>check_notcombat=%lastcombat
+#^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#               ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                ^^^^^^^^^^^ source.runescript-config.hunt variable.other.game.runescript-config
+>check_notcombat_self=%npc_lastcombat
+#^^^^^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                    ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                     ^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.game.runescript-config
+>check_notbusy=off
+#^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#             ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#              ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>check_afk=off
+#^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#         ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#          ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>find_keephunting=on
+#^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                 ^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>find_newmode=applayer2
+#^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#            ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#             ^^^^^^^^^ source.runescript-config.hunt
+>
+>[kalphite_worker]
+#^ source.runescript-config.hunt punctuation.definition.section.begin.runescript-config
+# ^^^^^^^^^^^^^^^ source.runescript-config.hunt entity.name.section.runescript-config
+#                ^ source.runescript-config.hunt punctuation.definition.section.end.runescript-config
+>type=player
+#^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#    ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#     ^^^^^^ source.runescript-config.hunt
+>check_vis=lineofsight
+#^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#         ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#          ^^^^^^^^^^^ source.runescript-config.hunt
+>check_nottoostrong=off
+#^^^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                  ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                   ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>check_notcombat=%lastcombat
+#^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#               ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                ^^^^^^^^^^^ source.runescript-config.hunt variable.other.game.runescript-config
+>check_notcombat_self=%npc_lastcombat
+#^^^^^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                    ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                     ^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.game.runescript-config
+>check_notbusy=off
+#^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#             ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#              ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>check_afk=off
+#^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#         ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#          ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>find_keephunting=off
+#^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                 ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>find_newmode=opplayer2
+#^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#            ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#             ^^^^^^^^^ source.runescript-config.hunt
+>
+>[kalphite_larva]
+#^ source.runescript-config.hunt punctuation.definition.section.begin.runescript-config
+# ^^^^^^^^^^^^^^ source.runescript-config.hunt entity.name.section.runescript-config
+#               ^ source.runescript-config.hunt punctuation.definition.section.end.runescript-config
+>type=player
+#^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#    ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#     ^^^^^^ source.runescript-config.hunt
+>check_vis=lineofsight
+#^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#         ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#          ^^^^^^^^^^^ source.runescript-config.hunt
+>check_nottoostrong=off
+#^^^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                  ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                   ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>check_notcombat=%lastcombat
+#^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#               ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                ^^^^^^^^^^^ source.runescript-config.hunt variable.other.game.runescript-config
+>check_notcombat_self=%npc_lastcombat
+#^^^^^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                    ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                     ^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.game.runescript-config
+>check_notbusy=off
+#^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#             ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#              ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>check_afk=off
+#^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#         ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#          ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>find_keephunting=off
+#^^^^^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#                ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#                 ^^^ source.runescript-config.hunt constant.language.boolean.runescript-config
+>find_newmode=applayer2
+#^^^^^^^^^^^^ source.runescript-config.hunt variable.other.key.runescript-config
+#            ^ source.runescript-config.hunt keyword.operator.assignment.runescript-config
+#             ^^^^^^^^^ source.runescript-config.hunt
+>

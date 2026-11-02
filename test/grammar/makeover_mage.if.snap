@@ -1,0 +1,234 @@
+>[com_0]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=12
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=20
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_1]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=12
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=80
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_2]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=12
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=140
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_3]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=12
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=200
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_4]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=12
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=260
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_5]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=100
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=20
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_6]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=100
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=80
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>width=88
+#^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#     ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#      ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>graphic=tradebacking,0
+#^^^^^^^ source.runescript-config.if variable.other.key.runescript-config
+#       ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^ source.runescript-config.if
+#                    ^ source.runescript-config.if punctuation.separator.runescript-config
+#                     ^ source.runescript-config.if constant.numeric.integer.runescript-config
+>
+>[com_7]
+#^ source.runescript-config.if punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if entity.name.section.runescript-config
+#      ^ source.runescript-config.if punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if variable.other.key.runescript-config
+#    ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if
+>x=100
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>y=140
+#^ source.runescript-config.if variable.other.key.runescript-config
+# ^ source.runescript-config.if keyword.operator.assignment.runescript-config
+#  ^^^ source.runescript-config.if constant.numeric.integer.runescript-config
+>

@@ -1,0 +1,238 @@
+>/* block
+#^^ source.runescript comment.block.runescript
+#  ^^^^^^^ source.runescript comment.block.runescript
+>   comment */
+#^^^^^^^^^^^ source.runescript comment.block.runescript
+#           ^^ source.runescript comment.block.runescript
+>[proc,sample](int $count, namedobj $item, intarray $list)(string, int)
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^ source.runescript keyword.other.trigger.runescript
+#     ^ source.runescript punctuation.separator.header.runescript
+#      ^^^^^^ source.runescript entity.name.function.subject.runescript
+#            ^ source.runescript punctuation.definition.header.end.runescript
+#             ^ source.runescript punctuation.section.parens.runescript
+#              ^^^ source.runescript storage.type.runescript
+#                 ^ source.runescript
+#                  ^^^^^^ source.runescript variable.other.local.runescript
+#                        ^ source.runescript punctuation.separator.runescript
+#                         ^ source.runescript
+#                          ^^^^^^^^ source.runescript storage.type.runescript
+#                                  ^ source.runescript
+#                                   ^^^^^ source.runescript variable.other.local.runescript
+#                                        ^ source.runescript punctuation.separator.runescript
+#                                         ^ source.runescript
+#                                          ^^^^^^^^ source.runescript storage.type.runescript
+#                                                  ^ source.runescript
+#                                                   ^^^^^ source.runescript variable.other.local.runescript
+#                                                        ^ source.runescript punctuation.section.parens.runescript
+#                                                         ^ source.runescript punctuation.section.parens.runescript
+#                                                          ^^^^^^ source.runescript storage.type.runescript
+#                                                                ^ source.runescript punctuation.separator.runescript
+#                                                                 ^ source.runescript
+#                                                                  ^^^ source.runescript storage.type.runescript
+#                                                                     ^ source.runescript punctuation.section.parens.runescript
+>def_int $hp = calc($count * 2 + 0x1F - 0b101);
+#^^^^^^^ source.runescript storage.type.def.runescript
+#       ^ source.runescript
+#        ^^^ source.runescript variable.other.local.runescript
+#           ^ source.runescript
+#            ^ source.runescript keyword.operator.runescript
+#             ^ source.runescript
+#              ^^^^ source.runescript keyword.control.runescript
+#                  ^ source.runescript punctuation.section.parens.runescript
+#                   ^^^^^^ source.runescript variable.other.local.runescript
+#                         ^ source.runescript
+#                          ^ source.runescript keyword.operator.runescript
+#                           ^ source.runescript
+#                            ^ source.runescript constant.numeric.integer.runescript
+#                             ^ source.runescript
+#                              ^ source.runescript keyword.operator.runescript
+#                               ^ source.runescript
+#                                ^^^^ source.runescript constant.numeric.hex.runescript
+#                                    ^ source.runescript
+#                                     ^ source.runescript keyword.operator.runescript
+#                                      ^ source.runescript
+#                                       ^^^^^ source.runescript constant.numeric.binary.runescript
+#                                            ^ source.runescript punctuation.section.parens.runescript
+#                                             ^ source.runescript punctuation.separator.runescript
+>def_string $msg = "You have <tostring($hp)> hp and <$count> items, <col=ff0000>red</col><br>\"quoted\" \<lt";
+#^^^^^^^^^^ source.runescript storage.type.def.runescript
+#          ^ source.runescript
+#           ^^^^ source.runescript variable.other.local.runescript
+#               ^ source.runescript
+#                ^ source.runescript keyword.operator.runescript
+#                 ^ source.runescript
+#                  ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                   ^^^^^^^^^ source.runescript string.quoted.double.runescript
+#                            ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.interpolation.begin.runescript
+#                             ^^^^^^^^ source.runescript string.quoted.double.runescript meta.interpolation.runescript entity.name.function.command.runescript
+#                                     ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.parens.runescript
+#                                      ^^^ source.runescript string.quoted.double.runescript meta.interpolation.runescript variable.other.local.runescript
+#                                         ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.parens.runescript
+#                                          ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.interpolation.end.runescript
+#                                           ^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                   ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.interpolation.begin.runescript
+#                                                    ^^^^^^ source.runescript string.quoted.double.runescript meta.interpolation.runescript variable.other.local.runescript
+#                                                          ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.interpolation.end.runescript
+#                                                           ^^^^^^^^ source.runescript string.quoted.double.runescript
+#                                                                   ^^^^^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.runescript
+#                                                                               ^^^ source.runescript string.quoted.double.runescript
+#                                                                                  ^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.runescript
+#                                                                                        ^^^^ source.runescript string.quoted.double.runescript constant.other.tag.runescript
+#                                                                                            ^^ source.runescript string.quoted.double.runescript constant.character.escape.runescript
+#                                                                                              ^^^^^^ source.runescript string.quoted.double.runescript
+#                                                                                                    ^^ source.runescript string.quoted.double.runescript constant.character.escape.runescript
+#                                                                                                      ^ source.runescript string.quoted.double.runescript
+#                                                                                                       ^^ source.runescript string.quoted.double.runescript constant.character.escape.runescript
+#                                                                                                         ^^ source.runescript string.quoted.double.runescript
+#                                                                                                           ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                                                                                            ^ source.runescript punctuation.separator.runescript
+>.%tradestatus = %tradestatus;
+#^^^^^^^^^^^^^ source.runescript variable.other.game.runescript
+#             ^ source.runescript
+#              ^ source.runescript keyword.operator.runescript
+#               ^ source.runescript
+#                ^^^^^^^^^^^^ source.runescript variable.other.game.runescript
+#                            ^ source.runescript punctuation.separator.runescript
+>if ($item ! null & $hp >= ^max_hp | $list(0) <= 'a') {
+#^^ source.runescript keyword.control.runescript
+#  ^ source.runescript
+#   ^ source.runescript punctuation.section.parens.runescript
+#    ^^^^^ source.runescript variable.other.local.runescript
+#         ^ source.runescript
+#          ^ source.runescript keyword.operator.runescript
+#           ^ source.runescript
+#            ^^^^ source.runescript constant.language.null.runescript
+#                ^ source.runescript
+#                 ^ source.runescript keyword.operator.runescript
+#                  ^ source.runescript
+#                   ^^^ source.runescript variable.other.local.runescript
+#                      ^ source.runescript
+#                       ^^ source.runescript keyword.operator.runescript
+#                         ^ source.runescript
+#                          ^^^^^^^ source.runescript constant.other.runescript
+#                                 ^ source.runescript
+#                                  ^ source.runescript keyword.operator.runescript
+#                                   ^ source.runescript
+#                                    ^^^^^ source.runescript variable.other.local.runescript
+#                                         ^ source.runescript punctuation.section.parens.runescript
+#                                          ^ source.runescript constant.numeric.integer.runescript
+#                                           ^ source.runescript punctuation.section.parens.runescript
+#                                            ^ source.runescript
+#                                             ^^ source.runescript keyword.operator.runescript
+#                                               ^ source.runescript
+#                                                ^^^ source.runescript string.quoted.single.char.runescript
+#                                                   ^ source.runescript punctuation.section.parens.runescript
+#                                                    ^ source.runescript
+#                                                     ^ source.runescript punctuation.section.block.runescript
+>    queue*(sample_queue, 0, $count);
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript entity.name.function.command.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^^^^^^^^ source.runescript
+#                       ^ source.runescript punctuation.separator.runescript
+#                        ^ source.runescript
+#                         ^ source.runescript constant.numeric.integer.runescript
+#                          ^ source.runescript punctuation.separator.runescript
+#                           ^ source.runescript
+#                            ^^^^^^ source.runescript variable.other.local.runescript
+#                                  ^ source.runescript punctuation.section.parens.runescript
+#                                   ^ source.runescript punctuation.separator.runescript
+>    #MY_MACRO($count, "a,b");
+#^^^^ source.runescript
+#    ^^^^^^^^^ source.runescript meta.preprocessor.macro.runescript
+#             ^ source.runescript punctuation.section.parens.runescript
+#              ^^^^^^ source.runescript variable.other.local.runescript
+#                    ^ source.runescript punctuation.separator.runescript
+#                     ^ source.runescript
+#                      ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#                       ^^^ source.runescript string.quoted.double.runescript
+#                          ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                           ^ source.runescript punctuation.section.parens.runescript
+#                            ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>switch_int($count) {
+#^^^^^^^^^^ source.runescript keyword.control.switch.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^^^^^^ source.runescript variable.other.local.runescript
+#                 ^ source.runescript punctuation.section.parens.runescript
+#                  ^ source.runescript
+#                   ^ source.runescript punctuation.section.block.runescript
+>    case 1, 2 : @sample_label(0_50_50_0_0, 50_50_1);
+#^^^^ source.runescript
+#    ^^^^ source.runescript keyword.control.runescript
+#        ^ source.runescript
+#         ^ source.runescript constant.numeric.integer.runescript
+#          ^ source.runescript punctuation.separator.runescript
+#           ^ source.runescript
+#            ^ source.runescript constant.numeric.integer.runescript
+#             ^ source.runescript
+#              ^ source.runescript punctuation.separator.runescript
+#               ^ source.runescript
+#                ^^^^^^^^^^^^^ source.runescript entity.name.function.label.runescript
+#                             ^ source.runescript punctuation.section.parens.runescript
+#                              ^^^^^^^^^^^ source.runescript constant.numeric.coord.runescript
+#                                         ^ source.runescript punctuation.separator.runescript
+#                                          ^ source.runescript
+#                                           ^^^^^^^ source.runescript constant.numeric.mapzone.runescript
+#                                                  ^ source.runescript punctuation.section.parens.runescript
+#                                                   ^ source.runescript punctuation.separator.runescript
+>    case default : ~sample_proc;
+#^^^^ source.runescript
+#    ^^^^ source.runescript keyword.control.runescript
+#        ^ source.runescript
+#         ^^^^^^^ source.runescript keyword.control.runescript
+#                ^ source.runescript
+#                 ^ source.runescript punctuation.separator.runescript
+#                  ^ source.runescript
+#                   ^^^^^^^^^^^^ source.runescript entity.name.function.proc.runescript
+#                               ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>while (npc_findnext = true) {
+#^^^^^ source.runescript keyword.control.runescript
+#     ^ source.runescript
+#      ^ source.runescript punctuation.section.parens.runescript
+#       ^^^^^^^^^^^^^ source.runescript
+#                    ^ source.runescript keyword.operator.runescript
+#                     ^ source.runescript
+#                      ^^^^ source.runescript constant.language.boolean.runescript
+#                          ^ source.runescript punctuation.section.parens.runescript
+#                           ^ source.runescript
+#                            ^ source.runescript punctuation.section.block.runescript
+>    return("<p,happy>Hi <tostring(%hp)>!", 1);
+#^^^^ source.runescript
+#    ^^^^^^ source.runescript keyword.control.runescript
+#          ^ source.runescript punctuation.section.parens.runescript
+#           ^ source.runescript string.quoted.double.runescript punctuation.definition.string.begin.runescript
+#            ^^^^^^^^^ source.runescript string.quoted.double.runescript constant.other.tag.mesanim.runescript
+#                     ^^^ source.runescript string.quoted.double.runescript
+#                        ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.interpolation.begin.runescript
+#                         ^^^^^^^^ source.runescript string.quoted.double.runescript meta.interpolation.runescript entity.name.function.command.runescript
+#                                 ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.parens.runescript
+#                                  ^^^ source.runescript string.quoted.double.runescript meta.interpolation.runescript variable.other.game.runescript
+#                                     ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.parens.runescript
+#                                      ^ source.runescript string.quoted.double.runescript meta.interpolation.runescript punctuation.section.interpolation.end.runescript
+#                                       ^ source.runescript string.quoted.double.runescript
+#                                        ^ source.runescript string.quoted.double.runescript punctuation.definition.string.end.runescript
+#                                         ^ source.runescript punctuation.separator.runescript
+#                                          ^ source.runescript
+#                                           ^ source.runescript constant.numeric.integer.runescript
+#                                            ^ source.runescript punctuation.section.parens.runescript
+#                                             ^ source.runescript punctuation.separator.runescript
+>}
+#^ source.runescript punctuation.section.block.runescript
+>[unknown_trigger,_cat] jump($x);
+#^ source.runescript punctuation.definition.header.begin.runescript
+# ^^^^^^^^^^^^^^^ source.runescript invalid.illegal.trigger.runescript
+#                ^ source.runescript punctuation.separator.header.runescript
+#                 ^^^^ source.runescript entity.name.tag.category.runescript
+#                     ^ source.runescript punctuation.definition.header.end.runescript
+#                      ^ source.runescript
+#                       ^^^^ source.runescript entity.name.function.command.runescript
+#                           ^ source.runescript punctuation.section.parens.runescript
+#                            ^^ source.runescript variable.other.local.runescript
+#                              ^ source.runescript punctuation.section.parens.runescript
+#                               ^ source.runescript punctuation.separator.runescript
+>

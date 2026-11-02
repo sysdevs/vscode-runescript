@@ -1,0 +1,175 @@
+>^true = 1
+#^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#     ^ source.runescript-config.constant
+#      ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#       ^ source.runescript-config.constant
+#        ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^false = 0
+#^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#      ^ source.runescript-config.constant
+#       ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#        ^ source.runescript-config.constant
+#         ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>^min_32bit_int = -2147483648
+#^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^^^^^^^^^^^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^max_32bit_int = 2147483647
+#^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^^^^^^^^^^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>// for exactmove
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant comment.line.double-slash.runescript-config
+>^exact_north = 0
+#^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#            ^ source.runescript-config.constant
+#             ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^exact_east = 1
+#^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#           ^ source.runescript-config.constant
+#            ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#             ^ source.runescript-config.constant
+#              ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^exact_south = 2
+#^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#            ^ source.runescript-config.constant
+#             ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^exact_west = 3
+#^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#           ^ source.runescript-config.constant
+#            ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#             ^ source.runescript-config.constant
+#              ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>// for directions procs
+#^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.constant comment.line.double-slash.runescript-config
+>^exact_northeast = 4
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                  ^ source.runescript-config.constant
+#                   ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^exact_southeast = 5
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                  ^ source.runescript-config.constant
+#                   ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^exact_southwest = 6
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                  ^ source.runescript-config.constant
+#                   ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^exact_northwest = 7
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                  ^ source.runescript-config.constant
+#                   ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>// for locangle
+#^^^^^^^^^^^^^^^ source.runescript-config.constant comment.line.double-slash.runescript-config
+>^loc_west = 0
+#^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#         ^ source.runescript-config.constant
+#          ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#           ^ source.runescript-config.constant
+#            ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^loc_north = 1
+#^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#          ^ source.runescript-config.constant
+#           ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#            ^ source.runescript-config.constant
+#             ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^loc_east = 2
+#^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#         ^ source.runescript-config.constant
+#          ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#           ^ source.runescript-config.constant
+#            ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^loc_south = 3
+#^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#          ^ source.runescript-config.constant
+#           ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#            ^ source.runescript-config.constant
+#             ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>^string_empty =
+#^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#             ^ source.runescript-config.constant
+#              ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+>
+>// for gettimespent
+#^^^^^^^^^^^^^^^^^^^ source.runescript-config.constant comment.line.double-slash.runescript-config
+>^millis = 0
+#^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#       ^ source.runescript-config.constant
+#        ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#         ^ source.runescript-config.constant
+#          ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^micros = 1
+#^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#       ^ source.runescript-config.constant
+#        ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#         ^ source.runescript-config.constant
+#          ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>// session logging
+#^^^^^^^^^^^^^^^^^^ source.runescript-config.constant comment.line.double-slash.runescript-config
+>^log_moderator = 0
+#^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^log_adventure = 1
+#^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
+>// wealth events
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant comment.line.double-slash.runescript-config
+>^wealth_pickup = 5
+#^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#              ^ source.runescript-config.constant
+#               ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^wealth_shop_buy = 6
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                  ^ source.runescript-config.constant
+#                   ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^wealth_shop_sell = 7
+#^^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                 ^ source.runescript-config.constant
+#                  ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                   ^ source.runescript-config.constant
+#                    ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^wealth_low_alch = 8
+#^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                ^ source.runescript-config.constant
+#                 ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                  ^ source.runescript-config.constant
+#                   ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>^wealth_high_alch = 9
+#^^^^^^^^^^^^^^^^^ source.runescript-config.constant constant.other.definition.runescript-config
+#                 ^ source.runescript-config.constant
+#                  ^ source.runescript-config.constant keyword.operator.assignment.runescript-config
+#                   ^ source.runescript-config.constant
+#                    ^ source.runescript-config.constant constant.numeric.integer.runescript-config
+>
