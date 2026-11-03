@@ -110,11 +110,12 @@
   function showFrame() {
     pixels.width = frame.width;
     pixels.height = frame.height;
-    overlay.width = frame.width * zoom;
-    overlay.height = frame.height * zoom;
+    // whole pixels: a canvas truncates a fractional size, and the overlay must line up with the preview
+    overlay.width = Math.round(frame.width * zoom);
+    overlay.height = Math.round(frame.height * zoom);
     for (const c of [pixels, overlay]) {
-      c.style.width = `${frame.width * zoom}px`;
-      c.style.height = `${frame.height * zoom}px`;
+      c.style.width = `${overlay.width}px`;
+      c.style.height = `${overlay.height}px`;
     }
     const ctx = /** @type {CanvasRenderingContext2D} */ (pixels.getContext("2d"));
     ctx.putImageData(new ImageData(new Uint8ClampedArray(frame.rgba.buffer ? frame.rgba : Object.values(frame.rgba)), frame.width, frame.height), 0, 0);
@@ -299,9 +300,11 @@
     }[tool];
   }
 
-  /** Zooms to `z` (1-8), keeping the preview pixel under the mouse where it is when `e` is given. */
+  /** Zooms to `z` (1-8, fractions allowed), keeping the preview pixel under the mouse where it is when `e` is given. */
   function setZoom(z, e) {
     z = Math.max(1, Math.min(8, z));
+    // whole levels snap exactly, so wheeling back and forth can land on 2x again
+    if (Math.abs(z - Math.round(z)) < 0.02) z = Math.round(z);
     if (z === zoom || !frame) return;
     const p = e ? at(e) : null;
     zoom = z;
@@ -478,7 +481,7 @@
     },
     zoom: {
       down(e) {
-        setZoom(zoom + (e.altKey ? -1 : 1), e);
+        setZoom(e.altKey ? Math.ceil(zoom) - 1 : Math.floor(zoom) + 1, e);
       },
       move() {},
       up() {},
@@ -597,7 +600,9 @@
     if (!frame) return;
     if (e.ctrlKey || e.metaKey) {
       e.preventDefault();
-      return setZoom(zoom + (e.deltaY < 0 ? 1 : -1), e);
+      // multiplicative, so a notch feels the same at any zoom: ~x1.16 per mouse notch, smooth on trackpads
+      const dy = e.deltaMode === 1 ? e.deltaY * 33 : e.deltaMode === 2 ? e.deltaY * 800 : e.deltaY;
+      return setZoom(zoom * Math.exp(-dy * 0.0015), e);
     }
     const [x, y] = at(e);
     const b = hit(x, y, (b) => b.type === "layer" && num(get(com(b.com), "scroll")) > b.h);
@@ -821,7 +826,7 @@
         Object.entries(catalog ? catalog.areas : { main: [512, 334], side: [190, 261], chat: [479, 96] }).map(([a, [w, h]]) =>
           el("option", { value: a, selected: a === s.area }, `${{ main: "Main", side: "Side tab", chat: "Chatbox" }[a]} ${w}x${h}`))),
       el("select", { title: "Zoom (Z tool, Ctrl+wheel)", onchange: (e) => setZoom(+e.target.value) },
-        [1, 2, 3, 4, 5, 6, 7, 8].map((z) => el("option", { value: z, selected: z === zoom }, `${z}x`))),
+        [...new Set([1, 2, 3, 4, 5, 6, 7, 8, zoom])].sort((a, b) => a - b).map((z) => el("option", { value: z, selected: z === zoom }, `${+z.toFixed(2)}x`))),
       toggle("Active", s.active, "Preview components whose conditions are true", () => setState({ active: !s.active })),
       toggle("Hidden", s.showHidden, "Show layers marked hide=yes", () => setState({ showHidden: !s.showHidden })),
       toggle("Grid", grid, `Snap to ${GRID}px`, () => ((grid = !grid), save(), renderToolbar(), drawOverlay())),
@@ -938,6 +943,26 @@
     confirming = Array.isArray(names) ? names : [names];
     renderPanels(true);
   }
+  /**
+   * A right-click menu at (x, y), kept on screen, of `[label, shortcut, action, enabled = true]` items
+   * (`null` draws a separator); a click elsewhere, Escape or blur closes it.
+   */
+  function openMenu(x, y, items) {
+    closeMenu();
+    const m = el("div", { class: "menu" }, items.map((it) => {
+      if (!it) return el("div", { class: "sep" });
+      const [label, keys, f, enabled = true] = it;
+      return el("div", { class: enabled ? "item" : "item disabled", onclick: () => enabled && (closeMenu(), f()) },
+        el("span", {}, label), el("span", { class: "keys" }, keys));
+    }));
+    document.body.append(m);
+    m.style.left = `${Math.max(0, Math.min(x, innerWidth - m.offsetWidth))}px`;
+    m.style.top = `${Math.max(0, Math.min(y, innerHeight - m.offsetHeight))}px`;
+  }
+  const closeMenu = () => document.querySelector(".menu")?.remove();
+  window.addEventListener("mousedown", (e) => !(/** @type {HTMLElement} */ (e.target)).closest?.(".menu") && closeMenu());
+  window.addEventListener("keydown", (e) => e.key === "Escape" && closeMenu());
+  window.addEventListener("blur", closeMenu);
   /** A short message at the top of the layers panel. */
   let message = "";
   function note(text) {
@@ -1050,6 +1075,23 @@
         title: `${name} (${typeOf(name)})`,
         "data-name": name,
         onclick: (e) => rowClick(e, name, rows),
+        oncontextmenu: (e) => {
+          e.preventDefault();
+          // like a file tree: right-clicking outside the selection selects that row
+          if (!selection.includes(name)) ((anchor = name), select(name));
+          openMenu(e.clientX, e.clientY, [
+            ["Rename", "F2", () => startRename(name), selection.length === 1],
+            ["Duplicate", "Ctrl+D", duplicate],
+            null,
+            ["Copy", "Ctrl+C", copy],
+            ["Paste", "Ctrl+V", paste],
+            null,
+            ["Group", "Ctrl+G", group],
+            ["Ungroup", "Ctrl+Shift+G", ungroup, isLayer(name) && selection.length === 1],
+            null,
+            ["Delete", "Del", () => askDelete(selection)],
+          ]);
+        },
         ondragstart: (e) => e.dataTransfer.setData("application/x-ifedit-node", JSON.stringify(selection.includes(name) ? selectionRoots() : [name])),
         ondragover: (e) => {
           if (!e.dataTransfer.types.includes("application/x-ifedit-node")) return;
@@ -1205,42 +1247,133 @@
     return out;
   }
 
-  /** scriptN / scriptNopK as cards: steps computing a value (%N in text) and an optional comparison. */
+  /** One script op in words, e.g. `count of coins in inventory:inv`. */
+  function describeOp(op) {
+    const info = catalog.schema.SCRIPT_OP_INFO[op[0]];
+    const a = (i) => op[i] || "?";
+    switch (op[0]) {
+      case "inv_count": return `count of ${a(2)} in ${a(1)}`;
+      case "inv_contains": return `holds ${a(2)} in ${a(1)}`;
+      case "pushvar": return `varp ${a(1)}`;
+      case "testbit": return `bit ${a(2)} of varp ${a(1)}`;
+      case "push_varbit": return `varbit ${a(1)}`;
+      case "push_constant": return a(1);
+      case "stat_level": return `${a(1)} level`;
+      case "stat_base_level": return `${a(1)} base level`;
+      case "stat_xp": return `${a(1)} xp`;
+      case "stat_xp_remaining": return `${a(1)} xp to next level`;
+      default: return info ? info.label.toLowerCase() : op[0];
+    }
+  }
+
+  /** A script's ops as a left-to-right formula: values add unless a maths op comes between. */
+  function formula(ops) {
+    const S = catalog.schema;
+    let out = "";
+    let operator = "";
+    for (const op of ops) {
+      if (S.MATHS_OPS.includes(op[0])) operator = S.SCRIPT_OP_INFO[op[0]].label;
+      else {
+        out = out === "" ? (operator ? `0 ${operator} ` : "") + describeOp(op) : `${out} ${operator || "+"} ${describeOp(op)}`;
+        operator = "";
+      }
+    }
+    return out || "0";
+  }
+
+  /** scriptN / scriptNopK as cards: a formula computing a value (%N in text) and an optional comparison. */
   function scriptsBlock(c) {
     const S = catalog.schema;
-    const conds = c.conds.map((x) => ({ ...x, ops: x.ops && x.ops.map((o) => [...o]) }));
+    const conds = c.conds.map((x) => ({ cmp: x.cmp, value: x.value, ops: x.ops && x.ops.map((o) => [...o]) }));
     const write = () => send({ kind: "conditions", com: c.name, conds });
+    // comparisons pair with script1..n in order, so scripts with one come before value-only ones
+    const firstOpen = () => { const i = conds.findIndex((x) => x.cmp === null); return i === -1 ? conds.length : i; };
+    const move = (list, i, to) => list.splice(to, 0, ...list.splice(i, 1));
+    const LISTS = { invcom: "interface", obj: "obj", varp: "varp", varbit: "varbit" };
     const operand = (kind, value, onchange) => {
       if (kind === "stat") return el("select", { onchange }, S.STATS.map((s) => el("option", { value: s, selected: s === value }, s)));
       if (kind === "int") return el("input", { type: "number", value: value ?? "0", onchange });
-      const list = { invcom: "interface", obj: "obj", varp: "varp", varbit: "varbit" }[kind];
-      return el("input", { value: value ?? "", list: `dl-${list}`, placeholder: kind, onchange });
+      const names = catalog.lists[LISTS[kind]] || [];
+      const problem = !value ? `${kind} is empty` : names.length && !names.includes(value) ? `no ${LISTS[kind]} named ${value}` : null;
+      return el("input", { value: value ?? "", list: `dl-${LISTS[kind]}`, placeholder: kind, class: problem ? "bad" : "", title: problem || undefined, onchange });
     };
+    const groups = [...new Set(Object.values(S.SCRIPT_OP_INFO).map((x) => x.group))].filter((g) => g !== "Maths");
+    const opPicker = (op, onchange) => el("select", { title: op[0], onchange },
+      groups.map((g) => el("optgroup", { label: g }, Object.entries(S.SCRIPT_OP_INFO).filter(([, x]) => x.group === g)
+        .map(([name, x]) => el("option", { value: name, selected: name === op[0], title: name }, x.label)))));
+    const tests = (frame.state && frame.state.tests) || {};
+
     const cards = conds.map((cond, i) => {
       const ops = cond.ops || [];
-      const steps = ops.map((op, k) => el("div", { class: "row" },
-        el("select", { onchange: (e) => ((op.length = 0), op.push(e.target.value), write()) },
-          Object.keys(S.SCRIPT_OPS).map((name) => el("option", { value: name, selected: name === op[0] }, name))),
-        (S.SCRIPT_OPS[op[0]] || []).map((kind, a) => operand(kind, op[a + 1], (e) => ((op[a + 1] = e.target.value), write()))),
-        el("button", { title: "Remove step", onclick: () => (ops.splice(k, 1), (cond.ops = ops), write()) }, "✕")));
+      const setOps = (next) => ((cond.ops = next), write());
+      const steps = ops.map((op, k) => {
+        const tools = [
+          el("button", { title: "Move up", disabled: k === 0, onclick: () => (move(ops, k, k - 1), setOps(ops)) }, "↑"),
+          el("button", { title: "Move down", disabled: k === ops.length - 1, onclick: () => (move(ops, k, k + 1), setOps(ops)) }, "↓"),
+          el("button", { title: "Remove", onclick: () => (ops.splice(k, 1), setOps(ops)) }, "✕")];
+        if (S.MATHS_OPS.includes(op[0])) {
+          return el("div", { class: "row maths" }, el("select", { title: "How the next value combines", onchange: (e) => ((op[0] = e.target.value), setOps(ops)) },
+            S.MATHS_OPS.map((m) => el("option", { value: m, selected: m === op[0], title: m }, S.SCRIPT_OP_INFO[m].label))), ...tools);
+        }
+        const plus = k > 0 && !S.MATHS_OPS.includes(ops[k - 1][0]) ? el("span", { class: "note", title: "Values next to each other add up" }, "+") : null;
+        return el("div", { class: "row" }, plus,
+          opPicker(op, (e) => ((op.length = 0), op.push(e.target.value, ...(S.SCRIPT_OPS[e.target.value] || []).map((kind) => (kind === "stat" ? "attack" : kind === "int" ? "0" : ""))), setOps(ops))),
+          (S.SCRIPT_OPS[op[0]] || []).map((kind, a) => operand(kind, op[a + 1], (e) => ((op[a + 1] = e.target.value), setOps(ops)))),
+          ...tools);
+      });
       const compare = cond.cmp !== null;
-      // comparisons pair with script1..n in order, so only a prefix of scripts can have one
-      const locked = compare ? conds.slice(i + 1).some((x) => x.cmp !== null) : conds.slice(0, i).some((x) => x.cmp === null);
+      const swappable = (j) => j >= 0 && j < conds.length && (conds[j].cmp === null) === (cond.cmp === null);
+      const result = c.conds[i].result;
+      const pass = c.conds[i].pass;
       return el("div", { class: "cond" },
-        el("div", { class: "row" }, el("b", {}, `Script ${i + 1}`), el("span", { class: "note" }, ` value is %${i + 1}`), el("span", { style: "flex:1" }),
+        el("div", { class: "row" }, el("b", {}, `%${i + 1}`), el("span", { class: "summary", title: "What the client computes" }, `= ${formula(ops)}`), el("span", { style: "flex:1" }),
+          el("button", { title: "Move up", disabled: !swappable(i - 1), onclick: () => (move(conds, i, i - 1), write()) }, "↑"),
+          el("button", { title: "Move down", disabled: !swappable(i + 1), onclick: () => (move(conds, i, i + 1), write()) }, "↓"),
           el("button", { title: "Remove script", onclick: () => (conds.splice(i, 1), write()) }, "✕")),
         ...steps,
-        el("button", { onclick: () => ((cond.ops = [...ops, ["pushvar", ""]]), write()) }, "+ step"),
         el("div", { class: "row" },
-          el("label", {}, el("input", { type: "checkbox", checked: compare, disabled: locked,
-            title: locked ? "Comparisons go on the first scripts in order: value-only scripts come last" : undefined, onchange: (e) => ((cond.cmp = e.target.checked ? "eq" : null), (cond.value = cond.value || "0"), write()) }), " active when value"),
-          compare ? el("select", { onchange: (e) => ((cond.cmp = e.target.value), write()) }, S.COMPARATORS.map((x) => el("option", { value: x, selected: x === cond.cmp }, x))) : null,
-          compare ? el("input", { type: "number", value: num(cond.value), onchange: (e) => ((cond.value = e.target.value), write()) }) : null));
+          el("button", { onclick: () => setOps([...ops, ["pushvar", ""]]) }, "+ value"),
+          ops.length ? el("button", { onclick: () => setOps([...ops, ["subtract"], ["push_constant", "0"]]) }, "+ operator") : null),
+        el("div", { class: "row" },
+          el("label", { title: "Turning this on or off reorders the scripts, which renumbers %N" }, el("input", { type: "checkbox", checked: compare, onchange: (e) => {
+            // firstOpen() before setting cmp: it is then at or before i
+            if (e.target.checked) { const to = firstOpen(); (cond.cmp = "eq"), (cond.value = cond.value || "0"), move(conds, i, to); }
+            else ((cond.cmp = null), move(conds, i, conds.length - 1));
+            write();
+          } }), ` active when %${i + 1}`),
+          compare ? el("select", { onchange: (e) => ((cond.cmp = e.target.value), write()) }, S.COMPARATORS.map((x) => el("option", { value: x, selected: x === cond.cmp, title: x }, S.COMPARATOR_LABELS[x]))) : null,
+          compare ? el("input", { type: "number", value: num(cond.value), onchange: (e) => ((cond.value = e.target.value), write()) }) : null,
+          compare && cond.cmp === "gt" ? el("span", { class: "note" }, `(at least ${num(cond.value) + 1})`) : null,
+          el("span", { style: "flex:1" }),
+          el("span", { class: pass === false ? "test fail" : "test", title: "With the test values below" }, `→ ${result}${pass === null ? "" : pass ? " ✓" : " ✗"}`)));
     });
+
+    // test values: one input per distinct value op the scripts read
+    const inputs = new Map();
+    for (const op of conds.flatMap((x) => x.ops || [])) {
+      if (!S.MATHS_OPS.includes(op[0]) && op[0] !== "push_constant") inputs.set(op.join(","), op);
+    }
+    const testRows = [...inputs].map(([key, op]) => el("div", { class: "testrow" }, el("span", { class: "testlabel" }, describeOp(op)),
+      el("input", { type: "number", value: String(tests[key] ?? 0), onchange: (e) => setState({ tests: { ...tests, [key]: parseInt(e.target.value, 10) || 0 } }) })));
+
+    const compared = conds.filter((x) => x.cmp !== null);
+    const missing = [...new Set([get(c, "text"), get(c, "activetext")].join(" ").match(/%[1-5]/g) || [])].filter((p) => +p[1] > conds.length);
+    const presets = el("select", { onchange: (e) => {
+      const p = e.target.value === "" ? null : S.SCRIPT_PRESETS[+e.target.value];
+      const cond = p ? JSON.parse(JSON.stringify(p.cond)) : { cmp: null, value: "", ops: [["pushvar", ""]] };
+      if (cond.cmp === null) conds.push(cond);
+      else conds.splice(firstOpen(), 0, cond);
+      write();
+    } }, el("option", { selected: true, disabled: true }, "+ script…"), S.SCRIPT_PRESETS.map((p, i) => el("option", { value: String(i) }, p.label)), el("option", { value: "" }, "Blank"));
+
     return [el("h4", {}, "Scripts"),
-      el("p", { class: "note" }, "Each script computes a value shown as %N in text. When every comparison holds the component is active (preview it with the Active toggle)."),
+      el("p", { class: "summary" }, compared.length
+        ? `Active when ${compared.map((x) => `${formula(x.ops || [])} ${S.COMPARATOR_LABELS[x.cmp]} ${x.value}`).join(" and ")}`
+        : conds.length ? "Never active (no comparisons); scripts only fill %N in text." : "No scripts."),
+      ...missing.map((p) => el("p", { class: "bad" }, `The text uses ${p} but there is no script ${p[1]}.`)),
       ...cards,
-      conds.length < 5 ? el("button", { onclick: () => (conds.push({ cmp: conds.every((x) => x.cmp !== null) ? "eq" : null, value: "1", ops: [["pushvar", ""]] }), write()) }, "+ script") : null];
+      conds.length < 5 ? presets : null,
+      ...(testRows.length ? [el("h4", {}, "Test values"), el("p", { class: "note" }, "Try values to see each script's result (→) and whether its comparison holds."), ...testRows] : [])];
   }
 
   function renderInspector(pane) {

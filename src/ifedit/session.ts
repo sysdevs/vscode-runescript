@@ -7,7 +7,7 @@ import { get, parseIf } from "./parse";
 import { Surface } from "./pix";
 import { decodePng } from "./png";
 import { AREAS, PreviewState, layout, render } from "./render";
-import { readConditions, schemaData } from "./schema";
+import { Condition, compare, evalScript, readConditions, schemaData } from "./schema";
 
 const PICKER_PACKS = ["model", "seq", "obj", "varp", "varbit", "interface"];
 
@@ -24,12 +24,18 @@ export function buildFrame(stem: string, text: string, assets: Assets, state: Pr
     rgba: s.toRgba(),
     boxes: r.boxes,
     layout: layout(model, state),
-    coms: model.coms.map((c) => ({ name: c.name, keys: c.keys.map((k) => [k.key, k.value]), conds: readConditions((k) => get(c, k)) })),
+    coms: model.coms.map((c) => ({ name: c.name, keys: c.keys.map((k) => [k.key, k.value]), conds: readConditions((k) => get(c, k)).map((cond) => test(cond, state)) })),
     tree: Object.fromEntries(model.children),
     root: model.root.keys.map((k) => [k.key, k.value]),
     warnings: model.warnings,
     state,
   };
+}
+
+/** A condition with what it computes from the state's test values, for the scripts panel. */
+function test(cond: Condition, state: PreviewState) {
+  const result = evalScript(cond.ops ?? [], (op) => state.tests?.[op.join(",")] ?? 0);
+  return { ...cond, result, pass: cond.cmp === null ? null : compare(cond.cmp, result, parseInt(cond.value, 10)) };
 }
 
 export function buildCatalog(root: string, assets: Assets, text: string) {

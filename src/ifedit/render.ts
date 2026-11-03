@@ -17,6 +17,8 @@ export interface PreviewState {
   showHidden: boolean;
   scroll: Record<string, number>;
   vars: string[];
+  /** Test values for script ops (keyed by the op line, e.g. `pushvar,bank_x`); missing ones are 0. */
+  tests?: Record<string, number>;
   /** Components hidden in the editor only (the eye in the layers panel); their subtrees are skipped. */
   hidden: string[];
 }

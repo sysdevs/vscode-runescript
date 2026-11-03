@@ -77,6 +77,13 @@ button.toggle.on, button.primary { background: var(--vscode-button-background); 
 .node .rename { flex: 1; min-width: 0; padding: 0 2px; }
 .badge { font-size: 0.8em; opacity: 0.6; margin-left: 4px; }
 .confirm { margin: 4px 6px; padding: 4px; border: 1px solid var(--vscode-inputValidation-warningBorder); }
+.menu { position: fixed; z-index: 100; min-width: 120px; padding: 4px 0; background: var(--vscode-menu-background); color: var(--vscode-menu-foreground);
+  border: 1px solid var(--vscode-menu-border, var(--vscode-widget-border, transparent)); border-radius: 4px; box-shadow: 0 2px 8px var(--vscode-widget-shadow); }
+.menu .item { display: flex; justify-content: space-between; gap: 24px; padding: 3px 16px; cursor: default; }
+.menu .item:not(.disabled):hover { background: var(--vscode-menu-selectionBackground); color: var(--vscode-menu-selectionForeground); }
+.menu .item.disabled { opacity: 0.4; }
+.menu .keys { opacity: 0.7; }
+.menu .sep { height: 1px; margin: 4px 0; background: var(--vscode-menu-separatorBackground, var(--vscode-widget-border)); }
 button:disabled { opacity: 0.4; cursor: default; }
 
 /* side panel */
@@ -110,4 +117,14 @@ button:disabled { opacity: 0.4; cursor: default; }
 .cond .row select, .cond .row input { min-width: 0; }
 .cond .row input { width: 6.5em; }
 .cond .row select { max-width: 9em; }
+.cond .maths { padding-left: 1.5em; }
+.cond .maths select { width: 3.5em; }
+.summary { font-style: italic; margin: 2px 0; overflow-wrap: anywhere; }
+.bad { color: var(--vscode-errorForeground); }
+input.bad { border: 1px solid var(--vscode-inputValidation-errorBorder); }
+.test { font-family: var(--vscode-editor-font-family); white-space: nowrap; }
+.test.fail { color: var(--vscode-errorForeground); }
+.testrow { display: flex; gap: 4px; margin: 2px 0; align-items: center; }
+.testrow .testlabel { flex: 1; overflow-wrap: anywhere; }
+.testrow input { width: 6.5em; }
 .other { font-family: var(--vscode-editor-font-family); font-size: 0.9em; opacity: 0.8; }

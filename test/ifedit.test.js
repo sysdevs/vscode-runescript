@@ -309,6 +309,37 @@ test("buildFrame sends each component's conditions", () => {
   assert.equal(f.coms[0].conds.length, 2);
 });
 
+test("evalScript folds values left to right", () => {
+  const { evalScript } = require("../out/ifedit/schema.js");
+  // Content's wilderness level: ((z - 3520) / 8) + 1
+  const wildy = [["coordz"], ["subtract"], ["push_constant", "3520"], ["divide"], ["push_constant", "8"], ["push_constant", "1"]];
+  assert.equal(evalScript(wildy, () => 3600), 11);
+  // staff spells: rune count + staff held, no operator between them adds
+  assert.equal(evalScript([["inv_count", "inventory:inv", "airrune"], ["inv_contains", "wornitems:wear", "staff_of_air"]], (op) => (op[0] === "inv_count" ? 0 : 1)), 1);
+  assert.equal(evalScript([["push_constant", "7"], ["multiply"], ["push_constant", "6"]], () => 0), 42);
+  assert.equal(evalScript([], () => 5), 0);
+});
+
+test("every script op has a label and presets round trip", () => {
+  const { SCRIPT_OPS, SCRIPT_OP_INFO, SCRIPT_PRESETS } = require("../out/ifedit/schema.js");
+  assert.deepEqual(Object.keys(SCRIPT_OP_INFO).sort(), Object.keys(SCRIPT_OPS).sort());
+  for (const p of SCRIPT_PRESETS) {
+    const out = applyIntent("t", "[c]\ntype=text\n", { kind: "conditions", com: "c", conds: [p.cond] });
+    assert.deepEqual(readConditions(getter(out, "c")), [p.cond], p.label);
+  }
+});
+
+test("buildFrame computes each condition from the test values", () => {
+  const { buildFrame } = require("../out/ifedit/session.js");
+  const { Assets } = require("../out/ifedit/assets.js");
+  const state = { area: "main", active: false, mouse: null, showHidden: false, scroll: {}, vars: [], hidden: [], tests: { "pushvar,bank_x": 1, "inv_count,inventory:inv,coins": 0 } };
+  const [first, second] = buildFrame("t", COND, new Assets("none"), state).coms[0].conds;
+  assert.equal(first.result, 1);
+  assert.equal(first.pass, true);
+  assert.equal(second.result, 0);
+  assert.equal(second.pass, false);
+});
+
 test("a comparison after a script without one is refused", () => {
   const conds = [{ cmp: "eq", value: "1", ops: [["runenergy"]] }, { cmp: null, value: "", ops: [["runweight"]] }, { cmp: "eq", value: "1", ops: [["runenergy"]] }];
   assert.throws(() => writeConditions("c", conds, []), /comparison/);
