@@ -358,6 +358,16 @@ test("reconcileIds makes the pack follow the saved .if", () => {
   assert.deepEqual(reconcileIds(PACK, ORDER, "a", ["x"]), { pack: PACK, order: ORDER });
 });
 
+test("templates parse cleanly and get an id per component", () => {
+  for (const area of ["main", "side", "chat"]) {
+    const m = parseIf("n", readFileSync(join(__dirname, "..", "templates", `${area}.if`), "latin1"));
+    assert.deepEqual(m.warnings, [], area);
+    assert.ok(m.coms.length > 0, area);
+    const r = reconcileIds(PACK, ORDER, "n", m.coms.map((c) => c.name));
+    assert.equal(r.pack.split("\n").filter((l) => l.startsWith("4=n") || l.includes("=n:")).length, m.coms.length + 1, area);
+  }
+});
+
 // ---- layers panel intents ----
 
 const { copyText } = require("../out/ifedit/edits.js");

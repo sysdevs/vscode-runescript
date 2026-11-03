@@ -167,10 +167,13 @@ function findIf(dir, stem) {
     } else if (name === `${stem}.if`) return p;
   }
 }
-for (const [stem, area] of Object.entries(SNAPSHOTS)) {
+// the bundled New Interface templates, as template_<area>
+const TEMPLATES = Object.fromEntries(["main", "side", "chat"].map((a) => [`template_${a}`, a]));
+for (const [stem, area] of Object.entries({ ...SNAPSHOTS, ...TEMPLATES })) {
   test(`snapshot ${stem}`, { skip: noContent }, () => {
     const assets = new Assets(CONTENT);
-    const r = render(parseIf(stem, readFileSync(findIf(join(CONTENT, "scripts"), stem), "latin1")), assets, { ...STATE, area });
+    const src = TEMPLATES[stem] ? join(__dirname, "..", "templates", `${area}.if`) : findIf(join(CONTENT, "scripts"), stem);
+    const r = render(parseIf(stem, readFileSync(src, "latin1")), assets, { ...STATE, area });
     const rgba = new Uint8Array(r.width * r.height * 4);
     r.pixels.forEach((p, i) => rgba.set([(p >> 16) & 255, (p >> 8) & 255, p & 255, 255], i * 4));
     const png = enc(r.width, r.height, rgba);

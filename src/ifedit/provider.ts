@@ -88,7 +88,7 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
       }),
       // interface.pack / .order follow the .if when it is saved, so discarding or undoing edits never strands ids
       vscode.workspace.onWillSaveTextDocument((e) => {
-        if (e.document.uri.toString() === doc.uri.toString()) e.waitUntil(this.reconcile(root, stem, e.document.getText()));
+        if (e.document.uri.toString() === doc.uri.toString()) e.waitUntil(reconcileIdsOnDisk(root, stem, e.document.getText()));
       }),
       panel.webview.onDidReceiveMessage(async (msg) => {
         switch (msg.type) {
@@ -172,29 +172,29 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
     }
     if (await vscode.workspace.applyEdit(edit)) post({ type: "select", names: [to] });
   }
+}
 
-  /** Gives every component in the saved text an id and drops ids of components no longer there. */
-  private async reconcile(root: string, stem: string, text: string) {
-    const coms = parseIf(stem, text).coms.map((c) => c.name);
-    const pack = await vscode.workspace.openTextDocument(vscode.Uri.file(join(root, "pack", "interface.pack")));
-    const order = await vscode.workspace.openTextDocument(vscode.Uri.file(join(root, "pack", "interface.order")));
-    let ids: { pack: string; order: string };
-    try {
-      ids = reconcileIds(pack.getText(), order.getText(), stem, coms);
-    } catch (e) {
-      void vscode.window.showErrorMessage(`Interface editor: interface.pack not updated: ${(e as Error).message}`);
-      return;
-    }
-    const we = new vscode.WorkspaceEdit();
-    const changed: vscode.TextDocument[] = [];
-    for (const [d, t] of [[pack, ids.pack], [order, ids.order]] as const) {
-      const e = minimalEdit(d.getText(), t);
-      if (!e) continue;
-      we.replace(d.uri, new vscode.Range(d.positionAt(e.start), d.positionAt(e.end)), e.text);
-      changed.push(d);
-    }
-    if (changed.length && (await vscode.workspace.applyEdit(we))) for (const d of changed) await d.save();
+/** Gives every component in `text` an id in interface.pack / .order and drops ids of components no longer there. */
+export async function reconcileIdsOnDisk(root: string, stem: string, text: string) {
+  const coms = parseIf(stem, text).coms.map((c) => c.name);
+  const pack = await vscode.workspace.openTextDocument(vscode.Uri.file(join(root, "pack", "interface.pack")));
+  const order = await vscode.workspace.openTextDocument(vscode.Uri.file(join(root, "pack", "interface.order")));
+  let ids: { pack: string; order: string };
+  try {
+    ids = reconcileIds(pack.getText(), order.getText(), stem, coms);
+  } catch (e) {
+    void vscode.window.showErrorMessage(`Interface editor: interface.pack not updated: ${(e as Error).message}`);
+    return;
   }
+  const we = new vscode.WorkspaceEdit();
+  const changed: vscode.TextDocument[] = [];
+  for (const [d, t] of [[pack, ids.pack], [order, ids.order]] as const) {
+    const e = minimalEdit(d.getText(), t);
+    if (!e) continue;
+    we.replace(d.uri, new vscode.Range(d.positionAt(e.start), d.positionAt(e.end)), e.text);
+    changed.push(d);
+  }
+  if (changed.length && (await vscode.workspace.applyEdit(we))) for (const d of changed) await d.save();
 }
 
 /** `defaults` holds only numbers and booleans (the interfaceEditor settings), so it needs no escaping. */

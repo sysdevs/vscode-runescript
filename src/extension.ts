@@ -2,15 +2,18 @@
 // providers; diagnostics, hover, definition, references, completion and signature
 // help come from the runescript-lsp server. Without a server binary the v1 regex
 // go-to-definition stays as the fallback. `.if` files also open in the visual
-// interface editor (src/ifedit).
+// interface editor (src/ifedit); `.npc` blocks preview in the model preview (src/modelview).
 import * as vscode from "vscode";
 import type { LanguageClient } from "vscode-languageclient/node";
 import { startClient } from "./client";
 import { colorProvider } from "./features/colors";
 import { definitionProvider } from "./features/definition";
 import { foldingProvider, symbolProvider } from "./features/symbols";
+import { newInterface } from "./ifedit/newif";
 import { IfEditorProvider, VIEW_TYPE } from "./ifedit/provider";
 import { ALL_LANGS, CONFIG_LANGS } from "./languages";
+import { modelLensProvider } from "./modelview/lens";
+import { BUILDERS, ModelPreview } from "./modelview/panel";
 
 let client: LanguageClient | undefined;
 
@@ -24,6 +27,9 @@ export function activate(ctx: vscode.ExtensionContext) {
     vscode.window.registerCustomEditorProvider(VIEW_TYPE, new IfEditorProvider(ctx), { webviewOptions: { retainContextWhenHidden: true } }),
     vscode.commands.registerCommand("runescript.ifOpenVisual", (uri?: vscode.Uri) => openWith(uri, VIEW_TYPE)),
     vscode.commands.registerCommand("runescript.ifOpenText", (uri?: vscode.Uri) => openWith(uri, "default")),
+    vscode.commands.registerCommand("runescript.ifNew", (uri?: vscode.Uri) => newInterface(ctx, uri)),
+    vscode.commands.registerCommand("runescript.modelPreview", (uri?: vscode.Uri, line?: number) => ModelPreview.show(ctx, uri, line)),
+    vscode.languages.registerCodeLensProvider(Object.keys(BUILDERS).map((language) => ({ language })), modelLensProvider),
     vscode.commands.registerCommand("runescript.restartServer", async () => {
       if (client) {
         await client.restart();

@@ -47,6 +47,24 @@ export function colours(text: string): Colour[] {
   return out;
 }
 
+/** A `recol#s` / `recol#d` value: an RGB15 colour (npc, obj, loc, idk, spotanim configs). */
+export interface Rgb15 {
+  line: number;
+  start: number;
+  end: number;
+  rgb15: number;
+}
+
+/** Every `recol#s/d=<0-32767>` value. */
+export function rgb15Colours(text: string): Rgb15[] {
+  const out: Rgb15[] = [];
+  lines(text).forEach((l, line) => {
+    const m = /^(\s*recol\d+[sd]\s*=\s*)(\d+)\s*(\/\/.*)?$/.exec(l);
+    if (m && Number(m[2]) < 32768) out.push({ line, start: m[1].length, end: m[1].length + m[2].length, rgb15: Number(m[2]) });
+  });
+  return out;
+}
+
 /** The identifier under `col` in `line`, with its sigil (`~proc`, `@label`, `^const`, `%var`, `$local`). */
 export function wordAt(line: string, col: number): Word | undefined {
   const re = new RegExp(IDENT, "g");

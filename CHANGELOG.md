@@ -110,3 +110,29 @@
   `runescript.interfaceEditor.zoom` / `gridSize` / `grid` / `smartGuides` (defaults for a newly opened editor),
   `runescript.contentRoot` (when the Content folder is not above the `.if`) and
   `runescript.diagnostics.configWarnings` (mute config-file warnings).
+- Command `RuneScript: New Interface…` (also on folders in the explorer): creates a main, side tab or chatbox
+  interface from a bundled template (`templates/`) in an `interfaces` folder, adds its interface.pack / .order ids
+  and opens it in the interface editor.
+- Command `RuneScript: Open Model Preview to the Side` (title-bar button on `.npc`, `.obj`, `.loc`, `.idk` and
+  `.spotanim` files, and a "Preview model" CodeLens above every block that names a model, which shows that
+  block): a WebGL2 panel that follows the block under the cursor and shows it as the client builds it (models
+  merged, recoloured/retextured, resized, lit). Drag orbits, wheel zooms, double-click resets.
+  - npc: plays its `readyanim`, a `walkanim` or any seq param it sets (`param=attack_anim,...`, `defend_anim`,
+    `death_anim`: every param declared `type=seq`).
+  - obj: ground model, inventory icon (posed by `2dzoom`/`2dxan`/`2dyan`/`2dzan`/`2dxof`/`2dyof` inside a 32x32
+    frame), worn and chathead models for each gender.
+  - loc: every shape variant its `model` stems expand to (`_1` wall, `_q` wall decor, ...), in a labelled grid,
+    playing its `anim`.
+  - idk: the kit's body or chathead models. spotanim: its model playing its `anim`.
+  - Textured faces take their texture's average colour (not texture-mapped).
+  - Sliders under the view for the keys that change it (obj `2d*` in the inventory view, `resize*`, `ambient`,
+    `contrast`; loc `resize*`/`offset*`; npc and spotanim `resizeh`/`resizev`; spotanim `angle`), clamped to what
+    the client can read (e.g. `2dxan` 0-2047, `2dxof` signed 16-bit, so `65534` reads as -2). Dragging previews
+    without touching the file; releasing (or typing a number) writes the key as one undoable edit, adding it if
+    the block lacks it; ↺ removes it.
+  - A Colours list for the block's `recol#` slots: source swatch, a destination picker (previewed while choosing,
+    written when it closes) and remove. "Pick from model" then a click on a face adds a slot whose source is
+    that face's colour before the block's recolours (written as an RGB15 value that converts to it); a slot's
+    Pick re-picks its source.
+- `recol#s` / `recol#d` values in `.npc`, `.obj`, `.loc`, `.idk` and `.spotanim` files get a colour swatch;
+  VS Code's picker writes the chosen colour back as RGB15.

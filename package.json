@@ -604,6 +604,18 @@
         "title": "Open as Text",
         "category": "RuneScript",
         "icon": "$(go-to-file)"
+      },
+      {
+        "command": "runescript.ifNew",
+        "title": "New Interface…",
+        "category": "RuneScript",
+        "icon": "$(new-file)"
+      },
+      {
+        "command": "runescript.modelPreview",
+        "title": "Open Model Preview to the Side",
+        "category": "RuneScript",
+        "icon": "$(open-preview)"
       }
     ],
     "customEditors": [
@@ -629,6 +641,18 @@
           "command": "runescript.ifOpenText",
           "when": "activeCustomEditorId == runescript.ifEditor",
           "group": "navigation"
+        },
+        {
+          "command": "runescript.modelPreview",
+          "when": "editorLangId =~ /^runescript-(npc|obj|loc|idk|spotanim)$/",
+          "group": "navigation"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "runescript.ifNew",
+          "when": "explorerResourceIsFolder",
+          "group": "navigation@10"
         }
       ]
     }
@@ -637,7 +661,7 @@
     "gen": "cd ../ares-compiler && cargo run --release --example dump_syntax > ../vscode-runescript/data/syntax.json && cd ../vscode-runescript && node scripts/gen-grammar.mjs",
     "compile": "tsc -p .",
     "watch": "tsc -w -p .",
-    "test": "npm run compile && node --test test/scan.test.js test/ifedit.test.js test/ifedit-render.test.js && vscode-tmgrammar-snap \"test/grammar/*.*\"",
+    "test": "npm run compile && node --test test/scan.test.js test/ifedit.test.js test/ifedit-render.test.js test/modelview.test.js test/modelview-types.test.js test/modelview-controls.test.js test/modelview-colours.test.js && vscode-tmgrammar-snap \"test/grammar/*.*\"",
     "snap": "vscode-tmgrammar-snap --updateSnapshot \"test/grammar/*.*\"",
     "package": "npm run compile && npm run build-server && vsce package --target win32-x64",
     "build-server": "cd ../runescript-lsp && cargo build --release && cd ../vscode-runescript && node -e \"require('fs').mkdirSync('bin',{recursive:true});require('fs').copyFileSync('../runescript-lsp/target/release/runescript-lsp.exe','bin/runescript-lsp.exe')\""
