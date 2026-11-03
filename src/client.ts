@@ -30,7 +30,7 @@ export function settingPath(key: string): string {
 /** The settings the server reads, resolved. */
 function serverSettings() {
   const configWarnings = vscode.workspace.getConfiguration("runescript").get<boolean>("diagnostics.configWarnings") ?? true;
-  return { symbolsPath: settingPath("symbolsPath"), configWarnings };
+  return { configWarnings };
 }
 
 export function startClient(ctx: vscode.ExtensionContext): LanguageClient | undefined {
@@ -52,8 +52,7 @@ export function startClient(ctx: vscode.ExtensionContext): LanguageClient | unde
   // The server reads its settings from didChangeConfiguration; send them resolved.
   ctx.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
-      const affected = e.affectsConfiguration("runescript.symbolsPath") || e.affectsConfiguration("runescript.diagnostics.configWarnings");
-      if (affected && client.isRunning()) {
+      if (e.affectsConfiguration("runescript.diagnostics.configWarnings") && client.isRunning()) {
         client.sendNotification("workspace/didChangeConfiguration", { settings: serverSettings() });
       }
     }),

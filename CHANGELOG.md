@@ -106,6 +106,8 @@
 
 ## Unreleased
 
+- The language server builds its symbol tables from the workspace: `runescript.symbolsPath` is gone, no
+  server build or `symbols.json` is needed, and config edits that add or retype names reach type checking live.
 - Settings `runescript.interfaceEditor.openWith` (visual or text; writes `workbench.editorAssociations`),
   `runescript.interfaceEditor.zoom` / `gridSize` / `grid` / `smartGuides` (defaults for a newly opened editor),
   `runescript.contentRoot` (when the Content folder is not above the `.if`) and

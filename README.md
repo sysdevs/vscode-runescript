@@ -32,19 +32,12 @@ Language support for LostCity-style RuneScript: `.rs2` scripts and the config fo
 
 ## Setup
 
-Set `runescript.symbolsPath` to the ares server's `data/symbols.json`. Without it, only syntax
-errors are reported. With Content and ares-gameserver side by side, in `Content/.vscode/settings.json`:
-
-```json
-"runescript.symbolsPath": "../ares-gameserver/data/symbols.json"
-```
-
-A dev-mode server (`production` off, `liveReload` on) writes that file at startup and after every
-rebuild. Outside dev mode, run `ares-pack symbols` after `ares-pack build`.
+Open a Content checkout. The server builds the compiler's symbol tables (commands, config names and
+types, constants, interfaces, db columns) from the workspace's `pack/*.pack`, `.constant` and config
+files, so nothing needs building first and a new varp or `.pack` line is known as soon as it is typed.
 
 | Setting | Meaning |
 |---|---|
-| `runescript.symbolsPath` | `symbols.json` for type checking. Relative paths start at the first workspace folder. |
 | `runescript.server.path` | A `runescript-lsp` binary to use instead of the bundled one. |
 | `runescript.trace.server` | Protocol tracing in the output panel. |
 | `runescript.diagnostics.configWarnings` | Off mutes unknown-key, bad-value and unknown-name warnings in config files. |
@@ -52,7 +45,7 @@ rebuild. Outside dev mode, run `ares-pack symbols` after `ares-pack build`.
 | `runescript.interfaceEditor.openWith` | `visual` or `text`; writes `workbench.editorAssociations["*.if"]` at the same scope. |
 | `runescript.interfaceEditor.zoom`, `.gridSize`, `.grid`, `.smartGuides` | Starting zoom, grid spacing, grid snap and smart guides for a newly opened editor (a reopened panel keeps its own). |
 
-Config checks and navigation work without `symbolsPath`; they follow the key table in
+Config checks and navigation follow the key table in
 `runescript-lsp/src/config_keys.rs`, transcribed from the ares-gameserver config parsers.
 
 `RuneScript: Restart Language Server` restarts the server. If no server binary is found,

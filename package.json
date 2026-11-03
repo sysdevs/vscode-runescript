@@ -519,11 +519,6 @@
     "configuration": {
       "title": "RuneScript",
       "properties": {
-        "runescript.symbolsPath": {
-          "type": "string",
-          "default": "",
-          "description": "Path to the ares server's data/symbols.json, e.g. ../ares-gameserver/data/symbols.json. A dev-mode server writes it at startup and after every build; `ares-pack symbols` writes it once. Relative paths start at the first workspace folder. Without it only syntax errors are reported."
-        },
         "runescript.server.path": {
           "type": "string",
           "default": "",
