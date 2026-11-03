@@ -42,6 +42,8 @@ export interface Scene {
   faceSource: Int32Array;
   /** "icon": points are already in the obj icon's view space; draw with its fixed camera */
   camera?: "icon";
+  /** the tiles the block covers [x, z] (npc size, loc width/length), centred on the origin; 1x1 when absent */
+  footprint?: number[];
   /** problems worth showing (missing models, frames) */
   warnings: string[];
 }
@@ -147,7 +149,7 @@ export function seqFrames(content: Content, seq: string, warnings: string[]): { 
   return { frames, delays };
 }
 
-type Meta = Pick<Scene, "seqs" | "seq" | "views" | "view" | "warnings" | "camera">;
+type Meta = Pick<Scene, "seqs" | "seq" | "views" | "view" | "warnings" | "camera" | "footprint">;
 
 /** Expands parts into per-frame triangle lists; several parts are laid out in a grid. */
 export function toScene(content: Content, parts: Part[], delays: number[], meta: Meta): Scene {
@@ -178,14 +180,17 @@ export function toScene(content: Content, parts: Part[], delays: number[], meta:
     });
   }
 
-  // opaque faces first so the webview can draw them before the blended ones
+  // opaque faces first so the webview can draw them before the blended ones; a face that seq
+  // transparency fades in any frame is blended in every frame
   const faces: [number, number][] = [];
   parts.forEach((p, i) => {
     for (let f = 0; f < p.frames[0].model.numFaces; f++) faces.push([i, f]);
   });
-  const alpha = ([p, f]: [number, number]) => parts[p].frames[0].model.faceAlpha?.[f] ?? 0;
-  faces.sort((a, b) => Number(alpha(a) !== 0) - Number(alpha(b) !== 0));
-  const opaqueFaces = faces.filter((f) => alpha(f) === 0).length;
+  const alpha = ([p, f]: [number, number], n: number) => parts[p].frames[n].model.faceAlpha?.[f] ?? 0;
+  const blended = (face: [number, number]) => delays.some((_, n) => alpha(face, n) !== 0);
+  const isBlended = new Map(faces.map((f) => [f, blended(f)]));
+  faces.sort((a, b) => Number(isBlended.get(a)) - Number(isBlended.get(b)));
+  const opaqueFaces = faces.filter((f) => !isBlended.get(f)).length;
 
   const table = colourTable();
   const bounds = [Infinity, Infinity, Infinity, -Infinity, -Infinity, -Infinity];
@@ -227,7 +232,7 @@ export function toScene(content: Content, parts: Part[], delays: number[], meta:
           col[c + 1] = (rgb >> 8) & 0xff;
           col[c + 2] = rgb & 0xff;
         }
-        col[c + 3] = 255 - alpha([p, f]);
+        col[c + 3] = 255 - alpha([p, f], n);
       }
     });
     frames.push(pos);

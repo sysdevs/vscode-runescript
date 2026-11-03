@@ -61,7 +61,7 @@
   let lastMvp = null;
   let lastViewport = [0, 0, 1, 1];
 
-  /** @type {{ frames: WebGLBuffer[], colours: WebGLBuffer[], delays: number[], faces: number, opaqueFaces: number, centre: number[], radius: number, parts: {label: string, anchor: number[], el: HTMLElement}[], icon: boolean } | null} */
+  /** @type {{ frames: WebGLBuffer[], colours: WebGLBuffer[], ground: WebGLBuffer | null, groundPoints: number, delays: number[], faces: number, opaqueFaces: number, centre: number[], radius: number, parts: {label: string, anchor: number[], el: HTMLElement}[], icon: boolean } | null} */
   let scene = null;
   let shownName = null;
   let frame = 0;
@@ -81,13 +81,36 @@
     });
   }
 
+  /**
+   * Ground lines on y = 0 every 128 units (one map square), aligned so the footprint's tiles are
+   * centred on the origin, reaching a tile past the model's bounds. Client axes, like the faces.
+   */
+  function groundLines(s) {
+    const [w, l] = s.footprint ?? [1, 1];
+    const [x0, , z0, x1, , z1] = s.bounds;
+    const at = (lo, hi, n) => {
+      const off = (n * 64) % 128;
+      const out = [];
+      for (let k = Math.floor((Math.min(lo, -n * 64) - off) / 128) - 1; k <= Math.ceil((Math.max(hi, n * 64) - off) / 128) + 1; k++) out.push(off + k * 128);
+      return out;
+    };
+    const xs = at(x0, x1, w);
+    const zs = at(z0, z1, l);
+    const pts = [];
+    for (const x of xs) pts.push(x, 0, zs[0], x, 0, zs[zs.length - 1]);
+    for (const z of zs) pts.push(xs[0], 0, z, xs[xs.length - 1], 0, z);
+    return pts;
+  }
+
   function choices(select, options, selected) {
     select.replaceChildren(...options.map(([label, value]) => new Option(label, value, false, value === selected)));
   }
 
   function upload(msg) {
     const s = msg.scene;
-    if (scene) [...scene.frames, ...scene.colours, scene.ids].forEach((b) => gl.deleteBuffer(b));
+    if (scene) [...scene.frames, ...scene.colours, scene.ids, scene.ground, scene.blendOrder].forEach((b) => b && gl.deleteBuffer(b));
+    // no ground under the icon view or a loc's grid of shapes (each stands on its own cell floor)
+    const ground = s.camera === "icon" || s.parts.length > 0 || s.faces === 0 ? [] : groundLines(s);
     const ids = new Uint8Array(s.faces * 12);
     for (let f = 0; f < s.faces; f++) {
       const id = f + 1;
@@ -109,6 +132,17 @@
       frames: buffers(s.frames, Float32Array),
       colours: buffers(s.colours, Uint8Array),
       ids: buffers([ids], Uint8Array)[0],
+      ground: ground.length ? buffers([ground], Float32Array)[0] : null,
+      groundPoints: ground.length / 3,
+      // per frame, each blended face's centre (client axes), for sorting them back to front
+      centres: s.frames.map((pos) => {
+        const out = new Float32Array((s.faces - s.opaqueFaces) * 3);
+        for (let f = s.opaqueFaces, o = 0; f < s.faces; f++) {
+          for (let k = 0; k < 3; k++, o++) out[o] = (pos[f * 9 + k] + pos[f * 9 + 3 + k] + pos[f * 9 + 6 + k]) / 3;
+        }
+        return out;
+      }),
+      blendOrder: gl.createBuffer(),
       faceSource: Int32Array.from(s.faceSource),
       delays: s.delays,
       faces: s.faces,
@@ -170,6 +204,10 @@
     const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(getComputedStyle(document.body).backgroundColor);
     return m ? [m[1] / 255, m[2] / 255, m[3] / 255] : [0.12, 0.12, 0.12];
   }
+  function foreground() {
+    const m = /rgba?\((\d+),\s*(\d+),\s*(\d+)/.exec(getComputedStyle(document.body).color);
+    return m ? [m[1] / 255, m[2] / 255, m[3] / 255] : [0.8, 0.8, 0.8];
+  }
 
   function draw(now) {
     const dpr = window.devicePixelRatio || 1;
@@ -219,11 +257,41 @@
       gl.disable(gl.BLEND);
       gl.depthMask(true);
       gl.drawArrays(gl.TRIANGLES, 0, scene.opaqueFaces * 3);
+      if (scene.ground) {
+        // depth-tested so the model hides the lines behind it; drawn before the blended faces,
+        // which do not write depth
+        const [fr, fg, fb] = foreground();
+        gl.enable(gl.BLEND);
+        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+        gl.bindBuffer(gl.ARRAY_BUFFER, scene.ground);
+        gl.vertexAttribPointer(posAt, 3, gl.FLOAT, false, 0, 0);
+        gl.disableVertexAttribArray(colAt);
+        gl.vertexAttrib4f(colAt, fr, fg, fb, 0.25);
+        gl.drawArrays(gl.LINES, 0, scene.groundPoints);
+        gl.enableVertexAttribArray(colAt);
+        gl.bindBuffer(gl.ARRAY_BUFFER, scene.frames[frame]);
+        gl.vertexAttribPointer(posAt, 3, gl.FLOAT, false, 0, 0);
+      }
       if (scene.faces > scene.opaqueFaces) {
         gl.enable(gl.BLEND);
         gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         gl.depthMask(false);
-        gl.drawArrays(gl.TRIANGLES, scene.opaqueFaces * 3, (scene.faces - scene.opaqueFaces) * 3);
+        // blended faces do not write depth, so draw them farthest first, as the client's painter
+        // does (by each face's mean depth); w is the distance along the view direction
+        // ponytail: re-sorted every frame, cache on (mvp, frame) if big translucent scenes stutter
+        const c = scene.centres[frame];
+        const n = c.length / 3;
+        const depth = new Float32Array(n);
+        for (let i = 0; i < n; i++) depth[i] = mvp[3] * c[i * 3] - mvp[7] * c[i * 3 + 1] - mvp[11] * c[i * 3 + 2] + mvp[15];
+        const order = Array.from({ length: n }, (_, i) => i).sort((a, b) => depth[b] - depth[a]);
+        const indices = new Uint32Array(n * 3);
+        order.forEach((f, i) => {
+          const v = (scene.opaqueFaces + f) * 3;
+          indices.set([v, v + 1, v + 2], i * 3);
+        });
+        gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, scene.blendOrder);
+        gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, indices, gl.DYNAMIC_DRAW);
+        gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_INT, 0);
       }
       // part labels follow the point under their part (in GL axes)
       for (const p of scene.parts) {

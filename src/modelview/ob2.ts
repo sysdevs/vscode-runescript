@@ -1,6 +1,8 @@
 // `.ob2` model decoding and the client's model operations the preview needs (merge,
 // recolour, label groups, lighting), ported from Client-TS dash3d/Model.ts.
 
+import { COS, SIN } from "./anim";
+
 export interface Model {
   numPoints: number;
   numFaces: number;
@@ -207,9 +209,9 @@ export function recolour(m: Model, src: number, dst: number) {
   for (let f = 0; f < m.numFaces; f++) if (m.faceColour[f] === src) m.faceColour[f] = dst;
 }
 
-/** A copy sharing faces and colours, with its own points (what animation and posing change). */
+/** A copy sharing faces and colours, with its own points and alphas (what animation and posing change). */
 export function copyPoints(m: Model): Model {
-  return { ...m, pointX: m.pointX.slice(), pointY: m.pointY.slice(), pointZ: m.pointZ.slice() };
+  return { ...m, pointX: m.pointX.slice(), pointY: m.pointY.slice(), pointZ: m.pointZ.slice(), faceAlpha: m.faceAlpha?.slice() ?? null };
 }
 
 export function translate(m: Model, x: number, y: number, z: number) {
@@ -232,6 +234,41 @@ export function rotate90(m: Model) {
     m.pointX[v] = m.pointZ[v];
     m.pointZ[v] = -x;
   }
+}
+
+/**
+ * `Model.objRender`'s view transform (obj icons, interface models): a copy turned by `roll`
+ * then `yaw`, moved by the eye offset and pitched by `eyePitch`, in view space (x right, y
+ * down, z away). The client then projects `origin + (x << 9) / z`.
+ */
+export function objRender(m: Model, yaw: number, roll: number, eyePitch: number, eyeX: number, eyeY: number, eyeZ: number): Model {
+  const out: Model = { ...m, pointX: new Int32Array(m.numPoints), pointY: new Int32Array(m.numPoints), pointZ: new Int32Array(m.numPoints) };
+  for (let v = 0; v < m.numPoints; v++) {
+    let x = m.pointX[v];
+    let y = m.pointY[v];
+    let z = m.pointZ[v];
+    let t: number;
+    if (roll !== 0) {
+      t = (y * SIN[roll] + x * COS[roll]) >> 16;
+      y = (y * COS[roll] - x * SIN[roll]) >> 16;
+      x = t;
+    }
+    if (yaw !== 0) {
+      t = (z * SIN[yaw] + x * COS[yaw]) >> 16;
+      z = (z * COS[yaw] - x * SIN[yaw]) >> 16;
+      x = t;
+    }
+    x += eyeX;
+    y += eyeY;
+    z += eyeZ;
+    t = (y * COS[eyePitch] - z * SIN[eyePitch]) >> 16;
+    z = (y * SIN[eyePitch] + z * COS[eyePitch]) >> 16;
+    y = t;
+    out.pointX[v] = x;
+    out.pointY[v] = y;
+    out.pointZ[v] = z;
+  }
+  return out;
 }
 
 export function resize(m: Model, x: number, y: number, z: number) {

@@ -122,6 +122,128 @@
     drawOverlay();
   }
 
+  // ---- models ----
+  // Model components drawn with WebGL on a canvas between the pixels and the overlay, placed
+  // as the client places them: view-space meshes from the host (src/modelview/ifmodel.ts)
+  // projected about the component's centre with `origin + (x << 9) / z`, clipped to its layer.
+  // Close to the client, not pixel-exact (a depth buffer instead of face priorities), and drawn
+  // above the components after them.
+  const modelCanvas = /** @type {HTMLCanvasElement} */ ($("models"));
+  const mgl = modelCanvas.getContext("webgl2", { antialias: true, premultipliedAlpha: false });
+  /** @type {{ com: string, frames: WebGLBuffer[], colours: WebGLBuffer[], delays: number[], faces: number, opaqueFaces: number, frame: number, elapsed: number }[]} */
+  let meshes = [];
+  let modelsLast = performance.now();
+  /** @type {any} */ let modelGl = null;
+  if (mgl) {
+    const shader = (type, src) => {
+      const s = /** @type {WebGLShader} */ (mgl.createShader(type));
+      mgl.shaderSource(s, src);
+      mgl.compileShader(s);
+      return s;
+    };
+    const program = /** @type {WebGLProgram} */ (mgl.createProgram());
+    mgl.attachShader(program, shader(mgl.VERTEX_SHADER, `#version 300 es
+      uniform mat4 mvp;
+      in vec3 pos;
+      in vec4 col;
+      out vec4 v_col;
+      void main() { gl_Position = mvp * vec4(pos, 1.0); v_col = col; }`));
+    mgl.attachShader(program, shader(mgl.FRAGMENT_SHADER, `#version 300 es
+      precision mediump float;
+      in vec4 v_col;
+      out vec4 colour;
+      void main() { colour = v_col; }`));
+    mgl.linkProgram(program);
+    modelGl = { program, mvp: mgl.getUniformLocation(program, "mvp"), pos: mgl.getAttribLocation(program, "pos"), col: mgl.getAttribLocation(program, "col"), vao: mgl.createVertexArray() };
+  }
+
+  function setModels(list) {
+    if (!mgl) return;
+    for (const m of meshes) [...m.frames, ...m.colours].forEach((b) => mgl.deleteBuffer(b));
+    const upload = (data, Type) => {
+      const b = mgl.createBuffer();
+      mgl.bindBuffer(mgl.ARRAY_BUFFER, b);
+      mgl.bufferData(mgl.ARRAY_BUFFER, new Type(data), mgl.STATIC_DRAW);
+      return b;
+    };
+    meshes = list.map(({ com, scene }) => ({
+      com,
+      frames: scene.frames.map((f) => upload(f, Float32Array)),
+      colours: scene.colours.map((c) => upload(c, Uint8Array)),
+      delays: scene.delays,
+      faces: scene.faces,
+      opaqueFaces: scene.opaqueFaces,
+      frame: 0,
+      elapsed: 0,
+    }));
+    if (frame) drawOverlay();
+  }
+
+  function drawModels(now) {
+    requestAnimationFrame(drawModels);
+    const dt = now - modelsLast;
+    modelsLast = now;
+    if (!mgl || !modelGl || !frame) return;
+    const dpr = window.devicePixelRatio || 1;
+    const cw = Math.max(1, Math.round(overlay.width * dpr));
+    const ch = Math.max(1, Math.round(overlay.height * dpr));
+    if (modelCanvas.width !== cw || modelCanvas.height !== ch) {
+      modelCanvas.width = cw;
+      modelCanvas.height = ch;
+    }
+    modelCanvas.style.width = `${overlay.width}px`;
+    modelCanvas.style.height = `${overlay.height}px`;
+    mgl.disable(mgl.SCISSOR_TEST);
+    mgl.viewport(0, 0, cw, ch);
+    mgl.clearColor(0, 0, 0, 0);
+    mgl.clear(mgl.COLOR_BUFFER_BIT | mgl.DEPTH_BUFFER_BIT);
+    if (meshes.length === 0) return;
+    const W = frame.width;
+    const H = frame.height;
+    const s = cw / W;
+    const [n, f] = [1, 100000];
+    mgl.useProgram(modelGl.program);
+    mgl.bindVertexArray(modelGl.vao);
+    mgl.enable(mgl.SCISSOR_TEST);
+    mgl.enable(mgl.DEPTH_TEST);
+    mgl.disable(mgl.CULL_FACE);
+    for (const m of meshes) {
+      const box = frame.boxes.find((b) => b.com === m.com && b.type === "model");
+      if (!box || m.faces === 0) continue;
+      if (m.frames.length > 1) {
+        m.elapsed += dt;
+        while (m.elapsed >= m.delays[m.frame]) {
+          m.elapsed -= m.delays[m.frame];
+          m.frame = (m.frame + 1) % m.frames.length;
+        }
+      }
+      // screen = origin + (x << 9) / z over the whole frame; w = z
+      const ox = box.x + (box.w >> 1);
+      const oy = box.y + (box.h >> 1);
+      const mvp = [1024 / W, 0, 0, 0, 0, -1024 / H, 0, 0, (2 * ox) / W - 1, 1 - (2 * oy) / H, (f + n) / (f - n), 1, 0, 0, (-2 * f * n) / (f - n), 0];
+      const [x0, y0, x1, y1] = box.clip;
+      mgl.scissor(Math.round(x0 * s), Math.round((H - y1) * s), Math.round((x1 - x0) * s), Math.round((y1 - y0) * s));
+      mgl.clear(mgl.DEPTH_BUFFER_BIT);
+      mgl.uniformMatrix4fv(modelGl.mvp, false, mvp);
+      mgl.bindBuffer(mgl.ARRAY_BUFFER, m.frames[m.frame]);
+      mgl.enableVertexAttribArray(modelGl.pos);
+      mgl.vertexAttribPointer(modelGl.pos, 3, mgl.FLOAT, false, 0, 0);
+      mgl.bindBuffer(mgl.ARRAY_BUFFER, m.colours[m.frame]);
+      mgl.enableVertexAttribArray(modelGl.col);
+      mgl.vertexAttribPointer(modelGl.col, 4, mgl.UNSIGNED_BYTE, true, 0, 0);
+      mgl.disable(mgl.BLEND);
+      mgl.depthMask(true);
+      mgl.drawArrays(mgl.TRIANGLES, 0, m.opaqueFaces * 3);
+      if (m.faces > m.opaqueFaces) {
+        mgl.enable(mgl.BLEND);
+        mgl.blendFunc(mgl.SRC_ALPHA, mgl.ONE_MINUS_SRC_ALPHA);
+        mgl.depthMask(false);
+        mgl.drawArrays(mgl.TRIANGLES, m.opaqueFaces * 3, (m.faces - m.opaqueFaces) * 3);
+      }
+    }
+  }
+  requestAnimationFrame(drawModels);
+
   function drawOverlay() {
     if (!frame) return;
     const ctx = /** @type {CanvasRenderingContext2D} */ (overlay.getContext("2d"));
@@ -147,8 +269,11 @@
         ctx.strokeStyle = "rgba(120,200,255,0.8)";
         ctx.strokeRect(b.x * z + 0.5, b.y * z + 0.5, b.w * z - 1, b.h * z - 1);
         ctx.setLineDash([]);
-        ctx.fillStyle = "rgba(120,200,255,0.9)";
-        ctx.fillText(get(com(b.com), "model") || "model", b.x * z + 3, b.y * z + 11);
+        // the name only where no model is drawn (none set, unknown, or inactive without activemodel)
+        if (!meshes.some((m) => m.com === b.com)) {
+          ctx.fillStyle = "rgba(120,200,255,0.9)";
+          ctx.fillText(get(com(b.com), "model") || "model", b.x * z + 3, b.y * z + 11);
+        }
       } else if (b.type === "inv" || b.type === "invtext") {
         const c = com(b.com);
         const [mx, my] = (get(c, "margin") || "0,0").split(",").map(num);
@@ -1209,7 +1334,7 @@
         el("input", { value: v || "", placeholder: key.startsWith("slot") ? "sprite,index:dx,dy" : "sprite,index", onchange: (e) => commit(key, e.target.value) }),
         el("button", { title: "Pick from the Sprites tab", onclick: () => ((pickKey = key), (tab = "sprites"), renderPanels(true)) }, "pick"));
     } else {
-      input = el("input", { value: v || "", list: LISTS[key] ? `dl-${LISTS[key]}` : undefined, onchange: (e) => commit(key, e.target.value) });
+      input = el("input", { value: v || "", "data-list": LISTS[key], onchange: (e) => commit(key, e.target.value) });
     }
     return el("div", { class: "field" }, label, input);
   }
@@ -1295,7 +1420,7 @@
       if (kind === "int") return el("input", { type: "number", value: value ?? "0", onchange });
       const names = catalog.lists[LISTS[kind]] || [];
       const problem = !value ? `${kind} is empty` : names.length && !names.includes(value) ? `no ${LISTS[kind]} named ${value}` : null;
-      return el("input", { value: value ?? "", list: `dl-${LISTS[kind]}`, placeholder: kind, class: problem ? "bad" : "", title: problem || undefined, onchange });
+      return el("input", { value: value ?? "", "data-list": LISTS[kind], placeholder: kind, class: problem ? "bad" : "", title: problem || undefined, onchange });
     };
     const groups = [...new Set(Object.values(S.SCRIPT_OP_INFO).map((x) => x.group))].filter((g) => g !== "Maths");
     const opPicker = (op, onchange) => el("select", { title: op[0], onchange },
@@ -1416,12 +1541,118 @@
     );
   }
 
-  function datalists() {
-    document.querySelectorAll("datalist.ifedit").forEach((d) => d.remove());
-    for (const [name, values] of Object.entries(catalog.lists)) {
-      document.body.append(el("datalist", { id: `dl-${name}`, class: "ifedit" }, values.map((v) => el("option", { value: v }))));
-    }
+  // ---- name suggestions ----
+  // Inputs with `data-list` (model and seq names) suggest from catalog.lists in an in-page list.
+  // A native <datalist> popup in a VS Code webview has no scrollbar and ignores the wheel, so
+  // with thousands of names most were unreachable. Prefix matches come first; the list shows at
+  // most SUGGEST_MAX and says how many more there are.
+  const SUGGEST_MAX = 500;
+  const popup = el("div", { class: "suggest", hidden: true });
+  document.body.append(popup);
+  /** @type {HTMLInputElement | null} */ let suggestFor = null;
+  /** @type {string[]} */ let suggestItems = [];
+  let suggestIndex = -1;
+  /** false until the user types: a field opened with a value lists everything, at that value */
+  let suggestFiltering = false;
+
+  function closeSuggest() {
+    suggestFor = null;
+    popup.hidden = true;
   }
+
+  function fillSuggest() {
+    if (!suggestFor) return;
+    const values = (catalog && catalog.lists[suggestFor.dataset.list || ""]) || [];
+    const q = suggestFiltering ? suggestFor.value.trim().toLowerCase() : "";
+    const prefix = [];
+    const inside = [];
+    for (const v of values) {
+      const at = v.toLowerCase().indexOf(q);
+      if (at === 0) prefix.push(v);
+      else if (at > 0) inside.push(v);
+    }
+    const matches = [...prefix, ...inside];
+    let start = 0;
+    if (!suggestFiltering) {
+      // unfiltered: a window of the list around the current value, which is highlighted
+      const at = matches.indexOf(suggestFor.value.trim());
+      if (at >= 0) {
+        start = Math.max(0, Math.min(at - (SUGGEST_MAX >> 1), matches.length - SUGGEST_MAX));
+        if (suggestIndex < 0) suggestIndex = at - start;
+      }
+    }
+    suggestItems = matches.slice(start, start + SUGGEST_MAX);
+    if (suggestIndex >= suggestItems.length) suggestIndex = suggestItems.length - 1;
+    popup.replaceChildren(
+      ...suggestItems.map((v, i) => el("div", { class: i === suggestIndex ? "item active" : "item", onmousedown: (e) => (e.preventDefault(), chooseSuggest(v)) }, v)),
+      ...(matches.length > SUGGEST_MAX ? [el("div", { class: "more" }, `${matches.length - SUGGEST_MAX} more: type to narrow`)] : []),
+    );
+    popup.hidden = suggestItems.length === 0;
+    // under the input, or above it when there is more room there
+    const r = suggestFor.getBoundingClientRect();
+    const below = window.innerHeight - r.bottom - 8;
+    const above = r.top - 8;
+    const height = Math.min(320, Math.max(below, above));
+    popup.style.left = `${Math.max(0, Math.min(r.left, window.innerWidth - Math.max(r.width, 220)))}px`;
+    popup.style.width = `${Math.max(r.width, 220)}px`;
+    popup.style.maxHeight = `${height}px`;
+    popup.style.top = below >= Math.min(320, above) ? `${r.bottom + 2}px` : `${Math.max(0, r.top - 2 - Math.min(height, popup.scrollHeight))}px`;
+  }
+
+  function chooseSuggest(v) {
+    const input = suggestFor;
+    closeSuggest();
+    if (!input) return;
+    input.value = v;
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  document.addEventListener("focusin", (e) => {
+    const t = /** @type {HTMLInputElement} */ (e.target);
+    if (t.tagName === "INPUT" && t.dataset.list) {
+      suggestFor = t;
+      suggestIndex = -1;
+      suggestFiltering = false;
+      fillSuggest();
+      popup.children[suggestIndex]?.scrollIntoView({ block: "center" });
+    }
+  });
+  document.addEventListener("focusout", (e) => {
+    if (e.target === suggestFor) closeSuggest();
+  });
+  document.addEventListener("input", (e) => {
+    if (e.target === suggestFor) {
+      suggestIndex = -1;
+      suggestFiltering = true;
+      fillSuggest();
+    }
+  });
+  // capture, so Escape closes the list before the editor treats it as "deselect"
+  document.addEventListener("keydown", (e) => {
+    if (!suggestFor || e.target !== suggestFor) return;
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      if (popup.hidden) fillSuggest();
+      const n = suggestItems.length;
+      if (!n) return;
+      suggestIndex = e.key === "ArrowDown" ? (suggestIndex + 1) % n : (suggestIndex - 1 + n) % n;
+      popup.querySelectorAll(".item").forEach((item, i) => item.classList.toggle("active", i === suggestIndex));
+      popup.children[suggestIndex]?.scrollIntoView({ block: "nearest" });
+      e.preventDefault();
+    } else if (e.key === "Enter" && !popup.hidden && suggestIndex >= 0) {
+      chooseSuggest(suggestItems[suggestIndex]);
+      e.preventDefault();
+    } else if (e.key === "Escape" && !popup.hidden) {
+      popup.hidden = true;
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
+  // the input moves when its panel scrolls or the window resizes: follow it (the list's own
+  // scrolling is left alone)
+  document.addEventListener("scroll", (e) => {
+    if (suggestFor && e.target !== popup) fillSuggest();
+  }, true);
+  window.addEventListener("resize", () => suggestFor && fillSuggest());
 
   function renderAdd(pane) {
     pane.append(el("p", { class: "note" }, "Drag onto the preview. Dropping inside a layer adds it to that layer."),
@@ -1571,10 +1802,12 @@
       showFrame();
       renderToolbar();
       renderPanels();
+    } else if (msg.type === "models") {
+      setModels(msg.models);
     } else if (msg.type === "catalog") {
       catalog = msg;
       sheetCanvases.clear();
-      datalists();
+      fillSuggest();
       if (frame) (renderToolbar(), renderPanels(true));
     } else if (msg.type === "select") {
       // components an intent just created (add, duplicate, paste, group) or renamed

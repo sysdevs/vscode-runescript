@@ -1,10 +1,13 @@
 // `.anim` decoding (one base plus the frames that use it) and the client's frame transform,
 // ported from Client-TS dash3d/AnimBase.ts, AnimFrame.ts and Model.animate.
 
+import type { Model } from "./ob2";
+
 const ORIGIN = 0;
 const TRANSLATE = 1;
 const ROTATE = 2;
 const SCALE = 3;
+const ALPHA = 5;
 
 export interface AnimBase {
   type: Uint8Array;
@@ -111,8 +114,12 @@ for (let i = 0; i < 2048; i++) {
   COS[i] = (Math.cos(i * 0.0030679615757712823) * 65536) | 0;
 }
 
-/** `Model.animate`: applies `frame` in place to the points, grouped by vertex label. */
-export function animate(px: Int32Array, py: Int32Array, pz: Int32Array, groups: Int32Array[], frame: AnimFrame) {
+/**
+ * `Model.animate`: applies `frame` in place to the points (grouped by vertex label) and, for
+ * transparency transforms, to the face alphas (by face label).
+ */
+export function animate(m: Model, groups: Int32Array[], frame: AnimFrame) {
+  const { pointX: px, pointY: py, pointZ: pz } = m;
   let ox = 0;
   let oy = 0;
   let oz = 0;
@@ -194,7 +201,13 @@ export function animate(px: Int32Array, py: Int32Array, pz: Int32Array, groups: 
           pz[v] = ((((pz[v] - oz) * z) / 128) | 0) + oz;
         }
       }
+    } else if (type === ALPHA && m.faceLabel) {
+      // the client's posed copy gets its own alpha array (all opaque when the model has none)
+      // whenever the frame fades faces
+      m.faceAlpha ??= new Int32Array(m.numFaces);
+      for (let f = 0; f < m.numFaces; f++) {
+        if (labels.includes(m.faceLabel[f])) m.faceAlpha[f] = Math.max(0, Math.min(255, m.faceAlpha[f] + x * 8));
+      }
     }
-    // type 5 (transparency) animates face alpha; the preview keeps alpha static
   }
 }

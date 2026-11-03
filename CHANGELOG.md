@@ -136,3 +136,11 @@
     Pick re-picks its source.
 - `recol#s` / `recol#d` values in `.npc`, `.obj`, `.loc`, `.idk` and `.spotanim` files get a colour swatch;
   VS Code's picker writes the chosen colour back as RGB15.
+- Interface editor: model components (`type=model`) now show their model, drawn with WebGL over the preview as the
+  client places it (`zoom`, `xan`, `yan` about the component's centre, clipped to its layer, lit like the client)
+  and playing `anim`. With Active on, components with a script show `activemodel` / `activeanim` (none without an
+  `activemodel`, as in the client). Close rather than pixel-exact, and drawn above later components.
+- Interface editor: model and seq name fields suggest from an in-page list instead of a native `<datalist>`, whose
+  popup in a VS Code webview had no scrollbar and ignored the mouse wheel. Focusing a field lists every name with its
+  current value highlighted; typing filters (prefix matches first, up to 500 shown). It scrolls and takes ↑/↓,
+  Enter and Esc.

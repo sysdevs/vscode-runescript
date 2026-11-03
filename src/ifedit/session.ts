@@ -3,10 +3,11 @@
 import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { Assets, FONT_NAMES } from "./assets";
-import { get, parseIf } from "./parse";
+import { ifModelSpec } from "../modelview/ifmodel";
+import { find, get, parseIf } from "./parse";
 import { Surface } from "./pix";
 import { decodePng } from "./png";
-import { AREAS, PreviewState, layout, render } from "./render";
+import { AREAS, PreviewState, comActive, layout, render } from "./render";
 import { Condition, compare, evalScript, readConditions, schemaData } from "./schema";
 
 const PICKER_PACKS = ["model", "seq", "obj", "varp", "varbit", "interface"];
@@ -29,6 +30,13 @@ export function buildFrame(stem: string, text: string, assets: Assets, state: Pr
     root: model.root.keys.map((k) => [k.key, k.value]),
     warnings: model.warnings,
     state,
+    // what each drawn model component shows; the provider builds and sends the meshes separately
+    modelSpecs: r.boxes
+      .filter((b) => b.type === "model")
+      .map((b) => {
+        const c = find(model, b.com)!;
+        return { com: b.com, spec: ifModelSpec((k) => get(c, k), comActive(c, state)) };
+      }),
   };
 }
 

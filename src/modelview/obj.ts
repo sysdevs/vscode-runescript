@@ -5,7 +5,7 @@
 import { COS, SIN } from "./anim";
 import { Content } from "./content";
 import { BuildOptions } from "./npc";
-import { merge, Model, resize, translate } from "./ob2";
+import { merge, Model, objRender, resize, translate } from "./ob2";
 import { applyRecolours, Lines, lit, loadModels, num, recolours, Scene, toScene, value, View } from "./scene";
 
 /** The views the block defines, ground first. */
@@ -33,33 +33,7 @@ function iconPose(m: Model, lines: Lines): Model {
   const eyeX = xof;
   const eyeY = ((SIN[xan] * zoom) >> 16) + ((minY / 2) | 0) + yof;
   const eyeZ = ((COS[xan] * zoom) >> 16) + yof;
-  const out: Model = { ...m, pointX: new Int32Array(m.numPoints), pointY: new Int32Array(m.numPoints), pointZ: new Int32Array(m.numPoints) };
-  for (let v = 0; v < m.numPoints; v++) {
-    let x = m.pointX[v];
-    let y = m.pointY[v];
-    let z = m.pointZ[v];
-    let t: number;
-    if (zan !== 0) {
-      t = (y * SIN[zan] + x * COS[zan]) >> 16;
-      y = (y * COS[zan] - x * SIN[zan]) >> 16;
-      x = t;
-    }
-    if (yan !== 0) {
-      t = (z * SIN[yan] + x * COS[yan]) >> 16;
-      z = (z * COS[yan] - x * SIN[yan]) >> 16;
-      x = t;
-    }
-    x += eyeX;
-    y += eyeY;
-    z += eyeZ;
-    t = (y * COS[xan] - z * SIN[xan]) >> 16;
-    z = (y * SIN[xan] + z * COS[xan]) >> 16;
-    y = t;
-    out.pointX[v] = x;
-    out.pointY[v] = y;
-    out.pointZ[v] = z;
-  }
-  return out;
+  return objRender(m, yan, zan, xan, eyeX, eyeY, eyeZ);
 }
 
 export function buildObj(content: Content, lines: Lines, opts: BuildOptions = {}): Scene {

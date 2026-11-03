@@ -39,7 +39,7 @@ export function buildLoc(content: Content, lines: Lines, opts: BuildOptions = {}
   const anim = value(lines, "anim");
   const seqs = anim ? [{ key: "anim", seq: anim }] : [];
   const seq = opts.seq ?? anim ?? "";
-  const meta = { seqs, seq, views: [], view: "", warnings };
+  const meta = { seqs, seq, views: [], view: "", warnings, footprint: [num(lines, "width", 1), num(lines, "length", 1)] };
 
   const pairs = locModels(lines, (n) => content.hasModel(n));
   if (pairs.length === 0) {
@@ -79,7 +79,7 @@ export function buildLoc(content: Content, lines: Lines, opts: BuildOptions = {}
       label: g.label,
       frames: frames.map((frame) => {
         const m = copyPoints(model);
-        if (frame) animate(m.pointX, m.pointY, m.pointZ, labels, frame);
+        if (frame) animate(m, labels, frame);
         resize(m, rx, ry, rz);
         translate(m, ox, oy, oz);
         return lit(m, ambient, contrast, -50, -10, -50);

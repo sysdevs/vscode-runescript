@@ -52,6 +52,7 @@ button.toggle.on, button.primary { background: var(--vscode-button-background); 
 #canvases { position: relative; display: inline-block; box-shadow: 0 0 0 1px var(--vscode-panel-border); }
 #canvases canvas { display: block; image-rendering: pixelated; }
 #overlay { position: absolute; left: 0; top: 0; }
+#models { position: absolute; left: 0; top: 0; pointer-events: none; image-rendering: auto; }
 
 .error { padding: 16px; color: var(--vscode-errorForeground); }
 
@@ -128,3 +129,9 @@ input.bad { border: 1px solid var(--vscode-inputValidation-errorBorder); }
 .testrow .testlabel { flex: 1; overflow-wrap: anywhere; }
 .testrow input { width: 6.5em; }
 .other { font-family: var(--vscode-editor-font-family); font-size: 0.9em; opacity: 0.8; }
+.suggest { position: fixed; z-index: 100; overflow-y: auto; box-sizing: border-box; background: var(--vscode-editorSuggestWidget-background, var(--vscode-dropdown-background, #252526)); color: var(--vscode-editorSuggestWidget-foreground, var(--vscode-dropdown-foreground)); border: 1px solid var(--vscode-editorSuggestWidget-border, var(--vscode-dropdown-border, #8888)); box-shadow: 0 2px 8px var(--vscode-widget-shadow, #0008); }
+.suggest[hidden] { display: none; }
+.suggest .item { padding: 1px 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; cursor: pointer; }
+.suggest .item:hover { background: var(--vscode-list-hoverBackground); }
+.suggest .item.active { background: var(--vscode-editorSuggestWidget-selectedBackground, var(--vscode-list-activeSelectionBackground)); color: var(--vscode-list-activeSelectionForeground, inherit); }
+.suggest .more { padding: 2px 6px; opacity: 0.7; font-style: italic; }

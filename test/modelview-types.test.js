@@ -4,7 +4,7 @@ const { readFileSync } = require("node:fs");
 const { join } = require("node:path");
 const { decodeOb2, mirror, rotate90, resize, translate, copyPoints } = require("../out/modelview/ob2.js");
 const { Content } = require("../out/modelview/content.js");
-const { blockAt } = require("../out/modelview/npc.js");
+const { blockAt, buildNpc } = require("../out/modelview/npc.js");
 const { buildObj, objViews } = require("../out/modelview/obj.js");
 const { buildLoc, locModels } = require("../out/modelview/loc.js");
 const { buildIdk, idkViews } = require("../out/modelview/idk.js");
@@ -124,4 +124,39 @@ test("spotanim: animated and resized", { skip: noContent }, () => {
   const full = buildSpotanim(content, lines.filter(([k]) => k !== "resizeh"));
   const width = (sc) => sc.bounds[3] - sc.bounds[0];
   assert.ok(width(s) < width(full), "resizeh=56 shrinks it");
+});
+
+test("spotanim: seq transparency fades faces per frame", { skip: noContent }, () => {
+  const s = buildSpotanim(new Content(CONTENT), block("_unpack/225/all.spotanim", "zamorak_flame"));
+  assert.equal(s.opaqueFaces, 0);
+  const alphas = s.colours.map((c) => c.filter((_, i) => i % 4 === 3).join());
+  assert.ok(new Set(alphas).size > 1, "alpha differs between frames");
+});
+
+test("npc: seq transparency fades models without an alpha section", { skip: noContent }, () => {
+  const content = new Content(CONTENT);
+  const lines = block("_unpack/225/all.npc", "thrantax");
+  assert.equal(content.model("model_2961_npc").faceAlpha, null);
+  assert.equal(buildNpc(content, lines, { seq: "ghost_ready" }).opaqueFaces, 0);
+});
+
+const { ifModelSpec, buildIfModel } = require("../out/modelview/ifmodel.js");
+
+test("ifModelSpec follows the client's active rule", () => {
+  const keys = { model: "a", activemodel: "b", anim: "s1", activeanim: "s2", zoom: "900", xan: "3000", yan: "64" };
+  const get = (k) => keys[k];
+  assert.deepEqual(ifModelSpec(get, false), { model: "a", anim: "s1", zoom: 900, xan: 3000 & 2047, yan: 64 });
+  assert.deepEqual(ifModelSpec(get, true), { model: "b", anim: "s2", zoom: 900, xan: 3000 & 2047, yan: 64 });
+  // active without an activemodel draws nothing, as in the client
+  assert.equal(ifModelSpec((k) => (k === "model" ? "a" : undefined), true).model, undefined);
+});
+
+test("buildIfModel poses the model in front of the component's camera", { skip: noContent }, () => {
+  const content = new Content(CONTENT);
+  const s = buildIfModel(content, { model: "chat_male_head_bald", zoom: 800, xan: 0, yan: 0 });
+  assert.equal(s.faces, content.model("chat_male_head_bald").numFaces);
+  assert.equal(s.camera, "icon");
+  for (let i = 2; i < s.frames[0].length; i += 3) assert.ok(s.frames[0][i] > 0);
+  assert.equal(buildIfModel(content, { zoom: 800, xan: 0, yan: 0 }), undefined);
+  assert.equal(buildIfModel(content, { model: "no_such_model", zoom: 800, xan: 0, yan: 0 }), undefined);
 });

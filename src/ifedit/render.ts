@@ -36,6 +36,11 @@ export interface Box {
   originY: number;
 }
 
+/** The preview's "active" toggle applies to components with a script (the client's getIfActive). */
+export function comActive(c: Com, state: PreviewState): boolean {
+  return state.active && [1, 2, 3, 4, 5].some((j) => get(c, `script${j}`) !== undefined);
+}
+
 const TYPES: Record<string, number> = { layer: 0, overlay: 0, inv: 2, rect: 3, text: 4, graphic: 5, model: 6, invtext: 7 };
 const SCROLLBAR_TRACK = 0x23201b;
 const SCROLLBAR_GRIP_FOREGROUND = 0x4d4233;
@@ -80,7 +85,7 @@ export function render(model: IfModel, assets: Assets, state: PreviewState): { w
     return [parseNum(a), parseNum(b)];
   };
   // getIfActive: only components with comparisons (scriptN) can be active
-  const active = (c: Com) => state.active && [1, 2, 3, 4, 5].some((j) => get(c, `script${j}`) !== undefined);
+  const active = (c: Com) => comActive(c, state);
   const scrollOf = (c: Com) => {
     const max = num(c, "scroll") - num(c, "height");
     return Math.max(0, Math.min(state.scroll[c.name] ?? 0, max));

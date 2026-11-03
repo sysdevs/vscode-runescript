@@ -5,6 +5,9 @@ import { existsSync } from "fs";
 import { basename, dirname, join } from "path";
 import * as vscode from "vscode";
 import { settingPath } from "../client";
+import { Content } from "../modelview/content";
+import { buildIfModel, IfModelSpec } from "../modelview/ifmodel";
+import { Scene } from "../modelview/scene";
 import { Assets } from "./assets";
 import { Intent, applyIntent, copyText, minimalEdit, reconcileIds } from "./edits";
 import { find, parseIf } from "./parse";
@@ -30,6 +33,7 @@ export function contentRootOf(file: string): string | undefined {
 
 export class IfEditorProvider implements vscode.CustomTextEditorProvider {
   private assets = new Map<string, Assets>();
+  private contents = new Map<string, Content>();
 
   constructor(private readonly ctx: vscode.ExtensionContext) {}
 
@@ -62,11 +66,32 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
     let assets = this.assets.get(root);
     if (!assets) this.assets.set(root, (assets = new Assets(root)));
 
+    let content = this.contents.get(root);
+    if (!content) this.contents.set(root, (content = new Content(root)));
+    // model components' meshes go in their own message, sent only when what they show changes
+    // (frames are re-sent on every hover and edit); built meshes are cached by spec
+    const meshes = new Map<string, Scene | undefined>();
+    let sentModels = "";
+    const models = (specs: { com: string; spec: IfModelSpec }[]) => {
+      const key = JSON.stringify(specs);
+      if (key === sentModels) return;
+      sentModels = key;
+      const out = specs.flatMap(({ com, spec }) => {
+        const k = JSON.stringify(spec);
+        if (!meshes.has(k)) meshes.set(k, buildIfModel(content!, spec));
+        const scene = meshes.get(k);
+        return scene && scene.faces > 0 ? [{ com, scene }] : [];
+      });
+      post({ type: "models", models: out });
+    };
+
     let pending: NodeJS.Timeout | undefined;
     const frame = () => {
       clearTimeout(pending);
       pending = setTimeout(() => {
-        post({ ...buildFrame(stem, doc.getText(), assets!, state), view });
+        const f = buildFrame(stem, doc.getText(), assets!, state);
+        post({ ...f, view });
+        models(f.modelSpecs);
       }, 0);
     };
     const catalog = () => post(buildCatalog(root, assets!, doc.getText()));
@@ -77,12 +102,23 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
       catalog();
       frame();
     };
+    const modelWatcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(root, "{models/**,**/*.seq,pack/anim.pack}"));
+    const reloadModels = () => {
+      content!.invalidate();
+      meshes.clear();
+      sentModels = "";
+      frame();
+    };
     let queue: Promise<void> = Promise.resolve();
     const subs = [
       watcher,
       watcher.onDidChange(reload),
       watcher.onDidCreate(reload),
       watcher.onDidDelete(reload),
+      modelWatcher,
+      modelWatcher.onDidChange(reloadModels),
+      modelWatcher.onDidCreate(reloadModels),
+      modelWatcher.onDidDelete(reloadModels),
       vscode.workspace.onDidChangeTextDocument((e) => {
         if (e.document.uri.toString() === doc.uri.toString()) frame();
       }),
@@ -214,7 +250,7 @@ function html(webview: vscode.Webview, media: vscode.Uri, defaults: object): str
 <div id="toolbar"></div>
 <div id="main">
   <div id="tree"></div>
-  <div id="stage"><div id="canvases"><canvas id="pixels"></canvas><canvas id="overlay"></canvas></div></div>
+  <div id="stage"><div id="canvases"><canvas id="pixels"></canvas><canvas id="models"></canvas><canvas id="overlay"></canvas></div></div>
   <div id="side"></div>
 </div>
 <script nonce="${nonce}" src="${uri("main.js")}"></script>

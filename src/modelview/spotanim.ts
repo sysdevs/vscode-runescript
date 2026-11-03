@@ -28,7 +28,7 @@ export function buildSpotanim(content: Content, lines: Lines, opts: BuildOptions
   const { frames, delays } = seqFrames(content, seq, warnings);
   const posed = frames.map((frame) => {
     const m = copyPoints(model);
-    if (frame) animate(m.pointX, m.pointY, m.pointZ, groups, frame);
+    if (frame) animate(m, groups, frame);
     resize(m, resizeh, resizev, resizeh);
     for (let i = 0; i < turns; i++) rotate90(m);
     return lit(m, ambient, contrast, -30, -50, -30);

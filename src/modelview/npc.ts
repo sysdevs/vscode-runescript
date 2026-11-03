@@ -58,7 +58,7 @@ export function buildNpc(content: Content, lines: Lines, opts: BuildOptions = {}
   const warnings: string[] = [];
   const seqs = npcSeqs(lines, content.seqParams());
   const seq = opts.seq ?? seqs[0]?.seq ?? "";
-  const meta = { seqs, seq, views: [], view: "", warnings };
+  const meta = { seqs, seq, views: [], view: "", warnings, footprint: [num(lines, "size", 1), num(lines, "size", 1)] };
   const models = loadModels(content, indexed(lines, "model").map(([, v]) => v), warnings);
   if (models.length === 0) {
     if (warnings.length === 0) warnings.push("no model# lines");
@@ -74,7 +74,7 @@ export function buildNpc(content: Content, lines: Lines, opts: BuildOptions = {}
   const { frames, delays } = seqFrames(content, seq, warnings);
   const posed = frames.map((frame) => {
     const m = copyPoints(model);
-    if (frame) animate(m.pointX, m.pointY, m.pointZ, groups, frame);
+    if (frame) animate(m, groups, frame);
     resize(m, resizeh, resizev, resizeh);
     // lit once before animating, as the client does
     return { ...base, model: m };
