@@ -2,7 +2,7 @@
   "name": "vscode-runescript",
   "displayName": "RuneScript",
   "description": "RuneScript (.rs2) and config file support: highlighting, file icons, diagnostics, hover, go to definition, references, completion.",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "publisher": "sysdevs",
   "icon": "images/icon.png",
   "repository": {
