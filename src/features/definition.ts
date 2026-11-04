@@ -3,7 +3,7 @@ import { scriptHeaders, sections, wordAt } from "./scan";
 import { CONFIG_EXTS } from "../languages";
 
 // .pack files are id=name lists, not definitions.
-const GLOB = `**/*.{rs2,${CONFIG_EXTS.filter((e) => e !== "pack").join(",")}}`;
+const GLOB = `**/*.{rs2,cs2,${CONFIG_EXTS.filter((e) => e !== "pack").join(",")}}`;
 
 /**
  * Workspace index of definition sites, keyed by:
@@ -56,11 +56,12 @@ class Index {
     const ext = uri.path.slice(uri.path.lastIndexOf(".") + 1);
     const stem = uri.path.slice(uri.path.lastIndexOf("/") + 1, uri.path.lastIndexOf("."));
     const entries: [string, number][] = [];
-    if (ext === "rs2") {
+    if (ext === "rs2" || ext === "cs2") {
       for (const h of scriptHeaders(text)) entries.push([`${h.trigger},${h.subject}`, h.line]);
     } else {
-      for (const s of sections(text)) entries.push([ext === "if" ? `${stem}:${s.name}` : s.name, s.line]);
-      if (ext === "if") entries.push([stem, 0]);
+      const iface = ext === "if" || ext === "if3";
+      for (const s of sections(text)) entries.push([iface ? `${stem}:${s.name}` : s.name, s.line]);
+      if (iface) entries.push([stem, 0]);
     }
     const keys: string[] = [];
     for (const [key, line] of entries) {

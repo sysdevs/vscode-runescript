@@ -45,7 +45,7 @@ export function startClient(ctx: vscode.ExtensionContext): LanguageClient | unde
       documentSelector: ALL_LANGS.map((language) => ({ scheme: "file", language })),
       initializationOptions: serverSettings(),
       synchronize: {
-        fileEvents: vscode.workspace.createFileSystemWatcher(`**/*.{rs2,macro,${CONFIG_EXTS.join(",")}}`),
+        fileEvents: vscode.workspace.createFileSystemWatcher(`**/*.{rs2,macro,cs2,${CONFIG_EXTS.join(",")}}`),
       },
     } satisfies LanguageClientOptions,
   );

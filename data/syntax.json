@@ -156,7 +156,13 @@
     "zoneexit",
     "changestat",
     "ai_spawn",
-    "ai_despawn"
+    "ai_despawn",
+    "if_button6",
+    "if_button7",
+    "if_button8",
+    "if_button9",
+    "if_button10",
+    "clientscript"
   ],
   "types": [
     "int",
@@ -219,7 +225,8 @@
     "intparam",
     "varp",
     "varbit",
-    "dbcolumn"
+    "dbcolumn",
+    "varc"
   ],
   "keywords": [
     "if",

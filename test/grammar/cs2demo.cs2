@@ -1,0 +1,44 @@
+[clientscript,cs2demo_init](component $com)
+if_settext("CS2 demo", $com);
+
+// ontimer: runs every client cycle while the interface is open
+[clientscript,cs2demo_clock](component $com)
+if_settext("Clock: <tostring(clientclock)>", $com);
+
+// onvartransmit on the varc cs2demo_clicks
+[clientscript,cs2demo_count](component $com)
+if_settext("Clicks: <tostring(%cs2demo_clicks)>", $com);
+
+[clientscript,cs2demo_click](component $com)
+%cs2demo_clicks = add(%cs2demo_clicks, 1);
+
+[clientscript,cs2demo_hover](component $com, boolean $over)
+if ($over = true) {
+    if_setcolour(0xffffff, $com);
+} else {
+    if_setcolour(0xff981f, $com);
+}
+
+// oninvtransmit on inv: one dynamic text line per occupied slot
+[clientscript,cs2demo_list](component $layer)
+cc_deleteall($layer);
+def_int $slot = 0;
+def_int $line = 0;
+def_obj $obj;
+while ($slot < inv_size(inv)) {
+    $obj = inv_getobj(inv, $slot);
+    if ($obj ! null) {
+        cc_create($layer, ^iftype_text, $line);
+        cc_setposition(0, multiply($line, 14), ^setpos_abs_left, ^setpos_abs_top);
+        cc_setsize(0, 14, ^setsize_minus, ^setsize_abs);
+        cc_settextfont(p11_full);
+        cc_setcolour(0xffff00);
+        cc_settext("<oc_name($obj)> x <tostring(inv_getnum(inv, $slot))>");
+        $line = add($line, 1);
+    }
+    $slot = add($slot, 1);
+}
+
+// sent by the server with runclientscript
+[clientscript,cs2demo_message](string $text)
+mes("Client says: <$text>");

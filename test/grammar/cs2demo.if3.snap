@@ -1,0 +1,458 @@
+>[frame]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#      ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=layer
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^ source.runescript-config.if3
+>width=16
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=16
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>widthmode=minus
+#^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#         ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#          ^^^^^ source.runescript-config.if3
+>heightmode=minus
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^ source.runescript-config.if3
+>xmode=abs_centre
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^ source.runescript-config.if3
+>ymode=abs_centre
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^ source.runescript-config.if3
+>
+>[bg]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^ source.runescript-config.if3 entity.name.section.runescript-config
+#   ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=rectangle
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^^^^^ source.runescript-config.if3
+>width=0
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=0
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>widthmode=minus
+#^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#         ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#          ^^^^^ source.runescript-config.if3
+>heightmode=minus
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>colour=0x3e3529
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>fill=yes
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^ source.runescript-config.if3 constant.language.boolean.runescript-config
+>trans=64
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>
+>[border]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#       ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=rectangle
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^^^^^ source.runescript-config.if3
+>width=0
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=0
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>widthmode=minus
+#^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#         ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#          ^^^^^ source.runescript-config.if3
+>heightmode=minus
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>colour=0x7a6a4f
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>
+>[title]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#      ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=text
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^ source.runescript-config.if3
+>y=6
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=0
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=16
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>widthmode=minus
+#^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#         ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#          ^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>textfont=b12_full
+#^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#        ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#         ^^^^^^^^ source.runescript-config.if3
+>textalignh=centre
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^^ source.runescript-config.if3
+>textshadow=yes
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^ source.runescript-config.if3 constant.language.boolean.runescript-config
+>colour=0xff981f
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>onload=cs2demo_init(event_com)
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>
+>[rule]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#     ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=line
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^ source.runescript-config.if3
+>x=8
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>y=26
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=16
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=0
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>widthmode=minus
+#^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#         ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#          ^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>colour=0x7a6a4f
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>linewid=1
+#^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#       ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#        ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>
+>[clock]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#      ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=text
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^ source.runescript-config.if3
+>x=10
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>y=34
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=200
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=14
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>textfont=p11_full
+#^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#        ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#         ^^^^^^^^ source.runescript-config.if3
+>colour=0xffffff
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>ontimer=cs2demo_clock(event_com)
+#^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#       ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#        ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>
+>[clicks]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#       ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=text
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^ source.runescript-config.if3
+>x=10
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>y=34
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=200
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=14
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>xmode=abs_right
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>textfont=p11_full
+#^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#        ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#         ^^^^^^^^ source.runescript-config.if3
+>textalignh=right
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^ source.runescript-config.if3
+>colour=0xffffff
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>onload=cs2demo_count(event_com)
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>onvartransmit=cs2demo_count(event_com){cs2demo_clicks}
+#^^^^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#             ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>
+>[icon]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#     ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=graphic
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^^^ source.runescript-config.if3
+>x=10
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>y=54
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=6
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=6
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>graphic=mapdots
+#^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#       ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#        ^^^^^^^ source.runescript-config.if3
+>
+>[list]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^^^ source.runescript-config.if3 entity.name.section.runescript-config
+#     ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=layer
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^ source.runescript-config.if3
+>x=10
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>y=70
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=20
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=60
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>widthmode=minus
+#^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#         ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#          ^^^^^ source.runescript-config.if3
+>heightmode=minus
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>scrollheight=200
+#^^^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#            ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#             ^^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>onload=cs2demo_list(event_com)
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>oninvtransmit=cs2demo_list(event_com){inv}
+#^^^^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#             ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>
+>[ok]
+#^ source.runescript-config.if3 punctuation.definition.section.begin.runescript-config
+# ^^ source.runescript-config.if3 entity.name.section.runescript-config
+#   ^ source.runescript-config.if3 punctuation.definition.section.end.runescript-config
+>type=text
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^ source.runescript-config.if3
+>x=0
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>y=8
+#^ source.runescript-config.if3 variable.other.key.runescript-config
+# ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#  ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>width=80
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>height=18
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>xmode=abs_centre
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^ source.runescript-config.if3
+>ymode=abs_bottom
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^^^^^^ source.runescript-config.if3
+>layer=frame
+#^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#     ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#      ^^^^^ source.runescript-config.if3
+>textfont=p12_full
+#^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#        ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#         ^^^^^^^^ source.runescript-config.if3
+>textalignh=centre
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^^ source.runescript-config.if3
+>textalignv=centre
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^^^^^^ source.runescript-config.if3
+>colour=0xff981f
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^^^^^ source.runescript-config.if3 constant.numeric.hex.runescript-config
+>text=Click me
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^^^^ source.runescript-config.if3
+>op1=Ok
+#^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#   ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#    ^^ source.runescript-config.if3
+>opbase=Demo
+#^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#      ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#       ^^^^ source.runescript-config.if3
+>transmitop=1
+#^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#          ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#           ^ source.runescript-config.if3 constant.numeric.integer.runescript-config
+>onop=cs2demo_click(event_com)
+#^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#    ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#     ^^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+>onmouseover=cs2demo_hover(event_com, true)
+#^^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#           ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#            ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+#                                   ^ source.runescript-config.if3 punctuation.separator.runescript-config
+#                                    ^^^^^^ source.runescript-config.if3
+>onmouseleave=cs2demo_hover(event_com, false)
+#^^^^^^^^^^^^ source.runescript-config.if3 variable.other.key.runescript-config
+#            ^ source.runescript-config.if3 keyword.operator.assignment.runescript-config
+#             ^^^^^^^^^^^^^^^^^^^^^^^ source.runescript-config.if3
+#                                    ^ source.runescript-config.if3 punctuation.separator.runescript-config
+#                                     ^^^^^^^ source.runescript-config.if3
+>

@@ -48,6 +48,20 @@
         }
       },
       {
+        "id": "runescript-client",
+        "aliases": [
+          "RuneScript Client Script"
+        ],
+        "extensions": [
+          ".cs2"
+        ],
+        "configuration": "./language-configuration/runescript.json",
+        "icon": {
+          "light": "./icons/cs2.svg",
+          "dark": "./icons/cs2.svg"
+        }
+      },
+      {
         "id": "runescript-npc",
         "aliases": [
           "RuneScript NPC"
@@ -244,6 +258,20 @@
         }
       },
       {
+        "id": "runescript-varc",
+        "aliases": [
+          "RuneScript Client variable"
+        ],
+        "extensions": [
+          ".varc"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/varc.svg",
+          "dark": "./icons/varc.svg"
+        }
+      },
+      {
         "id": "runescript-inv",
         "aliases": [
           "RuneScript Inventory"
@@ -356,6 +384,20 @@
         }
       },
       {
+        "id": "runescript-if3",
+        "aliases": [
+          "RuneScript Interface (IF3)"
+        ],
+        "extensions": [
+          ".if3"
+        ],
+        "configuration": "./language-configuration/config.json",
+        "icon": {
+          "light": "./icons/if3.svg",
+          "dark": "./icons/if3.svg"
+        }
+      },
+      {
         "id": "runescript-constant",
         "aliases": [
           "RuneScript Constant"
@@ -392,6 +434,11 @@
       },
       {
         "language": "runescript-macro",
+        "scopeName": "source.runescript",
+        "path": "./syntaxes/runescript.tmLanguage.json"
+      },
+      {
+        "language": "runescript-client",
         "scopeName": "source.runescript",
         "path": "./syntaxes/runescript.tmLanguage.json"
       },
@@ -466,6 +513,11 @@
         "path": "./syntaxes/config/vars.tmLanguage.json"
       },
       {
+        "language": "runescript-varc",
+        "scopeName": "source.runescript-config.varc",
+        "path": "./syntaxes/config/varc.tmLanguage.json"
+      },
+      {
         "language": "runescript-inv",
         "scopeName": "source.runescript-config.inv",
         "path": "./syntaxes/config/inv.tmLanguage.json"
@@ -504,6 +556,11 @@
         "language": "runescript-if",
         "scopeName": "source.runescript-config.if",
         "path": "./syntaxes/config/if.tmLanguage.json"
+      },
+      {
+        "language": "runescript-if3",
+        "scopeName": "source.runescript-config.if3",
+        "path": "./syntaxes/config/if3.tmLanguage.json"
       },
       {
         "language": "runescript-constant",

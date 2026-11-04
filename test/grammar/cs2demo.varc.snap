@@ -1,0 +1,9 @@
+>[cs2demo_clicks]
+#^ source.runescript-config.varc punctuation.definition.section.begin.runescript-config
+# ^^^^^^^^^^^^^^ source.runescript-config.varc entity.name.section.runescript-config
+#               ^ source.runescript-config.varc punctuation.definition.section.end.runescript-config
+>type=int
+#^^^^ source.runescript-config.varc variable.other.key.runescript-config
+#    ^ source.runescript-config.varc keyword.operator.assignment.runescript-config
+#     ^^^ source.runescript-config.varc
+>
