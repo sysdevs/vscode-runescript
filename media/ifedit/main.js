@@ -1263,7 +1263,10 @@
       button("Ungroup", "Move the layer's children out and remove it (Ctrl+Shift+G)", ungroup, !!selected && isLayer(selected)),
       button("Duplicate", "Duplicate (Ctrl+D)", duplicate, one),
       button("Delete", "Delete (Del)", () => askDelete(selection), one)));
+    // the rows are rebuilt on every render: keep the list where it was scrolled to
+    const scrollTop = $("tree").querySelector(".rows")?.scrollTop ?? 0;
     $("tree").replaceChildren(...out);
+    list.scrollTop = scrollTop;
     const r = $("tree").querySelector("input.rename");
     if (r) (r.focus(), r.select());
     if (revealing) {
