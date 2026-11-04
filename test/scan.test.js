@@ -2,7 +2,7 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const { readFileSync } = require("node:fs");
 const { join } = require("node:path");
-const { scriptHeaders, sections, colours, wordAt } = require("../out/features/scan.js");
+const { scriptHeaders, sections, colours, wordAt, scriptKey, candidates } = require("../out/features/scan.js");
 
 const fixture = (name) => readFileSync(join(__dirname, "grammar", name), "utf8");
 
@@ -37,4 +37,14 @@ test("wordAt returns the identifier and its sigil", () => {
   assert.equal(wordAt(line, line.indexOf("$x") + 1).sigil, "$");
   assert.deepEqual(wordAt(line, line.indexOf("com_96")).name, "tanner:com_96");
   assert.equal(wordAt(line, 2), undefined);
+});
+
+test("fallback goto keeps client (.cs2) and server (.rs2) scripts apart", () => {
+  assert.equal(scriptKey("rs2", "proc", "greet"), "proc,greet");
+  assert.equal(scriptKey("cs2", "proc", "greet"), "cs2:proc,greet");
+  assert.deepEqual(candidates("~", "greet", "rs2"), ["proc,greet"]);
+  assert.deepEqual(candidates("~", "greet", "cs2"), ["cs2:proc,greet"]);
+  // configs and constants are one namespace
+  assert.deepEqual(candidates("", "coins", "cs2"), ["coins", "cs2:command,coins"]);
+  assert.deepEqual(candidates("^", "max", "cs2"), ["^max"]);
 });

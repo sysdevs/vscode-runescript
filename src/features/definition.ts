@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { scriptHeaders, sections, wordAt } from "./scan";
+import { candidates, scriptHeaders, scriptKey, sections, wordAt } from "./scan";
 import { CONFIG_EXTS } from "../languages";
 
 // .pack files are id=name lists, not definitions.
@@ -57,7 +57,7 @@ class Index {
     const stem = uri.path.slice(uri.path.lastIndexOf("/") + 1, uri.path.lastIndexOf("."));
     const entries: [string, number][] = [];
     if (ext === "rs2" || ext === "cs2") {
-      for (const h of scriptHeaders(text)) entries.push([`${h.trigger},${h.subject}`, h.line]);
+      for (const h of scriptHeaders(text)) entries.push([scriptKey(ext, h.trigger, h.subject), h.line]);
     } else {
       const iface = ext === "if" || ext === "if3";
       for (const s of sections(text)) entries.push([iface ? `${stem}:${s.name}` : s.name, s.line]);
@@ -74,23 +74,12 @@ class Index {
   }
 }
 
-/** Which index keys a word could refer to, most specific first. */
-export function candidates(sigil: string, name: string): string[] {
-  switch (sigil) {
-    case "~": return [`proc,${name}`];
-    case "@": return [`label,${name}`];
-    case "^": return [`^${name}`];
-    case "$": return [];
-    default: return [name, `command,${name}`];
-  }
-}
-
 export function definitionProvider(subs: vscode.Disposable[]): vscode.DefinitionProvider {
   const index = new Index(subs);
   return {
     provideDefinition(doc, pos) {
       const w = wordAt(doc.lineAt(pos.line).text, pos.character);
-      return w ? index.lookup(candidates(w.sigil, w.name)) : [];
+      return w ? index.lookup(candidates(w.sigil, w.name, doc.uri.path.slice(doc.uri.path.lastIndexOf(".") + 1))) : [];
     },
   };
 }

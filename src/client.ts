@@ -45,7 +45,8 @@ export function startClient(ctx: vscode.ExtensionContext): LanguageClient | unde
       documentSelector: ALL_LANGS.map((language) => ({ scheme: "file", language })),
       initializationOptions: serverSettings(),
       synchronize: {
-        fileEvents: vscode.workspace.createFileSystemWatcher(`**/*.{rs2,macro,cs2,${CONFIG_EXTS.join(",")}}`),
+        // png/opt: sprites feed the graphic table
+        fileEvents: vscode.workspace.createFileSystemWatcher(`**/*.{rs2,macro,cs2,png,opt,${CONFIG_EXTS.join(",")}}`),
       },
     } satisfies LanguageClientOptions,
   );

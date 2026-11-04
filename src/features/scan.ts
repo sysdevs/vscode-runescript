@@ -78,3 +78,19 @@ export function wordAt(line: string, col: number): Word | undefined {
   }
   return undefined;
 }
+
+/** The fallback goto key of a script header: `.cs2` scripts are a namespace apart from `.rs2` ones. */
+export function scriptKey(ext: string, trigger: string, subject: string): string {
+  return `${ext === "cs2" ? "cs2:" : ""}${trigger},${subject}`;
+}
+
+/** Which index keys a word in a file of `ext` could refer to, most specific first. */
+export function candidates(sigil: string, name: string, ext: string): string[] {
+  switch (sigil) {
+    case "~": return [scriptKey(ext, "proc", name)];
+    case "@": return [scriptKey(ext, "label", name)];
+    case "^": return [`^${name}`];
+    case "$": return [];
+    default: return [name, scriptKey(ext, "command", name)];
+  }
+}
