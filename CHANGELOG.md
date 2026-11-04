@@ -108,6 +108,10 @@
 
 - The language server builds its symbol tables from the workspace: `runescript.symbolsPath` is gone, no
   server build or `symbols.json` is needed, and config edits that add or retype names reach type checking live.
+- The language server no longer grows without bound: every parse leaked its grammar (about 35 MB per full pass on
+  Content), fixed in ares-compiler's parser.
+- Opening the folder above Content (with other repos beside it) analyzes only `Content/`. Their test fixtures
+  used to be analyzed too, and one `.macro` among them made every script edit a full re-analysis.
 - Settings `runescript.interfaceEditor.openWith` (visual or text; writes `workbench.editorAssociations`),
   `runescript.interfaceEditor.zoom` / `gridSize` / `grid` / `smartGuides` (defaults for a newly opened editor),
   `runescript.contentRoot` (when the Content folder is not above the `.if`) and
