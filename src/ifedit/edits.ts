@@ -1,9 +1,18 @@
 // Editor intents as pure text -> text functions over `.if` files, plus the
 // interface.pack / interface.order id bookkeeping. Untouched lines stay byte-identical.
-import { Com, IfModel, boxOf, find, num, parentOf, parseIf } from "./parse";
+import { Hook, formatHook } from "./hook";
+import { Com, Format, IfModel, boxOf, find, get, num, parentOf, parseIf } from "./parse";
+import { unplace } from "./render3";
 import { Condition, KEY_ORDER, writeConditions } from "./schema";
+import { KEY_ORDER as KEY_ORDER3 } from "./schema3";
 
 export type Intent =
+  /** `.if3`: puts a component at a pixel box inside its parent, written through its x/y/size modes. */
+  | { kind: "place"; com: string; box: [number, number, number, number]; parent: [number, number] }
+  /** `.if3`: replaces every `param=` line. */
+  | { kind: "params"; com: string; values: string[] }
+  /** `.if3`: sets (or with null removes) one hook. */
+  | { kind: "hook"; com: string; key: string; hook: Hook | null }
   | { kind: "set"; com: string; key: string; value: string | null }
   | { kind: "add"; com: string; parent: string; keys: [string, string][] }
   | { kind: "delete"; com: string }
@@ -15,18 +24,40 @@ export type Intent =
   | { kind: "paste"; text: string; parent: string }
   | { kind: "batch"; intents: Intent[] };
 
-export function applyIntent(ifName: string, text: string, intent: Intent): string {
-  if (intent.kind === "batch") return intent.intents.reduce((t, i) => applyIntent(ifName, t, i), text);
-  const m = parseIf(ifName, text);
+export function applyIntent(ifName: string, text: string, intent: Intent, fmt: Format = "if"): string {
+  if (intent.kind === "batch") return intent.intents.reduce((t, i) => applyIntent(ifName, t, i, fmt), text);
+  const m = parseIf(ifName, text, fmt);
   if (intent.kind === "conditions") {
     const existing = (find(m, intent.com)?.keys ?? []).map((k) => k.key).filter((k) => /^script\d(op\d+)?$/.test(k));
-    return applyIntent(ifName, text, { kind: "batch", intents: writeConditions(intent.com, intent.conds, existing) });
+    return applyIntent(ifName, text, { kind: "batch", intents: writeConditions(intent.com, intent.conds, existing) }, fmt);
+  }
+  if (intent.kind === "place") {
+    const c = find(m, intent.com);
+    if (!c) throw new Error(`no component ${intent.com}`);
+    const want = unplace((k) => get(c, k), intent.box, intent.parent);
+    const intents: Intent[] = (["x", "y", "width", "height"] as const)
+      .filter((k) => want[k] !== num(c, k))
+      .map((k) => ({ kind: "set", com: intent.com, key: k, value: String(want[k]) }));
+    return applyIntent(ifName, text, { kind: "batch", intents }, fmt);
+  }
+  if (intent.kind === "hook") {
+    return applyIntent(ifName, text, { kind: "set", com: intent.com, key: intent.key, value: intent.hook && intent.hook.script ? formatHook(intent.hook) : null }, fmt);
   }
   const lines = m.lines.slice();
+  const order = fmt === "if3" ? KEY_ORDER3 : KEY_ORDER;
   switch (intent.kind) {
     case "set":
-      setKey(m, lines, intent.com, intent.key, intent.value);
+      setKey(m, lines, intent.com, intent.key, intent.value, order);
       break;
+    case "params": {
+      const c = find(m, intent.com);
+      if (!c) throw new Error(`no component ${intent.com}`);
+      const old = c.keys.filter((k) => k.key === "param").map((k) => k.line);
+      const at = old.length ? old[0] : insertAt(c, "param", order);
+      for (const l of [...old].reverse()) lines.splice(l, 1);
+      lines.splice(at, 0, ...intent.values.map((v) => `param=${v}`));
+      break;
+    }
     case "add":
       addBlock(lines, intent.com, intent.parent, intent.keys);
       break;
@@ -34,15 +65,15 @@ export function applyIntent(ifName: string, text: string, intent: Intent): strin
       for (const c of [...subtree(m, intent.com)].map((n) => find(m, n)!).sort((a, b) => b.header - a.header)) removeBlock(lines, c);
       break;
     case "reorder":
-      return reorder(ifName, text, intent.com, intent.parent, intent.before);
+      return reorder(ifName, text, intent.com, intent.parent, intent.before, fmt);
     case "duplicate":
-      return intent.coms.reduce((t, c) => duplicate(ifName, t, c), text);
+      return intent.coms.reduce((t, c) => duplicate(ifName, t, c, fmt), text);
     case "group":
-      return group(ifName, text, intent.coms, intent.name);
+      return group(ifName, text, intent.coms, intent.name, fmt);
     case "ungroup":
-      return ungroup(ifName, text, intent.com);
+      return ungroup(ifName, text, intent.com, fmt);
     case "paste":
-      return paste(ifName, text, intent.text, intent.parent);
+      return paste(ifName, text, intent.text, intent.parent, fmt);
   }
   return lines.join(m.eol);
 }
@@ -77,8 +108,8 @@ function freshName(taken: Set<string>): string {
 }
 
 /** The exact block text of the given components' subtrees (a component under another given one is not repeated). */
-export function copyText(ifName: string, text: string, coms: string[]): string {
-  const m = parseIf(ifName, text);
+export function copyText(ifName: string, text: string, coms: string[], fmt: Format = "if"): string {
+  const m = parseIf(ifName, text, fmt);
   const underOther = (n: string) => {
     for (let p = parentOf(m, n); p !== undefined && p !== ""; p = parentOf(m, p)) if (coms.includes(p)) return true;
     return false;
@@ -119,8 +150,8 @@ function renamedBlocks(m: IfModel, coms: Com[], rename: Map<string, string>, lay
 }
 
 /** A copy of the subtree of `name` with fresh names, placed right after the subtree so it draws just above. */
-function duplicate(ifName: string, text: string, name: string): string {
-  const m = parseIf(ifName, text);
+function duplicate(ifName: string, text: string, name: string, fmt: Format): string {
+  const m = parseIf(ifName, text, fmt);
   if (!find(m, name)) return text;
   const names = subtree(m, name);
   const taken = new Set(m.coms.map((c) => c.name));
@@ -138,8 +169,8 @@ function duplicate(ifName: string, text: string, name: string): string {
 }
 
 /** Wraps sibling components in a new layer at their bounding box; positions on screen do not change. */
-function group(ifName: string, text: string, coms: string[], name: string): string {
-  const m = parseIf(ifName, text);
+function group(ifName: string, text: string, coms: string[], name: string, fmt: Format): string {
+  const m = parseIf(ifName, text, fmt);
   if (find(m, name)) throw new Error(`${name} already exists`);
   const parents = new Set(coms.map((c) => parentOf(m, c)));
   if (!coms.length || parents.size !== 1 || parents.has(undefined)) throw new Error("select components in the same layer to group them");
@@ -159,21 +190,21 @@ function group(ifName: string, text: string, coms: string[], name: string): stri
   const top = sibs.indexOf(ordered[ordered.length - 1]);
   const before = sibs.slice(top + 1).find((c) => !coms.includes(c)) ?? null;
   const keys: [string, string][] = [["type", "layer"], ["x", String(x)], ["y", String(y)], ["width", String(w)], ["height", String(h)]];
-  text = applyIntent(ifName, text, { kind: "add", com: name, parent, keys });
-  text = reorder(ifName, text, name, parent, before);
+  text = applyIntent(ifName, text, { kind: "add", com: name, parent, keys }, fmt);
+  text = reorder(ifName, text, name, parent, before, fmt);
   ordered.forEach((c, i) => {
-    text = reorder(ifName, text, c, name, null);
+    text = reorder(ifName, text, c, name, null, fmt);
     text = applyIntent(ifName, text, { kind: "batch", intents: [
       { kind: "set", com: c, key: "x", value: String(boxes[i][0] - x) },
       { kind: "set", com: c, key: "y", value: String(boxes[i][1] - y) },
-    ] });
+    ] }, fmt);
   });
   return text;
 }
 
 /** Moves the children of a layer into its parent where the layer was, then deletes the layer. */
-function ungroup(ifName: string, text: string, name: string): string {
-  const m = parseIf(ifName, text);
+function ungroup(ifName: string, text: string, name: string, fmt: Format): string {
+  const m = parseIf(ifName, text, fmt);
   const layer = find(m, name);
   const parent = parentOf(m, name);
   if (!layer || parent === undefined) return text;
@@ -183,17 +214,17 @@ function ungroup(ifName: string, text: string, name: string): string {
     text = applyIntent(ifName, text, { kind: "batch", intents: [
       { kind: "set", com: c, key: "x", value: String(num(com, "x") + lx) },
       { kind: "set", com: c, key: "y", value: String(num(com, "y") + ly) },
-    ] });
-    text = reorder(ifName, text, c, parent, name);
+    ] }, fmt);
+    text = reorder(ifName, text, c, parent, name, fmt);
   }
-  return applyIntent(ifName, text, { kind: "delete", com: name });
+  return applyIntent(ifName, text, { kind: "delete", com: name }, fmt);
 }
 
 /** Appends `.if` blocks from the clipboard into `parent`, renaming names this file already has. */
-function paste(ifName: string, text: string, clip: string, parent: string): string {
-  const src = parseIf("clipboard", clip.replace(/\r\n/g, "\n"));
+function paste(ifName: string, text: string, clip: string, parent: string, fmt: Format): string {
+  const src = parseIf("clipboard", clip.replace(/\r\n/g, "\n"), fmt);
   if (!src.coms.length) return text;
-  const m = parseIf(ifName, text);
+  const m = parseIf(ifName, text, fmt);
   const taken = new Set(m.coms.map((c) => c.name));
   const rename = new Map<string, string>();
   for (const c of src.coms) {
@@ -220,7 +251,7 @@ function subtree(m: IfModel, name: string): string[] {
   return out;
 }
 
-function setKey(m: IfModel, lines: string[], name: string, key: string, value: string | null) {
+function setKey(m: IfModel, lines: string[], name: string, key: string, value: string | null, order: string[]) {
   const com = find(m, name);
   if (!com) throw new Error(`no component ${name}`);
   const hits = com.keys.filter((k) => k.key === key);
@@ -232,16 +263,16 @@ function setKey(m: IfModel, lines: string[], name: string, key: string, value: s
     return;
   }
   if (value === null) return;
-  lines.splice(insertAt(com, key), 0, line);
+  lines.splice(insertAt(com, key, order), 0, line);
 }
 
-/** Where a new `key` line goes: after the last earlier KEY_ORDER key, else after the header (layout keys) or at the block end. */
-function insertAt(com: Com, key: string): number {
-  const rank = KEY_ORDER.indexOf(key);
+/** Where a new `key` line goes: after the last earlier `order` key, else after the header (layout keys) or at the block end. */
+function insertAt(com: Com, key: string, order: string[]): number {
+  const rank = order.indexOf(key);
   if (rank === -1) return com.keys.length ? com.keys[com.keys.length - 1].line + 1 : com.header + 1;
   let at = com.header + 1;
   for (const k of com.keys) {
-    const r = KEY_ORDER.indexOf(k.key);
+    const r = order.indexOf(k.key);
     if (r !== -1 && r < rank) at = Math.max(at, k.line + 1);
   }
   return at;
@@ -264,14 +295,14 @@ function removeBlock(lines: string[], c: Com) {
   lines.splice(start, end - start);
 }
 
-function reorder(ifName: string, text: string, name: string, parent: string, before: string | null): string {
-  text = applyIntent(ifName, text, { kind: "set", com: name, key: "layer", value: parent === "" ? null : parent });
-  let m = parseIf(ifName, text);
+function reorder(ifName: string, text: string, name: string, parent: string, before: string | null, fmt: Format): string {
+  text = applyIntent(ifName, text, { kind: "set", com: name, key: "layer", value: parent === "" ? null : parent }, fmt);
+  let m = parseIf(ifName, text, fmt);
   const com = find(m, name)!;
   const block = m.lines.slice(com.header, com.end);
   const lines = m.lines.slice();
   removeBlock(lines, com);
-  m = parseIf(ifName, lines.join(m.eol));
+  m = parseIf(ifName, lines.join(m.eol), fmt);
   if (before !== null) {
     lines.splice(find(m, before)!.header, 0, ...block, "");
   } else {

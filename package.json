@@ -2,7 +2,7 @@
   "name": "vscode-runescript",
   "displayName": "RuneScript",
   "description": "RuneScript (.rs2) and config file support: highlighting, file icons, diagnostics, hover, go to definition, references, completion.",
-  "version": "0.8.7",
+  "version": "0.8.8",
   "publisher": "sysdevs",
   "icon": "images/icon.png",
   "repository": {
@@ -608,11 +608,11 @@
             "text"
           ],
           "enumDescriptions": [
-            "Open .if files in the visual interface editor.",
-            "Open .if files as text."
+            "Open .if and .if3 files in the visual interface editor.",
+            "Open .if and .if3 files as text."
           ],
           "default": "visual",
-          "description": "How .if files open. Setting it writes workbench.editorAssociations[\"*.if\"] at the same scope."
+          "description": "How .if and .if3 files open. Setting it writes workbench.editorAssociations[\"*.if\"] and [\"*.if3\"] at the same scope."
         },
         "runescript.interfaceEditor.zoom": {
           "type": "integer",
@@ -677,6 +677,9 @@
         "selector": [
           {
             "filenamePattern": "*.if"
+          },
+          {
+            "filenamePattern": "*.if3"
           }
         ],
         "priority": "default"
@@ -686,7 +689,7 @@
       "editor/title": [
         {
           "command": "runescript.ifOpenVisual",
-          "when": "resourceExtname == .if && activeCustomEditorId != runescript.ifEditor",
+          "when": "resourceExtname =~ /^\\.if3?$/ && activeCustomEditorId != runescript.ifEditor",
           "group": "navigation"
         },
         {

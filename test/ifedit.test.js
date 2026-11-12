@@ -458,3 +458,99 @@ test("addIds gives a new interface its own id and group", () => {
   assert.deepEqual(reconcileIds(PACK, ORDER, "c", ["x", "y"]), r);
   assert.deepEqual(reconcileIds(PACK, ORDER, "c", []), { pack: PACK + "4=c\n", order: ORDER + "4\n" });
 });
+
+// ---- .if3 ----
+
+const { parseHook, formatHook } = require("../out/ifedit/hook.js");
+const { schemaData: schemaData3, NEW_COM: NEW_COM3, fieldsFor: fieldsFor3 } = require("../out/ifedit/schema3.js");
+const { place, unplace } = require("../out/ifedit/render3.js");
+
+const IF3 = "// a comment\n[frame]\ntype=layer\nwidth=16\nheight=16\nwidthmode=minus\nheightmode=minus\n\n// about ok\n[ok]\ntype=text\nlayer=frame\nparam=a,1\nparam=b,2\nonop=demo_click(event_com)\n";
+
+test("if3 parse skips // lines, keeps repeated params and gives the root its implicit keys", () => {
+  const m = parseIf("t", IF3, "if3");
+  assert.deepEqual(m.warnings, []);
+  assert.deepEqual(m.children.get("frame"), ["ok"]);
+  assert.equal(find(m, "frame").end, 7, "the comment before [ok] is not part of [frame]");
+  assert.deepEqual(find(m, "ok").keys.filter((k) => k.key === "param").map((k) => k.value), ["a,1", "b,2"]);
+  assert.equal(get(m.root, "widthmode"), "minus");
+});
+
+test("if3 parse warns where the packer fails", () => {
+  const m = parseIf("t", "x=1\n[a]\ntype=rectangle\nnoequals\n[b]\ntype=text\nlayer=a\nwidth=wide\n", "if3");
+  assert.deepEqual(m.warnings.map((w) => w.line), [0, 3, 6, 7]);
+});
+
+test("hook values parse and format back unchanged", () => {
+  // every hook line of Content's cs2demo.if3 and cs2demo_prompt.if3
+  const values = ["cs2demo_clock(event_com)", "cs2demo_count(event_com){cs2demo_clicks}", "cs2demo_inv(event_com){inv}", "cs2demo_hp(event_com){hitpoints}",
+    "cs2demo_click(event_com)", "cs2demo_hover(event_com, true)", "cs2demo_hover(event_com, false)", "cs2demo_init(event_com)", "cs2demo_prompt_init(event_com)"];
+  for (const v of values) assert.equal(formatHook(parseHook(v)), v);
+  assert.deepEqual(parseHook('s(event_com, "a, b", ^x){v1, v2}'), { script: "s", args: ["event_com", '"a, b"', "^x"], triggers: ["v1", "v2"] });
+  assert.deepEqual(parseHook("bare"), { script: "bare", args: [], triggers: [] });
+  assert.equal(formatHook({ script: "s", args: [], triggers: ["v"] }), "s{v}");
+});
+
+test("hook and params intents write .if3 lines", () => {
+  let t = applyIntent("t", IF3, { kind: "hook", com: "ok", key: "onvartransmit", hook: { script: "s", args: ["event_com"], triggers: ["v1", "v2"] } }, "if3");
+  assert.ok(t.endsWith("onop=demo_click(event_com)\nonvartransmit=s(event_com){v1, v2}\n"), t);
+  t = applyIntent("t", t, { kind: "hook", com: "ok", key: "onop", hook: null }, "if3");
+  assert.ok(!t.includes("onop="));
+  t = applyIntent("t", t, { kind: "params", com: "ok", values: ["c,3"] }, "if3");
+  assert.ok(t.includes("layer=frame\nparam=c,3\nonvartransmit"), t);
+  t = applyIntent("t", t, { kind: "params", com: "ok", values: [] }, "if3");
+  assert.ok(!t.includes("param="));
+});
+
+test("if3 set inserts mode keys in KEY_ORDER position", () => {
+  const t = applyIntent("t", IF3, { kind: "set", com: "ok", key: "xmode", value: "abs_right" }, "if3");
+  assert.ok(t.includes("[ok]\ntype=text\nxmode=abs_right\nlayer=frame\n"), t);
+});
+
+test("place inverts layout for every mode", () => {
+  for (const xmode of ["abs_left", "abs_centre", "abs_right", "rel_left", "rel_centre", "rel_right"]) {
+    for (const widthmode of ["abs", "minus", "rel"]) {
+      const keys = { xmode, ymode: xmode.replace("left", "top").replace("right", "bottom"), widthmode, heightmode: widthmode };
+      for (const box of [[10, 20, 30, 40], [0, 0, 1, 1], [133, 7, 200, 90]]) {
+        const v = unplace((k) => keys[k], box, [400, 300]);
+        const vals = { ...keys, x: String(v.x), y: String(v.y), width: String(v.width), height: String(v.height) };
+        const b = place((k) => vals[k], 400, 300);
+        assert.deepEqual([b.x, b.y, b.w, b.h], box, `${xmode}/${widthmode} ${box}`);
+      }
+    }
+  }
+});
+
+test("place intent writes only changed keys", () => {
+  const t = applyIntent("t", "[a]\ntype=rectangle\nx=5\nwidth=10\nheight=10\nxmode=abs_right\n", { kind: "place", com: "a", box: [485, 0, 10, 10], parent: [500, 300] }, "if3");
+  assert.equal(t, "[a]\ntype=rectangle\nx=5\nwidth=10\nheight=10\nxmode=abs_right\n");
+  const moved = applyIntent("t", t, { kind: "place", com: "a", box: [480, 0, 10, 10], parent: [500, 300] }, "if3");
+  assert.ok(moved.includes("x=10\n"));
+});
+
+test("if3 schema: NEW_COM keys are packed for their type", () => {
+  for (const [type, keys] of Object.entries(NEW_COM3)) {
+    for (const [k] of keys) if (k !== "type") assert.ok(fieldsFor3(type).includes(k), `${type}.${k}`);
+  }
+  assert.equal(schemaData3().format, "if3");
+});
+
+test("if3 no-op round trip over Content", { skip: noContent }, () => {
+  const files = [];
+  const walk = (dir) => {
+    for (const name of readdirSync(dir).sort()) {
+      const p = join(dir, name);
+      if (statSync(p).isDirectory()) walk(p);
+      else if (name.endsWith(".if3")) files.push([basename(name, ".if3"), readFileSync(p, "latin1")]);
+    }
+  };
+  walk(join(CONTENT, "scripts"));
+  assert.ok(files.length > 0);
+  for (const [stem, text] of files) {
+    assert.deepEqual(parseIf(stem, text, "if3").warnings, [], stem);
+    assert.equal(applyIntent(stem, text, { kind: "batch", intents: [] }, "if3"), text);
+    for (const c of parseIf(stem, text, "if3").coms) {
+      for (const k of c.keys.filter((k) => k.key.startsWith("on"))) assert.equal(formatHook(parseHook(k.value)), k.value, `${stem}:${c.name} ${k.key}`);
+    }
+  }
+});

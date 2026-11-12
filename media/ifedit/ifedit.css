@@ -119,6 +119,8 @@ button:disabled { opacity: 0.4; cursor: default; }
 .cond .row input { width: 6.5em; }
 .cond .row select { max-width: 9em; }
 .cond .maths { padding-left: 1.5em; }
+.cond.hook .row input[data-list="clientscript"] { flex: 1; width: auto; }
+.cond.hook .trigger { display: inline-flex; gap: 2px; }
 .cond .maths select { width: 3.5em; }
 .summary { font-style: italic; margin: 2px 0; overflow-wrap: anywhere; }
 .bad { color: var(--vscode-errorForeground); }

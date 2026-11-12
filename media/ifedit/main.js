@@ -61,7 +61,30 @@
   const place = (name) => box(name) || (frame && frame.layout && frame.layout.find((b) => b.com === name));
   const snap = (v) => (grid ? Math.round(v / GRID) * GRID : v);
   const set = (name, key, value) => ({ kind: "set", com: name, key, value });
-  const RESIZABLE = new Set(["rect", "text", "layer", "inv", "invtext", "model"]);
+  const RESIZABLE = new Set(["rect", "text", "layer", "inv", "invtext", "model", "rectangle", "graphic", "line", "circle", "inputfield", "tooltip"]);
+  /** A `.if3` file: positions and sizes go through each component's modes (src/ifedit/render3.ts). */
+  const if3 = () => !!catalog && catalog.schema.format === "if3";
+  /** The parent's laid-out size: the layer's box, or the whole area for the root. */
+  const parentSize = (name) => {
+    const p = parentOf(name);
+    const b = p ? place(p) : null;
+    return b ? [b.w, b.h] : [frame.width, frame.height];
+  };
+  /**
+   * Intents putting `name` at screen box (x, y, w, h): raw x/y/width/height keys in a `.if`, a `place`
+   * (converted through the modes by the host) in a `.if3`. `b` is its current box.
+   */
+  function placeIntents(name, b, x, y, w, h) {
+    if (if3()) return [{ kind: "place", com: name, box: [x - b.originX, y - b.originY, w, h], parent: parentSize(name) }];
+    const c = com(name);
+    const out = [];
+    if (x !== b.x) out.push(set(name, "x", String(num(get(c, "x")) + x - b.x)));
+    if (y !== b.y) out.push(set(name, "y", String(num(get(c, "y")) + y - b.y)));
+    const [kw, kh] = sizeKeys(b, w, h);
+    if (w !== b.w) out.push(set(name, "width", String(kw)));
+    if (h !== b.h) out.push(set(name, "height", String(kh)));
+    return out;
+  }
 
   /** A component is locked when it or any layer above it is locked in the layers panel. */
   function isLocked(name) {
@@ -550,19 +573,12 @@
         const intents = [];
         if (d.mode === "move") {
           for (const name of selectionRoots()) {
-            const c = com(name);
-            if (!c || isLocked(name)) continue;
-            if (d.dx) intents.push(set(name, "x", String(num(get(c, "x")) + d.dx)));
-            if (d.dy) intents.push(set(name, "y", String(num(get(c, "y")) + d.dy)));
+            const b = place(name);
+            if (!b || !com(name) || isLocked(name)) continue;
+            if (d.dx || d.dy) intents.push(...placeIntents(name, b, b.x + d.dx, b.y + d.dy, b.w, b.h));
           }
         } else {
-          const b = d.box;
-          const [x, y, w, h] = d.rect;
-          if (x !== b.x) intents.push(set(b.com, "x", String(x - b.originX)));
-          if (y !== b.y) intents.push(set(b.com, "y", String(y - b.originY)));
-          const [kw, kh] = sizeKeys(b, w, h);
-          if (w !== b.w) intents.push(set(b.com, "width", String(kw)));
-          if (h !== b.h) intents.push(set(b.com, "height", String(kh)));
+          intents.push(...placeIntents(d.box.com, d.box, ...d.rect));
         }
         if (intents.length) send({ kind: "batch", intents });
       },
@@ -613,7 +629,7 @@
     },
     draw: {
       down(e, x, y) {
-        drag = { tool: "draw", type: DRAW_TYPES[tool], mode: "draw", sx: x, sy: y, ex: x, ey: y, moved: false };
+        drag = { tool: "draw", type: (if3() && catalog.schema.DRAW[tool]) || DRAW_TYPES[tool], mode: "draw", sx: x, sy: y, ex: x, ey: y, moved: false };
       },
       move(e, x, y) {
         [drag.ex, drag.ey] = [x, y];
@@ -639,7 +655,7 @@
         if (n === null) return;
         if (!e.altKey && colourField && document.body.contains(colourField)) return applyColour(n);
         const key = e.altKey ? "overcolour" : "colour";
-        const types = e.altKey ? ["rect", "text"] : ["rect", "text", "invtext"];
+        const types = e.altKey ? ["rect", "text"] : ["rect", "text", "invtext", "rectangle", "circle", "line", "inputfield"];
         const targets = selection.filter((s) => types.includes(typeOf(s)));
         if (!targets.length) return note("Select a rect or text (or focus a colour field) to take the colour.");
         send({ kind: "batch", intents: targets.map((s) => set(s, key, hex(n))) });
@@ -730,10 +746,11 @@
       return setZoom(zoom * Math.exp(-dy * 0.0015), e);
     }
     const [x, y] = at(e);
-    const b = hit(x, y, (b) => b.type === "layer" && num(get(com(b.com), "scroll")) > b.h);
+    const scrollKey = if3() ? "scrollheight" : "scroll";
+    const b = hit(x, y, (b) => b.type === "layer" && num(get(com(b.com), scrollKey)) > b.h);
     if (!b) return;
     e.preventDefault();
-    const max = num(get(com(b.com), "scroll")) - b.h;
+    const max = num(get(com(b.com), scrollKey)) - b.h;
     const cur = frame.state.scroll[b.com] || 0;
     const scroll = { ...frame.state.scroll, [b.com]: Math.max(0, Math.min(max, cur + Math.sign(e.deltaY) * 16)) };
     setState({ scroll });
@@ -771,10 +788,9 @@
     e.preventDefault();
     const intents = [];
     for (const name of selectionRoots()) {
-      const c = com(name);
-      if (!c || isLocked(name)) continue;
-      if (m[0]) intents.push(set(name, "x", String(num(get(c, "x")) + m[0])));
-      if (m[1]) intents.push(set(name, "y", String(num(get(c, "y")) + m[1])));
+      const b = place(name);
+      if (!b || !com(name) || isLocked(name)) continue;
+      intents.push(...placeIntents(name, b, b.x + m[0], b.y + m[1], b.w, b.h));
     }
     if (intents.length) send({ kind: "batch", intents });
   });
@@ -945,23 +961,23 @@
     const s = frame.state;
     const warn = frame.warnings;
     const bar = $("toolbar");
-    bar.replaceChildren(
+    bar.replaceChildren(...[
       el("span", { class: "title" }, frame.name),
       el("select", { title: "Where the client shows this interface", onchange: (e) => setState({ area: e.target.value }) },
         Object.entries(catalog ? catalog.areas : { main: [512, 334], side: [190, 261], chat: [479, 96] }).map(([a, [w, h]]) =>
           el("option", { value: a, selected: a === s.area }, `${{ main: "Main", side: "Side tab", chat: "Chatbox" }[a]} ${w}x${h}`))),
       el("select", { title: "Zoom (Z tool, Ctrl+wheel)", onchange: (e) => setZoom(+e.target.value) },
         [...new Set([1, 2, 3, 4, 5, 6, 7, 8, zoom])].sort((a, b) => a - b).map((z) => el("option", { value: z, selected: z === zoom }, `${+z.toFixed(2)}x`))),
-      toggle("Active", s.active, "Preview components whose conditions are true", () => setState({ active: !s.active })),
-      toggle("Hidden", s.showHidden, "Show layers marked hide=yes", () => setState({ showHidden: !s.showHidden })),
+      if3() ? null : toggle("Active", s.active, "Preview components whose conditions are true", () => setState({ active: !s.active })),
+      toggle("Hidden", s.showHidden, if3() ? "Show hide=yes components and where tooltips pop up" : "Show layers marked hide=yes", () => setState({ showHidden: !s.showHidden })),
       toggle("Grid", grid, `Snap to ${GRID}px`, () => ((grid = !grid), save(), renderToolbar(), drawOverlay())),
       toggle("Snap", snapGuides, "Snap to layer and sibling edges and centres while moving or resizing", () => ((snapGuides = !snapGuides), save(), renderToolbar())),
-      el("span", { class: "vars", title: "Values shown for %1..%5 in text" }, "%1-5",
+      if3() ? null : el("span", { class: "vars", title: "Values shown for %1..%5 in text" }, "%1-5",
         s.vars.map((v, i) => el("input", { value: v, size: 3, onchange: (e) => setState({ vars: s.vars.map((x, j) => (j === i ? e.target.value : x)) }) }))),
       el("span", { class: warn.length ? "warn" : "warn none", title: warn.map((w) => `line ${w.line + 1}: ${w.message}`).join("\n") || "No problems" },
         warn.length ? `⚠ ${warn.length}` : "✓"),
       el("button", { onclick: () => vscode.postMessage({ type: "openText" }) }, "Open as Text"),
-    );
+    ].filter(Boolean));
   }
 
   const toggle = (label, on, title, onclick) => el("button", { class: on ? "toggle on" : "toggle", title, onclick }, label);
@@ -980,7 +996,7 @@
     const typing = $("tree").contains(document.activeElement) && document.activeElement.tagName === "INPUT";
     if (force || (tsig !== treeSig && !typing)) (treeSig = tsig), renderLayers();
     // the inspector follows every frame unless one of its inputs is being edited
-    const ssig = tab === "inspect" ? JSON.stringify([selected, com(selected), frame.state.area]) : tab + (catalog ? "c" : "");
+    const ssig = tab === "inspect" ? JSON.stringify([selected, com(selected), frame.state.area, scripts]) : tab + (catalog ? "c" : "");
     const a = /** @type {HTMLInputElement} */ (document.activeElement);
     const editing = $("side").contains(a) && a.tagName === "INPUT" && a.type !== "checkbox";
     if (force || (ssig !== sideSig && !editing)) (sideSig = ssig), renderSide();
@@ -1118,9 +1134,9 @@
       return glyph("▣");
     }
     const colour = `#${num(get(c, "colour")).toString(16).padStart(6, "0")}`;
-    if (type === "rect") return glyph("", `background:${colour}`);
+    if (type === "rect" || type === "rectangle") return glyph("", `background:${colour}`);
     if (type === "text") return glyph("T", `color:${colour}`);
-    return glyph({ layer: "▤", overlay: "▤", inv: "▦", invtext: "≡", model: "◆" }[type] || "?");
+    return glyph({ layer: "▤", overlay: "▤", inv: "▦", invtext: "≡", model: "◆", line: "╱", circle: "◯", inputfield: "⌶", tooltip: "💬" }[type] || "?");
   }
 
   /** Rows in draw order with their depth; collapsed layers hide their children unless searching. */
@@ -1299,7 +1315,7 @@
   const BOOLS = new Set(["hide", "fill", "center", "shadowed", "draggable", "interactable", "usable", "swappable"]);
   const COLOURS = ["colour", "activecolour", "overcolour", "activeovercolour"];
   const SPRITES = new Set(["graphic", "activegraphic"]);
-  const LISTS = { model: "model", activemodel: "model", anim: "seq", activeanim: "seq" };
+  const LISTS = { model: "model", activemodel: "model", anim: "seq", activeanim: "seq", modelanim: "seq" };
   const LABELS = { center: "centred", shadowed: "shadow", activecolour: "active colour", overcolour: "hover colour", activeovercolour: "active hover", activetext: "active text",
     activegraphic: "active graphic", activemodel: "active model", activeanim: "active anim", clientcode: "client code", overlayer: "over layer", xan: "x angle", yan: "y angle" };
   /** @type {string | null} */ let pickKey = null;
@@ -1312,9 +1328,13 @@
     const v = get(c, key);
     const label = el("label", { title: key }, LABELS[key] || key);
     let input;
-    if (BOOLS.has(key)) {
+    const S = catalog.schema;
+    if (if3() && S.ENUMS[key]) {
+      input = el("select", { onchange: (e) => commit(key, e.target.value) }, el("option", { value: "" }, `(default ${S.ENUMS[key][0]})`),
+        S.ENUMS[key].map((o) => el("option", { value: o, selected: o === v }, o)));
+    } else if (if3() ? S.BOOLS.includes(key) : BOOLS.has(key)) {
       input = el("input", { type: "checkbox", checked: v === "yes", onchange: (e) => commit(key, e.target.checked ? "yes" : "") });
-    } else if (NUMBERS.has(key)) {
+    } else if (if3() ? S.NUMBERS.includes(key) : NUMBERS.has(key)) {
       input = el("input", { type: "number", value: v === undefined ? "" : num(v), onchange: (e) => commit(key, e.target.value) });
     } else if (key === "buttontype") {
       input = el("select", { onchange: (e) => commit(key, e.target.value) }, el("option", { value: "" }, "none"),
@@ -1327,7 +1347,7 @@
     } else if (key === "overlayer") {
       input = el("select", { onchange: (e) => commit(key, e.target.value) }, el("option", { value: "" }, "none"),
         frame.coms.map((x) => el("option", { value: x.name, selected: x.name === v }, x.name)));
-    } else if (COLOURS.includes(key)) {
+    } else if (if3() ? S.COLOURS.includes(key) : COLOURS.includes(key)) {
       const text = el("input", { value: v || "", placeholder: "0xRRGGBB", onfocus: (e) => (colourField = e.target), onchange: (e) => commit(key, e.target.value) });
       const n = num(v);
       input = el("span", { class: "colour" }, el("span", { class: "swatch", style: `background:#${n.toString(16).padStart(6, "0")}`, title: "Pick from the Colours tab",
@@ -1504,9 +1524,140 @@
       ...(testRows.length ? [el("h4", {}, "Test values"), el("p", { class: "note" }, "Try values to see each script's result (→) and whether its comparison holds."), ...testRows] : [])];
   }
 
+  // ---- .if3 inspector: modes, hooks (CS2 clientscripts), ops, params ----
+
+  /** `[clientscript]`s from the language server: { name, params: ["type $name"] }. */
+  /** @type {{ name: string, params: string[] }[]} */ let scripts = [];
+  /** Hooks added in the panel but not written yet (no script chosen), per component. */
+  const pendingHooks = new Map();
+
+  /** A name-suggestion list (catalog.lists key) for an argument of `type`. */
+  function argList(type) {
+    const S = catalog.schema;
+    const key = `_arg_${type}`;
+    catalog.lists[key] = type === "component" ? [...S.EVENTS.component, ...frame.coms.map((x) => `${frame.name}:${x.name}`)]
+      : type === "int" ? S.EVENTS.int
+      : type === "boolean" ? ["true", "false"]
+      : type === "string" ? S.EVENTS.string
+      : ["null", ...(catalog.lists[type] || [])];
+    return key;
+  }
+  const defaultArg = (param) => ({ component: "event_com", int: "0", boolean: "false", string: '""' })[param.split(" ")[0]] ?? "null";
+
+  function hooksBlock(c) {
+    const S = catalog.schema;
+    const pend = pendingHooks.get(c.name) || new Set();
+    pendingHooks.set(c.name, pend);
+    const keys = S.HOOKS.filter((h) => c.hooks[h] || pend.has(h));
+    const cards = keys.map((key) => {
+      const old = c.hooks[key] || { script: "", args: [], triggers: [] };
+      const h = { script: old.script, args: [...old.args], triggers: [...old.triggers] };
+      const sig = scripts.find((s) => s.name === h.script);
+      const commit = () => {
+        if (!h.script) return;
+        pend.delete(key);
+        send({ kind: "hook", com: c.name, key, hook: h });
+      };
+      const unknown = h.script && scripts.length && !sig;
+      const script = el("input", { value: h.script, "data-list": "clientscript", placeholder: "clientscript", class: unknown ? "bad" : "",
+        title: unknown ? `no clientscript ${h.script}` : undefined,
+        onfocus: () => vscode.postMessage({ type: "wantScripts" }),
+        onchange: (e) => {
+          h.script = e.target.value.trim();
+          const s = scripts.find((x) => x.name === h.script);
+          if (s) h.args = s.params.map((p, i) => h.args[i] ?? defaultArg(p));
+          commit();
+        } });
+      const args = sig
+        ? sig.params.map((p, i) => el("div", { class: "field" }, el("label", { title: p }, p),
+          el("input", { value: h.args[i] ?? "", "data-list": argList(p.split(" ")[0]), onchange: (e) => ((h.args[i] = e.target.value.trim()), commit()) })))
+        : h.script ? [el("div", { class: "field" }, el("label", { title: "Arguments, comma-separated (the language server lists each clientscript's parameters)" }, "args"),
+          el("input", { value: h.args.join(", "), placeholder: "event_com", onchange: (e) => ((h.args = e.target.value.split(",").map((x) => x.trim()).filter(Boolean)), commit()) }))] : [];
+      const arity = sig && h.args.length !== sig.params.length ? el("p", { class: "bad" }, `${h.script} takes ${sig.params.length} arguments, found ${h.args.length}`) : null;
+      let triggers = null;
+      if (S.TRIGGERS[key]) {
+        const list = `_trig_${key}`;
+        catalog.lists[list] = S.TRIGGERS[key].flatMap((p) => catalog.lists[p] || []);
+        triggers = el("div", { class: "row triggers" }, el("span", { class: "note", title: "Runs when any of these change" }, "on"),
+          h.triggers.map((t, i) => el("span", { class: "trigger" },
+            el("input", { value: t, size: 10, "data-list": list, onchange: (e) => ((e.target.value.trim() ? (h.triggers[i] = e.target.value.trim()) : h.triggers.splice(i, 1)), commit()) }),
+            el("button", { title: "Remove", onclick: () => (h.triggers.splice(i, 1), commit()) }, "✕"))),
+          el("input", { size: 10, "data-list": list, placeholder: `+ ${S.TRIGGERS[key].join("/")}`, onchange: (e) => e.target.value.trim() && (h.triggers.push(e.target.value.trim()), commit()) }));
+      }
+      return el("div", { class: "cond hook" },
+        el("div", { class: "row" }, el("b", {}, key), el("span", { class: "note" }, S.HOOK_INFO[key] || ""), el("span", { style: "flex:1" }),
+          el("button", { title: "Remove hook", onclick: () => (pend.delete(key), c.hooks[key] ? send({ kind: "hook", com: c.name, key, hook: null }) : renderPanels(true)) }, "✕")),
+        el("div", { class: "row" }, script,
+          el("button", { title: "Open the clientscript", disabled: !h.script, onclick: () => vscode.postMessage({ type: "openScript", name: h.script }) }, "Open"),
+          el("button", { title: "Add a new [clientscript] stub to this area's .cs2 and use it here", onclick: () => vscode.postMessage({ type: "newScript", com: c.name, hook: key }) }, "New…")),
+        ...args, arity, triggers);
+    });
+    const free = S.HOOKS.filter((h) => !keys.includes(h));
+    const add = el("select", { onchange: (e) => (pend.add(e.target.value), vscode.postMessage({ type: "wantScripts" }), renderPanels(true)) },
+      el("option", { selected: true, disabled: true }, "+ hook…"), free.map((h) => el("option", { value: h, title: S.HOOK_INFO[h] }, h)));
+    return [el("h4", {}, "Hooks (clientscripts)"), ...(keys.length ? [] : [el("p", { class: "note" }, "No hooks.")]), ...cards, free.length ? add : null];
+  }
+
+  /** `param=name,value` lines, in file order. */
+  function paramsBlock(c) {
+    const values = c.keys.filter(([k]) => k === "param").map(([, v]) => v);
+    const write = (list) => send({ kind: "params", com: c.name, values: list.filter((v) => v.trim() !== "") });
+    return [el("h4", {}, "Params"),
+      ...values.map((v, i) => el("div", { class: "row" },
+        el("input", { value: v, placeholder: "param,value", onchange: (e) => ((values[i] = e.target.value), write(values)) }),
+        el("button", { title: "Remove", onclick: () => write(values.filter((_, j) => j !== i)) }, "✕"))),
+      el("input", { placeholder: "+ param,value", "data-list": "param", onchange: (e) => write([...values, e.target.value]) })];
+  }
+
+  /** op1..op10, what the server hears (transmitop), targeting and dragging. */
+  function opsBlock(c) {
+    const commit = committer(c);
+    const S = catalog.schema;
+    const mask = (get(c, "targetmask") || "").split(",").filter(Boolean);
+    return el("details", { open: S.OP_KEYS.some((k) => get(c, k) !== undefined) || undefined }, el("summary", {}, "Ops and targeting"),
+      ...["opbase", ...Array.from({ length: 10 }, (_, i) => `op${i + 1}`)].map((k) => field(c, k)),
+      el("div", { class: "field" }, el("label", { title: "Ops (1-10) that also run [if_button<n>] on the server" }, "transmitop"),
+        el("input", { value: get(c, "transmitop") || "", placeholder: "1,2", onchange: (e) => commit("transmitop", e.target.value.replace(/\s/g, "")) })),
+      el("div", { class: "field" }, el("label", {}, "targetmask"), el("span", {}, S.TARGETS.map((f) =>
+        el("label", { style: "margin-right:6px" }, el("input", { type: "checkbox", checked: mask.includes(f), onchange: (e) =>
+          commit("targetmask", S.TARGETS.filter((g) => (g === f ? e.target.checked : mask.includes(g))).join(",")) }), f)))),
+      ...["targetverb", "dragdeadzone", "dragdeadtime", "dragrenderbehaviour"].map((k) => field(c, k)));
+  }
+
+  function renderInspector3(pane, c) {
+    const S = catalog.schema;
+    const commit = committer(c);
+    const type = get(c, "type") || "";
+    const fields = (S.FIELDS[type] || { "": [] })[""];
+    const LAYOUT = ["x", "y", "width", "height", "xmode", "ymode", "widthmode", "heightmode", "layer"];
+    const known = new Set([...Object.values(S.FIELDS).flatMap((t) => t[""]), ...S.HOOKS, "type", "param"]);
+    const appearance = fields.filter((k) => !LAYOUT.includes(k) && !["hide", "clientcode"].includes(k) && !S.OP_KEYS.includes(k));
+    const unpacked = [...new Set(c.keys.map(([k]) => k))].filter((k) => known.has(k) && !fields.includes(k) && !S.HOOKS.includes(k) && k !== "type" && k !== "param");
+    const other = c.keys.filter(([k]) => !known.has(k));
+    pane.append(
+      el("div", { class: "field" }, el("label", {}, "name"), el("b", {}, selected)),
+      el("div", { class: "field" }, el("label", {}, "type"), el("select", { onchange: (e) => commit("type", e.target.value) },
+        S.TYPES.map((t) => el("option", { value: t, selected: t === type }, t)))),
+      el("h4", {}, "Position and size"), ...LAYOUT.map((k) => field(c, k)),
+      el("p", { class: "note" }, "minus: the parent's size less the value; rel: 16384 = the parent's size. Dragging keeps the modes."),
+      ...(appearance.length ? [el("h4", {}, "Appearance"), ...appearance.map((k) => field(c, k))] : []),
+      ...hooksBlock(c),
+      opsBlock(c),
+      ...paramsBlock(c),
+      el("h4", {}, "Advanced"), field(c, "hide"), field(c, "clientcode"),
+      ...(unpacked.length ? [el("p", { class: "bad" }, `Not taken by type=${type} (the packer fails): ${unpacked.join(", ")}`)] : []),
+      ...(other.length ? [el("h4", {}, "Unknown keys (the packer fails)"), ...other.map(([k, v]) => el("div", { class: "other" }, `${k}=${v}`)),
+        el("button", { onclick: () => vscode.postMessage({ type: "openText" }) }, "Edit as text")] : []),
+    );
+  }
+
   function renderInspector(pane) {
     if (!catalog) return pane.append("Loading…");
     const c = com(selected);
+    if (if3()) {
+      if (selection.length > 1) pane.append(el("p", { class: "note" }, `${selection.length} selected: editing ${selected}.`));
+      return c ? renderInspector3(pane, c) : pane.append(el("p", { class: "note" }, "Select a component in the preview or the tree."));
+    }
     const commit = c && committer(c);
     if (selection.length > 1) pane.append(el("p", { class: "note" }, `${selection.length} selected: editing ${selected}. Drag, arrow keys, group, duplicate and delete act on all of them.`));
     if (!c) {
@@ -1717,7 +1868,8 @@
 
   function renderFonts(pane) {
     const c = com(selected);
-    const ok = c && ["text", "invtext"].includes(get(c, "type"));
+    const fontKey = if3() ? "textfont" : "font";
+    const ok = c && ["text", "invtext", "inputfield", "tooltip"].includes(get(c, "type"));
     pane.append(el("p", { class: "note" }, ok ? `Click to set the font of ${selected}.` : "Select a text component to set its font."));
     for (const f of catalog.fonts) {
       const cv = document.createElement("canvas");
@@ -1725,7 +1877,7 @@
       cv.height = f.height;
       /** @type {CanvasRenderingContext2D} */ (cv.getContext("2d")).putImageData(new ImageData(new Uint8ClampedArray(f.rgba), f.width, f.height), 0, 0);
       cv.style.width = `${f.width * 2}px`;
-      pane.append(el("div", { class: ok && get(c, "font") === f.name ? "font on" : "font", title: f.name, onclick: () => ok && send(set(selected, "font", f.name)) },
+      pane.append(el("div", { class: ok && get(c, fontKey) === f.name ? "font on" : "font", title: f.name, onclick: () => ok && send(set(selected, fontKey, f.name)) },
         el("div", { class: "note" }, f.name), cv));
     }
   }
@@ -1807,8 +1959,13 @@
       renderPanels();
     } else if (msg.type === "models") {
       setModels(msg.models);
+    } else if (msg.type === "scripts") {
+      scripts = msg.scripts;
+      if (catalog) catalog.lists.clientscript = scripts.map((s) => s.name);
+      renderPanels();
     } else if (msg.type === "catalog") {
       catalog = msg;
+      catalog.lists.clientscript = scripts.map((s) => s.name);
       sheetCanvases.clear();
       fillSuggest();
       if (frame) (renderToolbar(), renderPanels(true));

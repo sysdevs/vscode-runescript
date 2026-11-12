@@ -1,16 +1,18 @@
-// The visual `.if` editor: a CustomTextEditor over the real TextDocument (so undo, dirty
+// The visual `.if` / `.if3` editor: a CustomTextEditor over the real TextDocument (so undo, dirty
 // state and the text view stay in sync). The host parses, renders and edits; the webview
 // (media/ifedit/main.js) only shows pixels and sends intents back.
 import { existsSync } from "fs";
-import { basename, dirname, join } from "path";
+import { basename, dirname, extname, join } from "path";
 import * as vscode from "vscode";
+import type { LanguageClient } from "vscode-languageclient/node";
 import { settingPath } from "../client";
 import { Content } from "../modelview/content";
 import { buildIfModel, IfModelSpec } from "../modelview/ifmodel";
 import { Scene } from "../modelview/scene";
 import { Assets } from "./assets";
 import { Intent, applyIntent, copyText, minimalEdit, reconcileIds } from "./edits";
-import { find, parseIf } from "./parse";
+import { parseHook } from "./hook";
+import { Format, find, get, parseIf } from "./parse";
 import { Area, PreviewState } from "./render";
 import { buildCatalog, buildFrame } from "./session";
 
@@ -31,11 +33,30 @@ export function contentRootOf(file: string): string | undefined {
   }
 }
 
+/** One `[clientscript]` as runescript-lsp's `runescript/clientScripts` lists it. */
+interface ClientScript {
+  name: string;
+  /** `type $name` per parameter. */
+  params: string[];
+  location: { uri: string; range: { start: { line: number; character: number } } } | null;
+}
+
 export class IfEditorProvider implements vscode.CustomTextEditorProvider {
   private assets = new Map<string, Assets>();
   private contents = new Map<string, Content>();
 
-  constructor(private readonly ctx: vscode.ExtensionContext) {}
+  constructor(private readonly ctx: vscode.ExtensionContext, private readonly client: () => LanguageClient | undefined) {}
+
+  /** The clientscripts the language server knows ([] without a running server). */
+  private async clientScripts(): Promise<ClientScript[]> {
+    const c = this.client();
+    if (!c || !c.isRunning()) return [];
+    try {
+      return await c.sendRequest<ClientScript[]>("runescript/clientScripts");
+    } catch {
+      return [];
+    }
+  }
 
   async resolveCustomTextEditor(doc: vscode.TextDocument, panel: vscode.WebviewPanel): Promise<void> {
     const media = vscode.Uri.joinPath(this.ctx.extensionUri, "media", "ifedit");
@@ -45,7 +66,8 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
     panel.webview.html = html(panel.webview, media, defaults);
 
     const root = settingPath("contentRoot") || contentRootOf(doc.uri.fsPath);
-    const stem = basename(doc.uri.fsPath, ".if");
+    const fmt: Format = extname(doc.uri.fsPath) === ".if3" ? "if3" : "if";
+    const stem = basename(doc.uri.fsPath, `.${fmt}`);
     const areaKey = `ifedit.area:${doc.uri.fsPath}`;
     const viewKey = `ifedit.view:${doc.uri.fsPath}`;
     let view: View = { hidden: [], locked: [], collapsed: [], ...this.ctx.workspaceState.get<Partial<View>>(viewKey, {}) };
@@ -89,12 +111,17 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
     const frame = () => {
       clearTimeout(pending);
       pending = setTimeout(() => {
-        const f = buildFrame(stem, doc.getText(), assets!, state);
+        const f = buildFrame(stem, doc.getText(), assets!, state, fmt);
         post({ ...f, view });
         models(f.modelSpecs);
       }, 0);
     };
-    const catalog = () => post(buildCatalog(root, assets!, doc.getText()));
+    const catalog = () => post(buildCatalog(root, assets!, doc.getText(), fmt));
+    let scripts: ClientScript[] = [];
+    const sendScripts = async () => {
+      scripts = await this.clientScripts();
+      post({ type: "scripts", scripts: scripts.map((s) => ({ name: s.name, params: s.params })) });
+    };
 
     const watcher = vscode.workspace.createFileSystemWatcher(new vscode.RelativePattern(root, "{sprites,fonts}/**"));
     const reload = () => {
@@ -123,14 +150,36 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
         if (e.document.uri.toString() === doc.uri.toString()) frame();
       }),
       // interface.pack / .order follow the .if when it is saved, so discarding or undoing edits never strands ids
+      // (the packer assigns .if3 ids itself)
       vscode.workspace.onWillSaveTextDocument((e) => {
-        if (e.document.uri.toString() === doc.uri.toString()) e.waitUntil(reconcileIdsOnDisk(root, stem, e.document.getText()));
+        if (fmt === "if" && e.document.uri.toString() === doc.uri.toString()) e.waitUntil(reconcileIdsOnDisk(root, stem, e.document.getText()));
+      }),
+      vscode.workspace.onDidSaveTextDocument((d) => {
+        if (fmt === "if3" && d.uri.fsPath.endsWith(".cs2")) void sendScripts();
       }),
       panel.webview.onDidReceiveMessage(async (msg) => {
         switch (msg.type) {
           case "ready":
             catalog();
             frame();
+            if (fmt === "if3") void sendScripts();
+            break;
+          case "wantScripts":
+            void sendScripts();
+            break;
+          case "openScript": {
+            if (!scripts.some((s) => s.name === msg.name)) await sendScripts();
+            const loc = scripts.find((s) => s.name === msg.name)?.location;
+            if (!loc) {
+              void vscode.window.showErrorMessage(`Interface editor: no clientscript ${msg.name} (is the RuneScript language server running?)`);
+              break;
+            }
+            const at = new vscode.Position(loc.range.start.line, loc.range.start.character);
+            await vscode.window.showTextDocument(vscode.Uri.parse(loc.uri), { selection: new vscode.Range(at, at), viewColumn: vscode.ViewColumn.Beside });
+            break;
+          }
+          case "newScript":
+            queue = queue.then(() => this.newScript(doc, stem, msg.com, msg.hook, scripts, post));
             break;
           case "state":
             Object.assign(state, msg.state);
@@ -145,18 +194,18 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
             break;
           case "intent":
             // one at a time: each intent is computed against the text the previous one left
-            queue = queue.then(() => this.apply(doc, stem, msg.intent as Intent, post));
+            queue = queue.then(() => this.apply(doc, stem, fmt, msg.intent as Intent, post));
             break;
           case "copy":
-            await vscode.env.clipboard.writeText(copyText(stem, doc.getText(), msg.coms));
+            await vscode.env.clipboard.writeText(copyText(stem, doc.getText(), msg.coms, fmt));
             break;
           case "paste": {
             const text = await vscode.env.clipboard.readText();
-            queue = queue.then(() => this.apply(doc, stem, { kind: "paste", text, parent: msg.parent }, post));
+            queue = queue.then(() => this.apply(doc, stem, fmt, { kind: "paste", text, parent: msg.parent }, post));
             break;
           }
           case "rename":
-            queue = queue.then(() => this.rename(doc, stem, msg.com, msg.to, post));
+            queue = queue.then(() => this.rename(doc, stem, fmt, msg.com, msg.to, post));
             break;
           case "openText":
             await vscode.commands.executeCommand("vscode.openWith", doc.uri, "default");
@@ -168,11 +217,11 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
   }
 
   /** Applies one intent to the `.if` as a single minimal edit (undoable like typing), then selects new components. */
-  private async apply(doc: vscode.TextDocument, stem: string, intent: Intent, post: (msg: unknown) => void) {
+  private async apply(doc: vscode.TextDocument, stem: string, fmt: Format, intent: Intent, post: (msg: unknown) => void) {
     const old = doc.getText();
     let next: string;
     try {
-      next = applyIntent(stem, old, intent);
+      next = applyIntent(stem, old, intent, fmt);
     } catch (e) {
       void vscode.window.showErrorMessage(`Interface editor: ${(e as Error).message}`);
       return;
@@ -182,14 +231,51 @@ export class IfEditorProvider implements vscode.CustomTextEditorProvider {
     const we = new vscode.WorkspaceEdit();
     we.replace(doc.uri, new vscode.Range(doc.positionAt(edit.start), doc.positionAt(edit.end)), edit.text);
     if (!(await vscode.workspace.applyEdit(we))) return;
-    const before = new Set(parseIf(stem, old).coms.map((c) => c.name));
-    const added = parseIf(stem, next).coms.map((c) => c.name).filter((n) => !before.has(n));
+    const before = new Set(parseIf(stem, old, fmt).coms.map((c) => c.name));
+    const added = parseIf(stem, next, fmt).coms.map((c) => c.name).filter((n) => !before.has(n));
     if (added.length) post({ type: "select", names: added });
   }
 
+  /**
+   * Appends a `[clientscript,<name>](component $com)` stub to the area's `scripts/<stem>.cs2` (made if
+   * missing), points the hook at it with `event_com` (keeping its trigger list) and opens the stub.
+   */
+  private async newScript(doc: vscode.TextDocument, stem: string, com: string, hook: string, scripts: ClientScript[], post: (msg: unknown) => void) {
+    const name = await vscode.window.showInputBox({
+      title: `New clientscript for ${com} ${hook}`,
+      value: `${stem}_${com}_${hook.replace(/^on/, "")}`,
+      validateInput: (v) => (!/^[A-Za-z0-9_]+$/.test(v) ? "letters, digits and _ only" : scripts.some((s) => s.name === v) ? `clientscript ${v} already exists` : undefined),
+    });
+    if (!name) return;
+    // scripts/<area>/interfaces/<stem>.if3 -> scripts/<area>/scripts/<stem>.cs2
+    const uri = vscode.Uri.file(join(dirname(dirname(doc.uri.fsPath)), "scripts", `${stem}.cs2`));
+    const header = `[clientscript,${name}](component $com)`;
+    const we = new vscode.WorkspaceEdit();
+    if (existsSync(uri.fsPath)) {
+      const cs2 = await vscode.workspace.openTextDocument(uri);
+      const text = cs2.getText();
+      const eol = text.includes("\r\n") ? "\r\n" : "\n";
+      const lead = text === "" ? "" : text.endsWith(eol) ? eol : eol + eol;
+      we.insert(uri, cs2.positionAt(text.length), `${lead}${header}${eol}`);
+    } else {
+      we.createFile(uri, { contents: Buffer.from(`${header}\n`) });
+    }
+    if (!(await vscode.workspace.applyEdit(we))) return;
+    const cs2 = await vscode.workspace.openTextDocument(uri);
+    await cs2.save();
+    let line = cs2.lineCount - 1;
+    while (line > 0 && cs2.lineAt(line).text !== header) line--;
+    const c = find(parseIf(stem, doc.getText(), "if3"), com);
+    const old = c && get(c, hook);
+    const triggers = old === undefined ? [] : parseHook(old).triggers;
+    await this.apply(doc, stem, "if3", { kind: "hook", com, key: hook, hook: { script: name, args: ["event_com"], triggers } }, post);
+    const at = new vscode.Position(line, 0);
+    await vscode.window.showTextDocument(cs2, { selection: new vscode.Range(at, at), viewColumn: vscode.ViewColumn.Beside });
+  }
+
   /** Renames a component through the language server, which also updates scripts and interface.pack. */
-  private async rename(doc: vscode.TextDocument, stem: string, com: string, to: string, post: (msg: unknown) => void) {
-    const c = find(parseIf(stem, doc.getText()), com);
+  private async rename(doc: vscode.TextDocument, stem: string, fmt: Format, com: string, to: string, post: (msg: unknown) => void) {
+    const c = find(parseIf(stem, doc.getText(), fmt), com);
     if (!c || to === com) return;
     if (!/^[A-Za-z0-9_]+$/.test(to)) {
       void vscode.window.showErrorMessage(`Interface editor: "${to}" is not a valid component name.`);

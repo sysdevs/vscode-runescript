@@ -264,7 +264,7 @@ export class Surface {
 }
 
 /** The client's alpha mix: (src*alpha + dst*(256-alpha)) >> 8 per channel. */
-function blend(dst: number, rgb: number, alpha: number): number {
+export function blend(dst: number, rgb: number, alpha: number): number {
   const inv = 256 - alpha;
   const r = ((((rgb >> 16) & 0xff) * alpha + ((dst >> 16) & 0xff) * inv) >> 8) << 16;
   const g = ((((rgb >> 8) & 0xff) * alpha + ((dst >> 8) & 0xff) * inv) >> 8) << 8;

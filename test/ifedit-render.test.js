@@ -195,7 +195,7 @@ test("buildFrame carries pixels, boxes, coms and tree", () => {
   assert.equal(f.type, "frame");
   assert.equal(f.rgba.length, 512 * 334 * 4);
   assert.deepEqual(f.tree, { "": ["a"], a: ["b"] });
-  assert.deepEqual(f.coms[1], { name: "b", keys: [["type", "rect"], ["layer", "a"]], conds: [] });
+  assert.deepEqual(f.coms[1], { name: "b", keys: [["type", "rect"], ["layer", "a"]], conds: [], hooks: {} });
   assert.equal(f.boxes.length, 2);
 });
 
@@ -227,3 +227,52 @@ test("layout places every component, drawn or not", () => {
   assert.deepEqual(at(boxes, "r"), [25, 20, 4, 3], "inside a hide=yes layer, scrolled by 20");
   assert.deepEqual(at(boxes, "i"), [1, 2, 64, 32], "eye-hidden still has a place");
 });
+
+// ---- .if3 ----
+
+const r3 = require("../out/ifedit/render3.js");
+const draw3 = (text, state = {}) => r3.render(parseIf("t", text, "if3"), NO_ASSETS, { ...STATE, ...state });
+
+test("if3 layout follows the size and position modes", () => {
+  const IF = "[l]\ntype=layer\nwidth=20\nheight=10\nwidthmode=minus\nheightmode=minus\nxmode=abs_centre\nymode=abs_centre\n\n[r]\ntype=rectangle\nlayer=l\nx=4\ny=2\nwidth=8192\nheight=6\nwidthmode=rel\nxmode=abs_right\nymode=abs_bottom\n";
+  const at = (boxes, name) => { const b = boxes.find((b) => b.com === name); return b && [b.x, b.y, b.w, b.h]; };
+  const boxes = r3.layout(parseIf("t", IF, "if3"), STATE);
+  assert.deepEqual(at(boxes, "l"), [10, 5, 492, 324]);
+  assert.deepEqual(at(boxes, "r"), [10 + 492 - 246 - 4, 5 + 324 - 6 - 2, 246, 6]);
+});
+
+test("if3 rectangle, line and circle draw; hide=yes only with Hidden", () => {
+  const IF = "[r]\ntype=rectangle\nwidth=4\nheight=4\nfill=yes\ncolour=0xff0000\n\n[c]\ntype=circle\nx=10\nwidth=8\nheight=8\nfill=yes\ncolour=0x00ff00\n\n[n]\ntype=line\ny=20\nwidth=5\nheight=0\ncolour=0x0000ff\n\n[h]\ntype=rectangle\ny=30\nwidth=2\nheight=2\nfill=yes\nhide=yes\ncolour=0xffffff\n";
+  const r = draw3(IF);
+  const px = (x, y) => r.pixels[x + y * r.width];
+  assert.equal(px(1, 1), 0xff0000);
+  assert.equal(px(14, 4), 0x00ff00);
+  assert.equal(px(10, 0), 0, "outside the ellipse");
+  assert.equal(px(3, 20), 0x0000ff);
+  assert.equal(px(0, 30), 0);
+  assert.ok(!r.boxes.some((b) => b.com === "h"));
+  assert.equal(draw3(IF, { showHidden: true }).pixels[0 + 30 * r.width], 0xffffff);
+});
+
+test("buildFrame parses .if3 hooks", () => {
+  const f = buildFrame("t", "[a]\ntype=text\nonvartransmit=s(event_com){v}\n", NO_ASSETS, STATE, "if3");
+  assert.deepEqual(f.coms[0].hooks, { onvartransmit: { script: "s", args: ["event_com"], triggers: ["v"] } });
+  assert.deepEqual(f.coms[0].conds, []);
+});
+
+for (const [stem, area] of Object.entries({ cs2demo: "main", cs2demo_prompt: "chat" })) {
+  test(`snapshot ${stem}.if3`, { skip: noContent }, () => {
+    const assets = new Assets(CONTENT);
+    const src = join(CONTENT, "scripts", "_test", "cs2demo", "interfaces", `${stem}.if3`);
+    const r = r3.render(parseIf(stem, readFileSync(src, "latin1"), "if3"), assets, { ...STATE, area });
+    const rgba = new Uint8Array(r.width * r.height * 4);
+    r.pixels.forEach((p, i) => rgba.set([(p >> 16) & 255, (p >> 8) & 255, p & 255, 255], i * 4));
+    const png = enc(r.width, r.height, rgba);
+    const file = join(__dirname, "ifedit", "snapshots", `${stem}.if3.png`);
+    if (process.env.BLESS) writeFileSync(file, png);
+    else {
+      assert.ok(existsSync(file), `${file} missing: run with BLESS=1`);
+      assert.ok(readFileSync(file).equals(png), `${stem} differs from its snapshot`);
+    }
+  });
+}

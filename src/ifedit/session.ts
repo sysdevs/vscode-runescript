@@ -4,17 +4,21 @@ import { existsSync, readFileSync } from "fs";
 import { join } from "path";
 import { Assets, FONT_NAMES } from "./assets";
 import { ifModelSpec } from "../modelview/ifmodel";
-import { find, get, parseIf } from "./parse";
+import { parseHook } from "./hook";
+import { Format, find, get, parseIf } from "./parse";
 import { Surface } from "./pix";
 import { decodePng } from "./png";
 import { AREAS, PreviewState, comActive, layout, render } from "./render";
-import { Condition, compare, evalScript, readConditions, schemaData } from "./schema";
+import * as r3 from "./render3";
+import { Condition, STATS, compare, evalScript, readConditions, schemaData } from "./schema";
+import { HOOKS, schemaData as schemaData3 } from "./schema3";
 
-const PICKER_PACKS = ["model", "seq", "obj", "varp", "varbit", "interface"];
+const PICKER_PACKS = ["model", "seq", "obj", "npc", "enum", "param", "varp", "varbit", "varc", "inv", "interface"];
 
-export function buildFrame(stem: string, text: string, assets: Assets, state: PreviewState) {
-  const model = parseIf(stem, text);
-  const r = render(model, assets, state);
+export function buildFrame(stem: string, text: string, assets: Assets, state: PreviewState, format: Format = "if") {
+  const model = parseIf(stem, text, format);
+  const if3 = format === "if3";
+  const r = if3 ? r3.render(model, assets, state) : render(model, assets, state);
   const s = new Surface(r.width, r.height);
   s.pixels.set(r.pixels);
   return {
@@ -24,8 +28,13 @@ export function buildFrame(stem: string, text: string, assets: Assets, state: Pr
     height: r.height,
     rgba: s.toRgba(),
     boxes: r.boxes,
-    layout: layout(model, state),
-    coms: model.coms.map((c) => ({ name: c.name, keys: c.keys.map((k) => [k.key, k.value]), conds: readConditions((k) => get(c, k)).map((cond) => test(cond, state)) })),
+    layout: if3 ? r3.layout(model, state) : layout(model, state),
+    coms: model.coms.map((c) => ({
+      name: c.name,
+      keys: c.keys.map((k) => [k.key, k.value]),
+      conds: if3 ? [] : readConditions((k) => get(c, k)).map((cond) => test(cond, state)),
+      hooks: if3 ? Object.fromEntries(HOOKS.flatMap((h) => (get(c, h) === undefined ? [] : [[h, parseHook(get(c, h)!)]]))) : {},
+    })),
     tree: Object.fromEntries(model.children),
     root: model.root.keys.map((k) => [k.key, k.value]),
     warnings: model.warnings,
@@ -35,7 +44,7 @@ export function buildFrame(stem: string, text: string, assets: Assets, state: Pr
       .filter((b) => b.type === "model")
       .map((b) => {
         const c = find(model, b.com)!;
-        return { com: b.com, spec: ifModelSpec((k) => get(c, k), comActive(c, state)) };
+        return { com: b.com, spec: if3 ? ifModelSpec(r3.modelKeys(c), false) : ifModelSpec((k) => get(c, k), comActive(c, state)) };
       }),
   };
 }
@@ -46,7 +55,7 @@ function test(cond: Condition, state: PreviewState) {
   return { ...cond, result, pass: cond.cmp === null ? null : compare(cond.cmp, result, parseInt(cond.value, 10)) };
 }
 
-export function buildCatalog(root: string, assets: Assets, text: string) {
+export function buildCatalog(root: string, assets: Assets, text: string, format: Format = "if") {
   const sheets = assets.sheetNames().flatMap((name) => {
     const s = assets.sheet(name);
     if (!s) return [];
@@ -71,6 +80,7 @@ export function buildCatalog(root: string, assets: Assets, text: string) {
     const names = existsSync(file) ? readFileSync(file, "latin1").split(/\r?\n/).flatMap((l) => (l.includes("=") ? [l.slice(l.indexOf("=") + 1)] : [])) : [];
     lists[p] = p === "interface" ? names.filter((n) => n.includes(":")) : names;
   }
+  lists.stat = STATS;
   const colours = [...new Set((text.match(/colour=0x[0-9a-fA-F]{6}/g) ?? []).map((c) => parseInt(c.slice(9), 16)))];
-  return { type: "catalog", sheets, fonts, lists, colours, areas: AREAS, schema: schemaData() };
+  return { type: "catalog", sheets, fonts, lists, colours, areas: AREAS, schema: format === "if3" ? schemaData3() : schemaData() };
 }
